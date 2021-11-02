@@ -1,0 +1,68 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+
+SpoorData <- read_xlsx("1979-2020 spoordata.xlsx")
+```
+
+```{r}
+Zelfdodingen <- SpoorData%>%
+  select(Totaal_zelfdoding, Geslacht, Perioden)%>%
+  filter(Geslacht == "Mannen" | Geslacht == "Vrouwen")
+
+  ggplot(data=Zelfdodingen, aes(x=Perioden, y=Totaal_zelfdoding, fill= Geslacht, width =1.2)) +
+  geom_bar(stat="identity", position=position_dodge(width=0.25))+
+  scale_fill_manual(values = c("#add8e6", "Pink"))+
+  xlab("Jaar")+
+  ylab("Zelfdodingen")+
+  labs(title="Suïcides gebasseerd op geslacht",
+       subtitle= "Periode van 1979-2020",
+       caption= "Bron: CBS")
+```
+```{r}
+Zelfdoding_trein <- SpoorData%>%
+  filter(Geslacht == "Mannen" | Geslacht == "Vrouwen")
+
+ggplot(data=Zelfdoding_trein, aes(x=Perioden, y=DMV_trein, fill=Geslacht, width=1.2)) +
+  geom_bar(stat="identity", position=position_dodge(width=0.25))+
+  scale_fill_manual(values = c("#add8e6", "Pink"))+
+  xlab("Jaar")+
+  ylab("Zelfdodingen")+
+  labs(title="Spoorsuïcides gebasseerd op geslacht",
+       subtitle= "Periode van 1979-2020",
+       caption= "Bron: CBS")
+```
+
+
+```{r}
+library(reshape2)
+Totaal_vs_trein <- SpoorData%>%
+  select(Totaal_zelfdoding, DMV_trein, Perioden)%>%
+  rename(Totaal=Totaal_zelfdoding)%>%
+  rename(Spoorsuïcides=DMV_trein)
+
+Totaal_vs_trein_bar <- melt(Totaal_vs_trein, id.vars = c("Perioden"))
+ggplot(data=my_data_long, aes(x=factor(Perioden), y=value, fill=variable, color=variable, alpha=variable, width=0.6)) +
+  geom_bar(width=.8, stat="identity", position ="identity") +
+  scale_colour_manual(values=c("lightblue4", "red")) +
+  scale_fill_manual(values=c("lightblue", "pink")) +
+  scale_alpha_manual(values=c(.8, 1))+
+  scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10, vjust=1))+
+  theme(legend.title=element_blank())+
+  xlab("Jaar")+
+  ylab("Zelfdodingen")+
+    labs(title="Spoorsuïcides",
+         #color="Zelfdodingen",
+         #fill="Zelfdodingen",
+       subtitle= "Periode van 1979-2020",
+       caption= "Bron: CBS")
+
+
+```
