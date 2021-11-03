@@ -1,0 +1,9 @@
+#test_frame {
+    height: 450px;
+    width: 800px;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
