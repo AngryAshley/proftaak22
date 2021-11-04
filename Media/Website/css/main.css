@@ -11,3 +11,8 @@ body {
 #map { 
     height: 600px; 
 } 
+
+#log {
+    height: 400px;
+    overflow-y: auto;
+}
