@@ -8,6 +8,7 @@ library(dplyr)
 library(ggplot2)
 library(reshape2)
 
+AanrijdingLocatie <- read_xlsx("Spoordata_locatie.xlsx")
 SpoorData_solution <- read_xlsx("Spoordata_solution.xlsx")
 AanrijdingData <- read_xlsx("AanrijdingData.xlsx")
 SpoorData_prediction <- read_xlsx("Spoordata_prediction.xlsx")
@@ -19,9 +20,11 @@ Zelfdodingen <- SpoorData%>%
   select(Totaal_zelfdoding, Geslacht, Perioden)%>%
   filter(Geslacht == "Mannen" | Geslacht == "Vrouwen")
 
-  ggplot(data=Zelfdodingen, aes(x=Perioden, y=Totaal_zelfdoding, fill= Geslacht, width =1.2)) +
-  geom_bar(stat="identity", position=position_dodge(width=0.25))+
+  ggplot(data=Zelfdodingen, aes(x=Perioden, y=Totaal_zelfdoding, fill= Geslacht, colour= Geslacht, alpha = Geslacht, width =1.2)) +
+  geom_bar(stat="identity", position=position_dodge(width=0.35))+
+  scale_colour_manual(values=c("lightblue4", "#e75480")) +
   scale_fill_manual(values = c("#add8e6", "Pink"))+
+  scale_alpha_manual(values=c(.8, 1))+
   xlab("Jaar")+
   ylab("Zelfdodingen")+
   labs(title="Suïcides gebasseerd op geslacht",
@@ -32,9 +35,11 @@ Zelfdodingen <- SpoorData%>%
 Zelfdoding_trein <- SpoorData%>%
   filter(Geslacht == "Mannen" | Geslacht == "Vrouwen")
 
-ggplot(data=Zelfdoding_trein, aes(x=Perioden, y=DMV_trein, fill=Geslacht, width=1.2)) +
-  geom_bar(stat="identity", position=position_dodge(width=0.25))+
+ggplot(data=Zelfdoding_trein, aes(x=Perioden, y=DMV_trein, fill=Geslacht, colour=Geslacht, alpha=Geslacht, width=1.2)) +
+  geom_bar(stat="identity", position=position_dodge(width=0.35))+
+  scale_colour_manual(values=c("lightblue4", "#e75480")) +
   scale_fill_manual(values = c("#add8e6", "Pink"))+
+  scale_alpha_manual(values=c(.8, 1))+
   xlab("Jaar")+
   ylab("Zelfdodingen")+
   labs(title="Spoorsuïcides gebasseerd op geslacht",
@@ -48,21 +53,20 @@ Totaal_vs_trein <- SpoorData%>%
   select(Totaal_zelfdoding, DMV_trein, Perioden)%>%
   rename(Suïcides=Totaal_zelfdoding)%>%
   rename(Spoorsuïcides=DMV_trein)
+  
+Totaal_vs_trein_bar <- melt(Totaal_vs_trein, id.vars = c("Perioden"))%>%
+  rename(Suïcides=variable)
 
-Totaal_vs_trein_bar <- melt(Totaal_vs_trein, id.vars = c("Perioden"))
-ggplot(data=Totaal_vs_trein_bar, aes(x=factor(Perioden), y=value, fill=variable, color=variable, alpha=variable, width=0.6)) +
+ggplot(data=Totaal_vs_trein_bar, aes(x=factor(Perioden), y=value, fill=Suïcides, color=Suïcides, alpha=Suïcides, width=0.6)) +
   geom_bar(width=.8, stat="identity", position ="identity") +
   scale_colour_manual(values=c("lightblue4", "red")) +
   scale_fill_manual(values=c("lightblue", "pink")) +
   scale_alpha_manual(values=c(.8, 1))+
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10, vjust=1))+
-  theme(legend.title=element_blank())+
   xlab("Jaar")+
   ylab("Zelfdodingen")+
     labs(title="Spoorsuïcides",
-         #color="Zelfdodingen",
-         #fill="Zelfdodingen",
        subtitle= "Periode van 1979-2020",
        caption= "Bron: CBS")
 
@@ -74,69 +78,67 @@ New_Totaal_vs_trein <- SpoorData_prediction%>%
   rename(Suïcides=Totaal_zelfdoding)%>%
   rename(Spoorsuïcides=DMV_trein)
 
-New_Totaal_vs_trein_bar <- melt(New_Totaal_vs_trein, id.vars = c("Perioden"))
-ggplot(data=New_Totaal_vs_trein_bar, aes(x=factor(Perioden), y=value, fill=variable, color=variable, alpha=variable, width=0.6)) +
+New_Totaal_vs_trein_bar <- melt(New_Totaal_vs_trein, id.vars = c("Perioden"))%>%
+  filter(between(Perioden,2006,2026))%>%
+  rename(Suïcides=variable)
+
+ggplot(data=New_Totaal_vs_trein_bar, aes(x=factor(Perioden), y=value, fill=Suïcides, color=Suïcides, alpha=Suïcides, width=0.6)) +
   geom_bar(width=.8, stat="identity", position ="identity") +
   scale_colour_manual(values=c("lightblue4", "red")) +
   scale_fill_manual(values=c("lightblue", "pink")) +
   scale_alpha_manual(values=c(.8, 1))+
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10, vjust=1))+
-  theme(legend.title=element_blank())+
   xlab("Jaar")+
   ylab("Zelfdodingen")+
     labs(title="Verwachte Spoorsuïcides",
-         #color="Zelfdodingen",
-         #fill="Zelfdodingen",
-       subtitle= "Periode van 1979-2026",
+       subtitle= "Periode van 2006-2026",
        caption= "Bron: CBS")
 ```
 
 ```{r}
 Zelfdodingen_trein_pogingen <- SpoorData%>%
   select(DMV_trein_attempts, DMV_trein, Perioden)%>%
-  rename(Suïcidespogingen=DMV_trein_attempts)%>%
-  rename(Spoorsuïcides=DMV_trein)
+  rename(Suïcides=DMV_trein)%>%
+  rename(Suïcidepogingen= DMV_trein_attempts)
 
-Trein_pogingen <- melt(Zelfdodingen_trein_pogingen, id.vars = c("Perioden"))
-ggplot(data=Trein_pogingen, aes(x=factor(Perioden), y=value, fill=variable, color=variable, alpha=variable, width=0.6)) +
-  geom_bar(width=.8, stat="identity", position ="identity") +
+Trein_pogingen <- melt(Zelfdodingen_trein_pogingen, id.vars = c("Perioden"))%>%
+  rename(Spoorsuïcides=variable)
+
+ggplot(data=Trein_pogingen, aes(x=factor(Perioden), y=value, fill=Spoorsuïcides, color=Spoorsuïcides, alpha=Spoorsuïcides, width=1)) +
+  geom_bar(width=.8, stat="identity", position =position_dodge(width=0.35)) +
   scale_colour_manual(values=c("lightblue4", "red")) +
   scale_fill_manual(values=c("lightblue", "pink")) +
   scale_alpha_manual(values=c(.8, 1))+
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10, vjust=1))+
-  theme(legend.title=element_blank())+
   xlab("Jaar")+
   ylab("Zelfdodingen")+
     labs(title="Spoorsuïcides pogingen",
-         #color="Zelfdodingen",
-         #fill="Zelfdodingen",
        subtitle= "Periode van 1979-2020",
        caption= "Bron: CBS")
 ```
 ```{r}
 New_Zelfdodingen_trein_pogingen <- SpoorData_prediction%>%
   select(DMV_trein_attempts, DMV_trein, Perioden)%>%
-  #filter(Perioden == '2020'+'2021'+'2022'+'2023'+'2024',+'2025'+'2026')%>%
-  rename(Suïcidespogingen=DMV_trein_attempts)%>%
-  rename(Spoorsuïcides=DMV_trein)
+  rename(Suïcides=DMV_trein)%>%
+  rename(Suïcidepogingen= DMV_trein_attempts)
+  
+New_Trein_pogingen <- melt(New_Zelfdodingen_trein_pogingen, id.vars = c("Perioden"))%>%
+  filter(between(Perioden,2006,2026))%>%
+  rename(Spoorsuïcides=variable)
 
-New_Trein_pogingen <- melt(New_Zelfdodingen_trein_pogingen, id.vars = c("Perioden"))
-ggplot(data=New_Trein_pogingen, aes(x=factor(Perioden), y=value, fill=variable, color=variable, alpha=variable, width=0.6)) +
-  geom_bar(width=.8, stat="identity", position ="identity") +
+ggplot(data=New_Trein_pogingen, aes(x=factor(Perioden), y=value, fill=Spoorsuïcides, color=Spoorsuïcides, alpha=Spoorsuïcides, width=1)) +
+  geom_bar(width=.8, stat="identity", position =position_dodge(width=0.35)) +
   scale_colour_manual(values=c("lightblue4", "red")) +
   scale_fill_manual(values=c("lightblue", "pink")) +
   scale_alpha_manual(values=c(.8, 1))+
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10, vjust=1))+
-  theme(legend.title=element_blank())+
   xlab("Jaar")+
   ylab("Zelfdodingen")+
     labs(title="Verwachte Spoorsuïcides pogingen",
-         #color="Zelfdodingen",
-         #fill="Zelfdodingen",
-       subtitle= "Periode van 1979-2026",
+       subtitle= "Periode van 2006-2026",
        caption= "Bron: CBS")
 ```
 ```{r}
@@ -145,68 +147,86 @@ Fix_Totaal_vs_trein <- SpoorData_solution%>%
   rename(Suïcides=Totaal_zelfdoding)%>%
   rename(Spoorsuïcides=DMV_trein)
 
-Fix_Totaal_vs_trein_bar <- melt(Fix_Totaal_vs_trein, id.vars = c("Perioden"))
-ggplot(data=Fix_Totaal_vs_trein_bar, aes(x=factor(Perioden), y=value, fill=variable, color=variable, alpha=variable, width=0.6)) +
+Fix_Totaal_vs_trein_bar <- melt(Fix_Totaal_vs_trein, id.vars = c("Perioden"))%>%
+  filter(between(Perioden,2006,2026))%>%
+rename(Suïcides = variable)
+
+ggplot(data=Fix_Totaal_vs_trein_bar, aes(x=factor(Perioden), y=value, fill=Suïcides, color=Suïcides, alpha=Suïcides, width=0.6)) +
   geom_bar(width=.8, stat="identity", position ="identity") +
   scale_colour_manual(values=c("lightblue4", "red")) +
   scale_fill_manual(values=c("lightblue", "pink")) +
   scale_alpha_manual(values=c(.8, 1))+
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10, vjust=1))+
-  theme(legend.title=element_blank())+
   xlab("Jaar")+
   ylab("Zelfdodingen")+
     labs(title="Verwachte Spoorsuïcides met RailView",
-         #color="Zelfdodingen",
-         #fill="Zelfdodingen",
-       subtitle= "Periode van 1979-2026",
+       subtitle= "Periode van 2006-2026",
        caption= "Bron: CBS")
 ```
 ```{r}
 Fix_Zelfdodingen_trein_pogingen <- SpoorData_solution%>%
   select(DMV_trein_attempts, DMV_trein, Perioden)%>%
-  #filter(Perioden == '2020'+'2021'+'2022'+'2023'+'2024',+'2025'+'2026')%>%
-  rename(Suïcidespogingen=DMV_trein_attempts)%>%
-  rename(Spoorsuïcides=DMV_trein)
+  rename(Suïcides=DMV_trein)%>%
+  rename(Suïcidepogingen= DMV_trein_attempts)
 
-Fix_Trein_pogingen <- melt(Fix_Zelfdodingen_trein_pogingen, id.vars = c("Perioden"))
-ggplot(data=Fix_Trein_pogingen, aes(x=factor(Perioden), y=value, fill=variable, color=variable, alpha=variable, width=0.6)) +
-  geom_bar(width=.8, stat="identity", position ="identity") +
+Fix_Trein_pogingen <- melt(Fix_Zelfdodingen_trein_pogingen, id.vars = c("Perioden"))%>%
+  filter(between(Perioden,2006,2026))%>%
+  rename(Spoorsuïcides = variable)
+
+ggplot(data=Fix_Trein_pogingen, aes(x=factor(Perioden), y=value, fill=Spoorsuïcides, color=Spoorsuïcides, alpha=Spoorsuïcides, width=1)) +
+  geom_bar(width=.8, stat="identity", position = position_dodge(width=0.35)) +
   scale_colour_manual(values=c("lightblue4", "red")) +
   scale_fill_manual(values=c("lightblue", "pink")) +
   scale_alpha_manual(values=c(.8, 1))+
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10, vjust=1))+
-  theme(legend.title=element_blank())+
   xlab("Jaar")+
   ylab("Zelfdodingen")+
     labs(title="Verwachte Spoorsuïcides met RailView",
-         #color="Zelfdodingen",
-         #fill="Zelfdodingen",
-       subtitle= "Periode van 1979-2026",
+       subtitle= "Periode van 2016-2026",
        caption= "Bron: CBS")
 ```
 ```{r}
 Aanrijdingen <- AanrijdingData%>%
   select(DMV_aanrijding_of_object_op_spoor, Aantal_storingen, Perioden)%>%
-  rename(Storingen=Aantal_storingen)%>%
-  rename('Storingen waaronder aanrijding of object op spoor'=DMV_aanrijding_of_object_op_spoor)
+  rename("Totaal"=Aantal_storingen)%>%
+  rename("Aanrijding of object op spoor" = DMV_aanrijding_of_object_op_spoor)
 
-AanrijdingenBarChart <- melt(Aanrijdingen, id.vars = c("Perioden"))
-ggplot(data=AanrijdingenBarChart, aes(x=factor(Perioden), y=value, fill=variable, color=variable, alpha=variable, width=0.6)) +
+AanrijdingenBarChart <- melt(Aanrijdingen, id.vars = c("Perioden"))%>%
+rename(Storingen = variable)
+
+ggplot(data=AanrijdingenBarChart, aes(x=factor(Perioden), y=value, fill=Storingen, color=Storingen, alpha=Storingen, width=0.6)) +
   geom_bar(width=.8, stat="identity", position ="dodge") +
-  scale_colour_manual(values=c("lightblue4", "red")) +
-  scale_fill_manual(values=c("lightblue", "pink")) +
+  scale_colour_manual(values=c("red", "lightblue4")) +
+  scale_fill_manual(values=c("pink", "lightblue")) +
   scale_alpha_manual(values=c(.8, 1))+
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10, vjust=1))+
-  theme(legend.title=element_blank())+
   xlab("Jaar")+
   ylab("Storingen")+
     labs(title="Aantal storingen waaronder aanrijding of object op spoor",
-         #color="Zelfdodingen",
-         #fill="Zelfdodingen",
        subtitle= "Periode van 2011-2021",
        caption= "Bron: Rijdendetreinen.nl")
+```
+```{r}
+Spoorsuïcide_locatie <-AanrijdingLocatie%>%
+  rename("Vrij Spoor" = Locatie_vrij_spoor)%>%
+  rename("Overwegen" = Locatie_overwegen)%>%
+  rename("Station" = Locatie_station)
+
+AanrijdingenLocatiePieChart <- melt(Spoorsuïcide_locatie, id.vars = c("Totaal Spoorsuïcides"))%>%
+  rename(Locatie = variable)
+
+  ggplot(data=AanrijdingenLocatiePieChart, aes(x="", y=value, fill=Locatie))+
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0)+
+  theme_void()+
+  geom_text(aes(y = value, label = Locatie), color = "white", size=5) +
+  scale_fill_brewer(palette="Set1")+
+  labs(title="Spoorsuïcides locatie",
+  subtitle= "Periode van 1979-2021",
+  caption= "Bron: Wikipedia")
+
 ```
 
