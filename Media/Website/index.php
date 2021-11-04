@@ -49,4 +49,14 @@
 
     L.marker([52.2, 5.1855]).addTo(map);
     L.marker([52.2, 5.2939]).addTo(map);
+
+    function createWindow(src, width, height){
+        var win = window.open(src, "_new", "width="+width+",height="+height);
+        win.addEventListener("resize", function(){
+            console.log("Resized");
+            win.resizeTo(width, height);
+        });
+    }
+
+createWindow("popup.php", 800, 660);
 </script>
