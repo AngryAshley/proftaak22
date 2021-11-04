@@ -218,7 +218,7 @@ Spoorsuïcide_locatie <-AanrijdingLocatie%>%
 AanrijdingenLocatiePieChart <- melt(Spoorsuïcide_locatie, id.vars = c("Totaal Spoorsuïcides"))%>%
   rename(Locatie = variable)
 
-  ggplot(data=AanrijdingenLocatiePieChart, aes(x="", y=value, fill=Locatie))+
+ggplot(data=AanrijdingenLocatiePieChart, aes(x="", y=value, fill=Locatie))+
   geom_bar(stat="identity", width=1) +
   coord_polar("y", start=0)+
   theme_void()+
