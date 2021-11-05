@@ -15,7 +15,8 @@
 
     <div class="container">
         <div class="embed-responsive embed-responsive-21by9 d-flex justify-content-center mb-3">
-            <iframe class="embed-responsive-item" id="test_frame" src="http://213.34.225.97:8080/mjpg/video.mjpg"></iframe>
+            <!-- <iframe class="embed-responsive-item" id="test_frame" src="http://213.34.225.97:8080/mjpg/video.mjpg"></iframe> -->
+            <iframe width="560" id="test_frame" class="embed-responsive-item" height="315" src="https://www.youtube.com/embed/4DXle0_Ud7s?&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen autoplay></iframe>
         </div>
 
         <div class="row d-flex justify-content-center">

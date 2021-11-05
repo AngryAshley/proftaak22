@@ -50,7 +50,18 @@
 </body>
 </html>
 <script>
-    var map = L.map('map').setView([51.4993, 5.6570], 13);
+    var map = L.map('map', {
+        center: [51.4993, 5.6570],
+        zoom: 8,
+        minZoom: 8,
+        maxZoom: 18,
+        maxBounds: [
+            [50.138758, 2.194824],
+            [53.921042, 7.863770]
+        ],
+        zoomControl: false
+
+    });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -61,17 +72,23 @@
         [51.4446, 5.4897],
         [51.4448, 5.5021],
         [51.4531, 5.5680],
-        [51.4531, 5.5710],
+        [51.4534, 5.5710],
         [51.4756, 5.6620]
     ];
 
-    var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+    //icon
+    var cctvIcon = L.icon({
+    iconUrl: 'images/cctv.png',
 
-    var test = L.marker([51.4432, 5.4797]).addTo(map);
-    var test2 = L.marker([51.4756, 5.6620]).addTo(map);
+    iconSize:     [40, 40], // size of the icon
+    });
+    var camera = L.marker([51.4531, 5.5680], {icon: cctvIcon}).addTo(map);
 
-    test.on('click', function(){
+    camera.on('click', function(){
         createWindow("popup.php", 1000, 660);
+        var eindhovenMarker = L.marker([51.4432, 5.4797]).addTo(map);
+        var helmondMarker = L.marker([51.4756, 5.6620]).addTo(map);
+        var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
     });
 
     function createWindow(src, width, height){
