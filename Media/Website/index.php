@@ -50,21 +50,25 @@
 </body>
 </html>
 <script>
-    var map = L.map('map').setView([52.505, 6.09], 7);
+    var map = L.map('map').setView([51.4993, 5.6570], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var test = L.Routing.control({
-        waypoints: [
-            L.latLng(51.4416, 5.4697),
-            L.latLng(51.4793, 5.6570)
-        ]
-    }).addTo(map);
+    var latlngs = [
+        [51.4432, 5.4797],
+        [51.4446, 5.4897],
+        [51.4448, 5.5021],
+        [51.4531, 5.5680],
+        [51.4531, 5.5710],
+        [51.4756, 5.6620]
+    ];
 
-    var test = L.marker([52.2, 5.1855]).addTo(map);
-    var test2 = L.marker([52.2, 5.2939]).addTo(map);
+    var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+
+    var test = L.marker([51.4432, 5.4797]).addTo(map);
+    var test2 = L.marker([51.4756, 5.6620]).addTo(map);
 
     test.on('click', function(){
         createWindow("popup.php", 1000, 660);
@@ -77,6 +81,4 @@
             win.resizeTo(width, height);
         });
     }
-
-    var polyline = L.polyline(test, {color: 'red'}).addTo(map);
 </script>
