@@ -50,6 +50,12 @@
 </body>
 </html>
 <script>
+    var win;
+    var eindhovenMarker ;
+    var helmondMarker;
+    var polyline;
+
+
     var map = L.map('map', {
         center: [51.4993, 5.6570],
         zoom: 8,
@@ -80,22 +86,33 @@
     var cctvIcon = L.icon({
     iconUrl: 'images/cctv.png',
 
-    iconSize:     [40, 40], // size of the icon
-    });
+    iconSize:[40, 40],}); // size of the icon
+
     var camera = L.marker([51.4531, 5.5680], {icon: cctvIcon}).addTo(map);
 
     camera.on('click', function(){
         createWindow("popup.php", 1000, 660);
-        var eindhovenMarker = L.marker([51.4432, 5.4797]).addTo(map);
-        var helmondMarker = L.marker([51.4756, 5.6620]).addTo(map);
-        var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+        eindhovenMarker = L.marker([51.4432, 5.4797]).addTo(map);
+        helmondMarker = L.marker([51.4756, 5.6620]).addTo(map);
+        polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
     });
 
+
     function createWindow(src, width, height){
-        var win = window.open(src, "_new", "width="+width+",height="+height);
-        win.addEventListener("resize", function(){
+            win = window.open(src, "_new", "width="+width+",height="+height);
+            win.addEventListener("resize", function(){
             console.log("Resized");
             win.resizeTo(width, height);
         });
+    }
+
+    var mapDiv = document.getElementById("map");
+
+    mapDiv.onmouseover = function(){
+        if (win.closed) {
+            map.removeLayer(eindhovenMarker);
+            map.removeLayer(helmondMarker);
+            map.removeLayer(polyline);
+        }
     }
 </script>
