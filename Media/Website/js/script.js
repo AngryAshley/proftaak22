@@ -25,7 +25,6 @@
             [53.921042, 7.863770]
         ],
         zoomControl: false
-
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -52,8 +51,6 @@
         helmondMarker = L.marker([51.4756, 5.6620]).addTo(map);
         polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
     });
-
-    var $i = 0; 
 
     //onlick event for camera
     test.on('click', function(){

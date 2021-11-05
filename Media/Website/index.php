@@ -48,6 +48,5 @@
         </div>
     </div>
 </body>
+    <script src="js/script.js"></script>
 </html>
-
-<script src="js/script.js"></script>
