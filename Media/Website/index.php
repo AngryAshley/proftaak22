@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
@@ -55,8 +56,19 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    L.marker([52.2, 5.1855]).addTo(map);
-    L.marker([52.2, 5.2939]).addTo(map);
+    var test = L.Routing.control({
+        waypoints: [
+            L.latLng(51.4416, 5.4697),
+            L.latLng(51.4793, 5.6570)
+        ]
+    }).addTo(map);
+
+    var test = L.marker([52.2, 5.1855]).addTo(map);
+    var test2 = L.marker([52.2, 5.2939]).addTo(map);
+
+    test.on('click', function(){
+        createWindow("popup.php", 1000, 660);
+    });
 
     function createWindow(src, width, height){
         var win = window.open(src, "_new", "width="+width+",height="+height);
@@ -66,5 +78,5 @@
         });
     }
 
-createWindow("popup.php", 800, 660);
+    var polyline = L.polyline(test, {color: 'red'}).addTo(map);
 </script>
