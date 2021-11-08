@@ -81,7 +81,6 @@
     mapDiv.onmouseover = function(){
         var givenNumber = localStorage.getItem("givenNumber");
         if (windows[givenNumber].closed && givenNumber != 0) {
-            alert(givenNumber);
             map.removeLayer(eindhovenMarkers[givenNumber]);
             map.removeLayer(helmondMarkers[givenNumber]);
             map.removeLayer(polylines[givenNumber]);
