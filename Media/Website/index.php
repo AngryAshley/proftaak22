@@ -1,3 +1,35 @@
+<?php
+$servername = "192.168.161.205:3306";
+$username = "admin";
+$password = "TopMaster99";
+
+try {
+  $conn = new PDO("mysql:host=$servername;dbname=tester", $username, $password);
+  // set the PDO error mode to exception
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  echo "Connected successfully";
+} catch(PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+}
+
+$sth = $conn->prepare('SELECT * FROM test');
+
+$sth->execute();
+echo '<br />';
+
+while($row = $sth->fetch()) {
+    echo $row['id'];
+    echo '. ';
+    echo $row['content'];
+    echo '<br />';
+}
+
+$update = $conn->prepare('UPDATE test SET content = "baklava" WHERE id = "1"');
+$update->execute();
+
+
+// mysql_close($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
