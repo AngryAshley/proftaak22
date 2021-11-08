@@ -42,7 +42,7 @@
     ];
 
     var camera = L.marker([51.4531, 5.5680], {icon: alertIcon}).addTo(map);
-    var test = L.marker([51.4432, 5.4797], {icon: alertIcon}).addTo(map);
+    var test = L.marker([51.4432, 5.4797], {icon: cctvIcon}).addTo(map);
 
     //onlick event for camera
     camera.on('click', function(){
