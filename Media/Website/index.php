@@ -48,5 +48,6 @@
         </div>
     </div>
 </body>
-    <script src="js/script.js"></script>
+    <script type="text/javascript" src="js/script.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/popupscript.js" crossorigin="anonymous"></script>
 </html>

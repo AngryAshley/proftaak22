@@ -1,8 +1,10 @@
     //Javascript variables
     var win;
-    var eindhovenMarker ;
-    var helmondMarker;
-    var polyline;
+    var eindhovenMarkers = [];
+    var helmondMarkers = [];
+    var polylines = [];
+    var windows = [];
+    var windowCounter = 0;
 
     //camera icon
     var cctvIcon = L.icon({
@@ -47,35 +49,43 @@
     //onlick event for camera
     camera.on('click', function(){
         createWindow("popup.php", 1000, 660);
-        eindhovenMarker = L.marker([51.4432, 5.4797]).addTo(map);
-        helmondMarker = L.marker([51.4756, 5.6620]).addTo(map);
-        polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+        eindhovenMarkers[windowCounter] = L.marker([51.4432, 5.4797]).addTo(map);
+        helmondMarkers[windowCounter] = L.marker([51.4756, 5.6620]).addTo(map);
+        polylines[windowCounter] = L.polyline(latlngs, {color: 'red'}).addTo(map);
+
+        //sessionStorage.setItem("lastname", "Smith");
+        //console.log(sessionStorage.getItem("lastname"));
     });
 
     //onlick event for camera
     test.on('click', function(){
         createWindow("popup.php", 1000, 660);
-        eindhovenMarker = L.marker([51.4432, 5.4797]).addTo(map);
-        helmondMarker = L.marker([51.4756, 5.6620]).addTo(map);
-        polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
-        $i++;
+        eindhovenMarkers[windowCounter] = L.marker([51.4432, 5.4797]).addTo(map);
+        helmondMarkers[windowCounter] = L.marker([51.4756, 5.6620]).addTo(map);
+        polylines[windowCounter] = L.polyline(latlngs, {color: 'red'}).addTo(map);
     });
 
     //create pop up
     function createWindow(src, width, height){
-        win = window.open(src, "_blank", "width="+width+",height="+height);
-        win.addEventListener("resize", function(){
+        windowCounter++;
+        windows[windowCounter] = window.open(src, "_blank", "width="+width+",height="+height);
+        windows[windowCounter].addEventListener("resize", function(){
             console.log("Resized");
-            win.resizeTo(width, height);
+            windows[windowCounter].resizeTo(width, height);
         });
+        localStorage.setItem("popUpNumber", windowCounter);
     }
 
     var mapDiv = document.getElementById("map");
 
     mapDiv.onmouseover = function(){
-        if (win.closed) {
-            map.removeLayer(eindhovenMarker);
-            map.removeLayer(helmondMarker);
-            map.removeLayer(polyline);
+        var givenNumber = localStorage.getItem("givenNumber");
+        if (windows[givenNumber].closed && givenNumber != 0) {
+            alert(givenNumber);
+            map.removeLayer(eindhovenMarkers[givenNumber]);
+            map.removeLayer(helmondMarkers[givenNumber]);
+            map.removeLayer(polylines[givenNumber]);
+            givenNumber = 0;
+            localStorage.setItem("givenNumber", 0);
         }
     }
