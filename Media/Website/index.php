@@ -1,34 +1,48 @@
 <?php
-$servername = "192.168.161.205:3306";
-$username = "admin";
-$password = "TopMaster99";
+    $servername = "192.168.161.205:3306";
+    $username = "admin";
+    $password = "TopMaster99";
 
-try {
-  $conn = new PDO("mysql:host=$servername;dbname=tester", $username, $password);
-  // set the PDO error mode to exception
-  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  echo "Connected successfully";
-} catch(PDOException $e) {
-  echo "Connection failed: " . $e->getMessage();
-}
+    try {
+    $pdo = new PDO("mysql:host=$servername;dbname=RailView", $username, $password);
+    // set the PDO error mode to exception
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connected successfully";
+    } catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+    }
 
-$sth = $conn->prepare('SELECT * FROM test');
+    $sth = $pdo->prepare('SELECT * FROM alerts');
 
-$sth->execute();
-echo '<br />';
-
-while($row = $sth->fetch()) {
-    echo $row['id'];
-    echo '. ';
-    echo $row['content'];
+    $sth->execute();
     echo '<br />';
-}
 
-$update = $conn->prepare('UPDATE test SET content = "baklava" WHERE id = "1"');
-$update->execute();
+    // $parameters = array(':Alert' => 'train',
+    //                     ':Location' => '51.4531, 5.5680', 
+    //                     ':Route' => 'Eindhoven naar Helmond, intercity',
+    //                     ':Times' =>  date("Y-m-d H:i:s"));
 
+    // $insert = $pdo->prepare('INSERT INTO alerts (alert, location, route, times) VALUES (:Alert, :Location, :Route, :Times)');
+    // $insert->execute($parameters);
 
-// mysql_close($conn);
+    // enum en kan alleen een persoon train of other zijn. 
+    // location van de camera 
+    // route (helmond naar eindhoven, sprinter of intercity bijvoorbeeld)
+    // times = wanneer dus tijd en datum 
+
+    while($row = $sth->fetch()) {
+        echo $row['id'];
+        echo '. ';
+        echo $row['alert'];
+        echo ', ';
+        echo $row['location'];
+        echo ', ';
+        echo $row['route'];
+        echo ', ';
+        echo $row['times'];
+        echo '<br />';
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
