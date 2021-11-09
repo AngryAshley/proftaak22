@@ -1,10 +1,12 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 ```{r}
-install.packages("lubridate") 
-install.packages("reshape2")
+#install.packages("lubridate") 
+#install.packages("reshape2")
 
 library(readxl)
 library(dplyr)
@@ -238,7 +240,24 @@ Storingen <- Disruptions%>%
   filter (cause_en %in% c("person on the railway track", "person along the track", "person hit by a train", "collision", "people along the railway", "people on the railway track", "collision with a vehicle", "vehicle on the railway track"))
   Storingen$start_time <- as.Date(Storingen$start_time)
   Storingen$year <- as.numeric(format(Storingen$start_time, "%Y"))
+  group_by(Storingen, ns_lines) %>%
+  summarize(duration_total = sum(duration_minutes)) %>%
+  arrange(desc(duration_total))
+```
+```{r}
+Storingen
 
-  #group_by(Storingen ,year)
+  ggplot(data=Storingen, aes(factor(year), y=duration_minutes, fill = cause_en)) +
+  geom_bar(stat="identity")+
+  #scale_colour_manual(values=c("lightblue4", "#e75480")) +
+  #scale_fill_manual(values = c("#add8e6", "Pink"))+
+  scale_alpha_manual(values=c(.8, 1))+
+  scale_y_continuous(expand = c(0,0)) + scale_x_discrete(expand = c(0,0))+
+  labs(fill = "Categorie storing") +
+  xlab("Jaar")+
+  ylab("Minuten")+
+  labs(title="Duratie van storingen waarvan aanrijding/ongeluk",
+       subtitle= "Periode van 2011-2019",
+       caption= "Bron: Rijdendetreinen")
 ```
 
