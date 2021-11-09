@@ -23,7 +23,7 @@ function getData() {
 			});
 		},
 		error: function (response, error) {
-			console.log('fouttttt', response, error);
+			console.log('Error', response, error);
 		}
 	});
 }
