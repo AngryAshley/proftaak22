@@ -1,47 +1,26 @@
 <?php
-    $servername = "192.168.161.205:3306";
-    $username = "admin";
-    $password = "TopMaster99";
 
-    try {
-    $pdo = new PDO("mysql:host=$servername;dbname=RailView", $username, $password);
-    // set the PDO error mode to exception
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully";
-    } catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-    }
+    // $sth = $pdo->prepare('SELECT * FROM alerts');
 
-    $sth = $pdo->prepare('SELECT * FROM alerts');
+    // $sth->execute();
 
-    $sth->execute();
-    echo '<br />';
+    // // enum en kan alleen een persoon train of other zijn. 
+    // // location van de camera 
+    // // route (helmond naar eindhoven, sprinter of intercity bijvoorbeeld)
+    // // times = wanneer dus tijd en datum 
 
-    // $parameters = array(':Alert' => 'train',
-    //                     ':Location' => '51.4531, 5.5680', 
-    //                     ':Route' => 'Eindhoven naar Helmond, intercity',
-    //                     ':Times' =>  date("Y-m-d H:i:s"));
-
-    // $insert = $pdo->prepare('INSERT INTO alerts (alert, location, route, times) VALUES (:Alert, :Location, :Route, :Times)');
-    // $insert->execute($parameters);
-
-    // enum en kan alleen een persoon train of other zijn. 
-    // location van de camera 
-    // route (helmond naar eindhoven, sprinter of intercity bijvoorbeeld)
-    // times = wanneer dus tijd en datum 
-
-    while($row = $sth->fetch()) {
-        echo $row['id'];
-        echo '. ';
-        echo $row['alert'];
-        echo ', ';
-        echo $row['location'];
-        echo ', ';
-        echo $row['route'];
-        echo ', ';
-        echo $row['times'];
-        echo '<br />';
-    }
+    // while($row = $sth->fetch()) {
+    //     echo $row['id'];
+    //     echo '. ';
+    //     echo $row['alert'];
+    //     echo ', ';
+    //     echo $row['location'];
+    //     echo ', ';
+    //     echo $row['route'];
+    //     echo ', ';
+    //     echo $row['times'];
+    //     echo '<br />';
+    // }
 
 ?>
 <!DOCTYPE html>
@@ -94,6 +73,11 @@
         </div>
     </div>
 </body>
+    <!--JQuery-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <!--Bootstrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/script.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/popupscript.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/getdatascript.js"></script>
 </html>

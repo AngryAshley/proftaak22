@@ -78,6 +78,7 @@
 
     var mapDiv = document.getElementById("map");
 
+    //Deletes route when a window is closed
     mapDiv.onmouseover = function(){
         var givenNumber = localStorage.getItem("givenNumber");
         if (windows[givenNumber].closed && givenNumber != 0) {
