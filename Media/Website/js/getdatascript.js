@@ -1,26 +1,38 @@
+var predefined_val = null;
+
 $(document).ready(function () {
+	setInterval(function(){
+        $.ajax({
+            type:"GET",
+			dataType: "json",
+            url:"./includes/get_data.php", //put relative url here, script which will return php
 
-	getData();
+            success:function(response){
+                var data = response; // response data from your php script
 
+				if (predefined_val == null)
+				{
+					predefined_val = data;
+				}
+
+                if(JSON.stringify(predefined_val) != JSON.stringify(data)){
+                    window.location.href=window.location.href;
+                } 
+            }
+        });                     
+    },1000);// function will run every 1 seconds
 });
 
+
 function getData() {
-	//get all the coins from the database
+	// get all the coins from the database
 	$.ajax({
 		type: "GET",
 		dataType: "json",
 		url: "./includes/get_data.php",
 
 		success: function (response) {
-			//An array is returned
-			console.log(response);
-
-			//calculate the total value of the whole wallet
-			$.each(response, function (index, value) {
-
-				//sum up all the rows in this each loop, extra + is to actual add the price to the existing variable
-				console.log(response[index]["id"])
-			});
+			predefined_val = response;
 		},
 		error: function (response, error) {
 			console.log('Error', response, error);
