@@ -41,7 +41,7 @@
         {{#.}}
         <div class="text-center border-top border-dark border-2">
             <p class="px-2 pt-2" id>
-                { {{times}} } {{route}} {{alert}}
+                { {{times}} } <br/> {{route}} <br /> <b>{{alert}}</b>
             </p>
         </div>
         {{/.}}
