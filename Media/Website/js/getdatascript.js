@@ -1,4 +1,6 @@
 var predefined_val = null;
+var cam_alerts = [];
+var counter = 0;
 
 $(document).ready(function () {
 	setInterval(function(){
@@ -10,8 +12,6 @@ $(document).ready(function () {
             success:function(response){
                 var data = response; // response data from your php script
 
-				console.log('test');
-
                 if(JSON.stringify(predefined_val) != JSON.stringify(data)){
                     // window.location.href=window.location.href;
 					//Get the template
@@ -20,10 +20,20 @@ $(document).ready(function () {
 					var renderTemplate = Mustache.render(template, data);
 					//Append the data to the body
 					$("#log").append(renderTemplate);
-
+					
+					// camAlert = data;
 					predefined_val = data;
-					console.log(data);
-					console.log(predefined_val);
+
+					// store alerts for check
+					data.forEach(element => {
+						if(element['alert_checked'] == false) {
+							cam_alerts[counter] = element;
+							counter++;
+						}
+					});
+
+					camAlerts(cam_alerts);
+				
                 } 
 				
 				if (predefined_val == null)
@@ -34,7 +44,6 @@ $(document).ready(function () {
         });                     
     },1000);// function will run every 1 seconds
 });
-
 
 // function getData() {
 // 	// get all the coins from the database

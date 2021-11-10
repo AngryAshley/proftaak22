@@ -33,7 +33,7 @@
                 <p class="text-center">Eindhoven naar Helmond</p>
             </div>
             <div class="col-sm-auto">
-                <button type="button" class="btn btn-secondary ml-5">FALSE ALARM</button>
+                <button id="FalseAlarm" type="button" class="btn btn-secondary ml-5">FALSE ALARM</button>
             </div>
         </div>
     </div>
