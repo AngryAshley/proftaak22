@@ -53,18 +53,18 @@ var camera2 = L.marker([51.4432, 5.4797], {icon: cctvIcon}).addTo(map);
 function camAlerts(cam_alerts) {
     cam_alerts.forEach(element => {
         camera = L.marker([element['location_x'], element['location_y']], {icon: alertIcon}).addTo(map);
-        localStorage.setItem([loadCounter], element['id']);
-        loadCounter++;
-        camOnClick(camera);
+        camOnClick(camera, element['id']);
     });
 }
 
 camOnClick(camera);
 
 //onlick event for camera
-function camOnClick(cam) {
+function camOnClick(cam, camId) {
     cam.on('click', function () {
         createWindow("popup.php", 1000, 660);
+        localStorage.setItem('camId', camId);
+        //localStorage.setItem('cam', cam);
         eindhovenMarkers[windowCounter] = L.marker([51.4432, 5.4797]).addTo(map);
         helmondMarkers[windowCounter] = L.marker([51.4756, 5.6620]).addTo(map);
         polylines[windowCounter] = L.polyline(latlngs, {
@@ -84,14 +84,14 @@ camera2.on('click', function () {
 });
 
 //create pop up
-function createWindow(src, width, height) {
+function createWindow(src, width, height) {    
+    windowCounter++;
     windows[windowCounter] = window.open(src, "_blank", "width=" + width + ",height=" + height);
     windows[windowCounter].addEventListener("resize", function () {
         console.log("Resized");
         windows[windowCounter].resizeTo(width, height);
     });
     localStorage.setItem("popUpNumber", windowCounter);
-    windowCounter++;
 }
 
 var mapDiv = document.getElementById("map");
@@ -106,4 +106,8 @@ mapDiv.onmouseover = function () {
         givenNumber = 0;
         localStorage.setItem("givenNumber", 0);
     }
+}
+
+function removeCameraFalseAlarm(cam) {
+    //map.removeLayer(cam);
 }

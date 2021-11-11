@@ -2,8 +2,6 @@ var popUpNumber = 0;
 
 window.onload = (event) => {
     popUpNumber = localStorage.getItem("popUpNumber");
-    console.log(localStorage.getItem("popUpNumber"));
-    console.log(localStorage.getItem([popUpNumber]));
 }
 
 window.onunload = (event) => {
@@ -11,5 +9,10 @@ window.onunload = (event) => {
 }
 
 function FalseAlarm(){
+    camId = localStorage.getItem('camId');
+    //cam = localStorage.getItem('cam');
+
+    //map.removeLayer(cam);
     
+    updateData(camId);
 }

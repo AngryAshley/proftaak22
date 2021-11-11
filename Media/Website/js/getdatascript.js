@@ -45,19 +45,22 @@ $(document).ready(function () {
     },1000);// function will run every 1 seconds
 });
 
-// function getData() {
-// 	// get all the coins from the database
-// 	$.ajax({
-// 		type: "GET",
-// 		dataType: "json",
-// 		url: "./includes/get_data.php",
+function updateData(camId) {
 
-// 		success: function (response) {
-// 			predefined_val = response;
-// 		},
-// 		error: function (response, error) {
-// 			console.log('Error', response, error);
-// 		}
-// 	});
-// }
+	console.log("Update Data met ID: " + camId);
+
+	$.ajax({ 
+		type: "POST",
+		url: "includes/update_data.php",
+		data:{
+			cam_id : camId,
+		},
+		success: function (response) {
+			console.log("Alert Checked!");
+		},
+		error: function (response, error) {
+			console.log('Error', response, error);
+		}
+	});
+}
 
