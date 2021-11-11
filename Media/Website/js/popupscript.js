@@ -10,9 +10,7 @@ window.onunload = (event) => {
 
 function FalseAlarm(){
     camId = localStorage.getItem('camId');
-    //cam = localStorage.getItem('cam');
-
-    //map.removeLayer(cam);
-    
     updateData(camId);
+
+    // TO MAKE: zorgen dat de camera via de map.removemarker weer van de map wordt gehaald
 }
