@@ -27,11 +27,12 @@ railviewdata = mydb.cursor()
 railviewdata.execute("SELECT LAST_INSERT_ID() FROM alerts")
 result = railviewdata.fetchall()
 
-counter = len(result)
+#counter = len(result)
 
 s.listen(5)
 c, addr = s.accept()
 while True:
+
   if doOnce == 0:
     print('Got connection from ', addr)
     doOnce = 1
@@ -40,17 +41,31 @@ while True:
 
   if data == "PERSON DETECTED":
     # select the id where the location = alert location send by the PI
-    counter = counter + 1
-    print(data, counter)
+    # counter = counter + 1
+    print(data)
     
-    updateSql = "REPLACE INTO alerts SET id=%s, alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s"
-    values = (counter, "person", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
+    updateSql = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
+    values = ("person", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
     railviewdata.execute(updateSql, values)
     mydb.commit()
     
     #print(railviewdata.rowcount, "record(s) affected")
     
     c.send(b'RECIEVED MESSAGE') #send data back to PI
+
+  if data == "All clear":
+    print(data)
+    updateSql = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
+    values = ("person", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
+    railviewdata.execute(updateSql, values)
+    mydb.commit()
+
+  if data == "Train detected":
+    print(data)
+    updateSql = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
+    values = ("person", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
+    railviewdata.execute(updateSql, values)
+    mydb.commit()
 
   if data == "!":
     print('Closing...', addr)
