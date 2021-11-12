@@ -56,14 +56,14 @@ while True:
   if data == "All clear":
     print(data)
     updateSql = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
-    values = ("person", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
+    values = ("other", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
     railviewdata.execute(updateSql, values)
     mydb.commit()
 
   if data == "Train detected":
     print(data)
     updateSql = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
-    values = ("person", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
+    values = ("train", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
     railviewdata.execute(updateSql, values)
     mydb.commit()
 
