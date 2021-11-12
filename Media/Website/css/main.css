@@ -1,0 +1,19 @@
+#test_frame {
+    height: 450px;
+    width: 800px;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#map {
+    height: 600px;
+}
+
+#log {
+    height: 400px;
+    overflow-y: auto;
+    text-transform: capitalize;
+}
