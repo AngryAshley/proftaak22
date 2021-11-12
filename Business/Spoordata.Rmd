@@ -236,16 +236,21 @@ ggplot(data=AanrijdingenLocatiePieChart, aes(x="", y=value, fill=Locatie))+
   caption= "Bron: Wikipedia")
 ```
 ```{r}
-Storingen <- Disruptions%>%
-  filter (cause_en %in% c("person on the railway track", "person along the track", "person hit by a train", "collision", "people along the railway", "people on the railway track", "collision with a vehicle", "vehicle on the railway track"))
+Storingen <- Disruptions %>%
+  filter (cause_en %in% c("person on the railway track", "person along the track", "person hit by a train", "collision", "people along the railway", "people on the railway track", "collision with a vehicle", "vehicle on the railway track"))%>%
 
-filter (!ns_lines %in% c("Den Haag-Rotterdam-Breda (HSL); Den Haag-Rotterdam-Eindhoven (HSL); Rotterdam-Breda (HSL); Amsterdam-Rotterdam-Brussel (HSL); Amsterdam-Rotterdam-Breda (HSL); Rotterdam-Breda-Brussel (HSL); Amsterdam-Brussel-Paris (HSL); Rotterdam-Brussel-London (HSL); Amsterdam-Brussel-London (HSL); Den Haag-Rotterdam-Brussel (HSL)"))
+  filter (!ns_lines %in% c("Den Haag-Rotterdam-Breda (HSL); Den Haag-Rotterdam-Eindhoven (HSL); Rotterdam-Breda (HSL); Amsterdam-Rotterdam-Brussel (HSL); Amsterdam-Rotterdam-Breda (HSL); Rotterdam-Breda-Brussel (HSL); Amsterdam-Brussel-Paris (HSL); Rotterdam-Brussel-London (HSL); Amsterdam-Brussel-London (HSL); Den Haag-Rotterdam-Brussel (HSL)"))
 
   Storingen$start_time <- as.Date(Storingen$start_time)
   Storingen$year <- as.numeric(format(Storingen$start_time, "%Y"))
+  
   group_by(Storingen, ns_lines) %>%
   summarize(duration_total = sum(duration_minutes)) %>%
-  arrange(desc(duration_total))
+  arrange(desc(duration_total))%>%
+  rename("NS lijn" = ns_lines)%>%
+  top_n(10, duration_total)%>%
+  rename("Totale duur(minuten)" = "duration_total")
+
 ```
 ```{r}
 Storingen
@@ -262,5 +267,24 @@ Storingen
   labs(title="Duratie van storingen waarvan aanrijding/ongeluk",
        subtitle= "Periode van 2011-2019",
        caption= "Bron: Rijdendetreinen")
+```
+```{r}
+Storingen_jaar <- Disruptions
+
+  Storingen_jaar$start_time <- as.Date(Storingen_jaar$start_time) 
+  Storingen_jaar$year <- as.numeric(format(Storingen_jaar$start_time, "%Y"))
+  
+  group_by(Storingen_jaar, year)%>%
+  #mutate(cause_en_all = cause_en)%>%
+  select(cause_en, year)%>%
+  filter (cause_en %in% c("person on the railway track", "person along the track", "person hit by a train", "collision", "people   along the railway", "people on the railway track", "collision with a vehicle", "vehicle on the railway track"))%>%
+  filter (year %in% c("2019"))
+  
+  Storingen_per_jaar <- melt(Storingen_jaar, id.vars = c("year"))
+  
+  ggplot(data=Storingen, aes(factor(year), y= cause_en, fill = cause_en)) +
+  geom_bar(stat="identity")
+  
+
 ```
 
