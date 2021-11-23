@@ -26,7 +26,7 @@ $(document).ready(function () {
 
 					// store alerts for check
 					data.forEach(element => {
-						if(element['alert_checked'] == false) {
+						if(element['alert_checked'] == false && element['alert'] == 'person') {
 							cam_alerts[counter] = element;
 							counter++;
 						}
