@@ -12,9 +12,12 @@ namespace RailView_database_GUI
 {
     public partial class Form1 : Form
     {
+        connection conn = new connection();
         public Form1()
         {
             InitializeComponent();
+            conn.OpenConection();
+            conn.CloseConnection();
         }
     }
 }
