@@ -1,0 +1,28 @@
+﻿@model List<Alert>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col col-lg-3">
+            <h4>Meldingen</h4>
+            <div id="log" class="border border-dark border-2">
+                @foreach (var item in Model)
+                {
+                    <div class="text-center border-top border-dark border-2">
+                        <p class="px-2 pt-2 text-capitalize">
+                            @item.times<br />@item.route<br /><b>@item.alert</b>
+                        </p>
+                    </div>
+                }
+            </div>
+
+            <button type="button" class="btn btn-primary my-2">Bel 112</button>
+
+        </div>
+        <div class="col col-lg-3" id="test">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
