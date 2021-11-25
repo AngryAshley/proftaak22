@@ -15,16 +15,9 @@ namespace RailData.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        [Required]
-        [DataType(DataType.Text)]
-        public string Username { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
         string connectionString = "";
         MySqlConnection _connection;
+        MySqlCommand cmd = null;
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -33,19 +26,35 @@ namespace RailData.Pages
 
         public void OnGet()
         {
-            Console.WriteLine("test");
+            
+            if (HttpContext.Session.GetString("Loggedin") != null)
+            {
+                // log database
+                string sql = "SHOW TABLES";
+                cmd = new MySqlCommand(sql, _connection);
+
+                using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                {
+                    //TODO: log mysql reader
+                }
+            }
         }
 
         public void OnPost()
-        {  
+        {
+            string Username = Request.Form["Username"].ToString();
+            string Password = Request.Form["Password"].ToString();
+
             connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=" + Username + ";Pwd=" + Password + ";";
+
+            HttpContext.Session.SetString("Loggedin", Username);
 
             try
             {
-                Console.WriteLine("Hier komt het: ", Username, Password);
+                Console.WriteLine("Connecting...");
                 _connection = new MySqlConnection(connectionString);
+                Console.WriteLine("SUCCESS");
                 _connection.Open();
-                Response.Redirect("~/Privacy");
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
