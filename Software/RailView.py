@@ -91,12 +91,14 @@ cameraRunning=True
 async def main(): #program loop
    receiver = asyncio.create_task(receive(reader))
    
+   serialIn=""
+   lastFrameDetected=False
+   
    while True:
       await asyncio.sleep(1)
       if(serialIn!=""):   
          print(serialIn)
          serialIn=""
-
 
       if(cameraRunning==True):
          thisFrameDetected=False
