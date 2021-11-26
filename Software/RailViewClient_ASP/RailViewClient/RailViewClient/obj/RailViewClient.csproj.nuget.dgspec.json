@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj": {}
+    "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj": {}
   },
   "projects": {
-    "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj": {
+    "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj",
+        "projectUniqueName": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj",
         "projectName": "RailViewClient",
-        "projectPath": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj",
-        "packagesPath": "C:\\Users\\bende\\.nuget\\packages\\",
-        "outputPath": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\obj\\",
+        "projectPath": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj",
+        "packagesPath": "C:\\Users\\Ben\\.nuget\\packages\\",
+        "outputPath": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\bende\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ben\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -63,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

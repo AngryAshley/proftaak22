@@ -2,4 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
+function ShowPopUp() {
+    console.log("test");
+    window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
+}

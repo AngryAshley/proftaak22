@@ -1,6 +1,24 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
+@*<h1>@ViewData["Title"]</h1>*@
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container">
+    <div class="embed-responsive embed-responsive-21by9 d-flex justify-content-center mb-3 w-100 h-100">
+        <iframe id="test_frame" class="embed-responsive-item" src="https://www.youtube.com/embed/HUpPmsBqyUg?&autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen autoplay></iframe>
+    </div>
+
+    <div class="row d-flex justify-content-between">
+
+        <div class="col-sm-auto">
+            <button type="button" class="btn btn-danger mr-5">SEND ALERT!</button>
+        </div>
+        <div class="col-sm-auto mt-2">
+            <p class="text-center"><strong>Eindhoven naar Helmond</strong></p>
+        </div>
+        <div class="col-sm-auto">
+            <button onclick="FalseAlarm()" type="button" class="btn btn-secondary ml-5">FALSE ALARM</button>
+        </div>
+    </div>
+</div>
+
