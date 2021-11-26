@@ -28,9 +28,14 @@ a.navbar-brand {
     border: 1px solid blue;
 }
 
+.btn-success {
+    background-color: #21735B !important;
+    border-color: #21735B !important;
+}
+
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
