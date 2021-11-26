@@ -22,7 +22,7 @@ namespace RailView_database_GUI
             conn.OpenConection(connectionString);
             conn.CloseConnection();
 
-            txbUsername.Text = "Gebruikersnaam";
+            txbUsername.Text = "Username";
             txbPassword.PasswordChar = '*';
             btnLogin.TabStop = false;
             btnLogin.FlatStyle = FlatStyle.Flat;
@@ -56,7 +56,6 @@ namespace RailView_database_GUI
                 Dashboard dahsboard = new Dashboard();
                 this.Hide();
                 dahsboard.ShowDialog();
-
                 conn.CloseConnection();
 
             }
