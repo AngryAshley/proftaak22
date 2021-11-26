@@ -8,12 +8,15 @@ using System.ComponentModel.DataAnnotations;
 using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Html;
 
 namespace RailData.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+
+        public List<string> Tables = new List<string>();
 
         string connectionString = "";
         MySqlConnection _connection;
@@ -25,18 +28,26 @@ namespace RailData.Pages
         }
 
         public void OnGet()
-        {
-            
-            if (HttpContext.Session.GetString("Loggedin") != null)
+        { 
+            if (HttpContext.Session.GetString("Loggedin") != null && HttpContext.Session.GetString("connection") != null)
             {
+                _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
+                _connection.Open();
                 // log database
                 string sql = "SHOW TABLES";
                 cmd = new MySqlCommand(sql, _connection);
+                cmd.ExecuteNonQuery();
 
-                using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    //TODO: log mysql reader
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        Tables.Add(reader.GetString(i));
+                    }
                 }
+                _connection.Close();
             }
         }
 
@@ -45,20 +56,52 @@ namespace RailData.Pages
             string Username = Request.Form["Username"].ToString();
             string Password = Request.Form["Password"].ToString();
 
-            connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=" + Username + ";Pwd=" + Password + ";";
 
-            HttpContext.Session.SetString("Loggedin", Username);
-
-            try
+            if (Username != "" && Password != "")
             {
+                connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=" + Username + ";Pwd=" + Password + ";";
                 Console.WriteLine("Connecting...");
-                _connection = new MySqlConnection(connectionString);
-                Console.WriteLine("SUCCESS");
-                _connection.Open();
-            } catch (Exception ex)
+
+                try
+                {
+                    _connection = new MySqlConnection(connectionString);
+                    Console.WriteLine("SUCCESS");
+
+                    HttpContext.Session.SetString("Loggedin", Username);
+                    HttpContext.Session.SetString("connection", connectionString);
+                    _connection.Open();
+                    Response.Redirect("/");
+                }
+                catch (MySqlException ex)
+                {
+                    ExitConnections();
+                    switch (ex.Number)
+                    {
+                        case 0:
+                            Console.WriteLine("Invalid username/password, please try again");
+                            break;
+                        case 1045:
+                            Console.WriteLine("Cannot connect to server");
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExitConnections();
+                    Console.WriteLine("An error occurred " + ex);
+                }
+            } else
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine("Enter your username and password.");
             }
+        }
+
+        private void ExitConnections()
+        {
+            HttpContext.Session.Remove("Loggedin");
+            HttpContext.Session.Remove("connection");
+            _connection.Close();
+            Console.WriteLine("Disconnecting...");
         }
     }
 }

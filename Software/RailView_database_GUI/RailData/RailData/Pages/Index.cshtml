@@ -18,9 +18,15 @@
                 <input runat="server" id="Password" name="Password" type="password" class="form-control" placeholder="Wachtwoord"/>
             </div>
             <button type="submit" class="btn btn-general w-100">Login</button>
+            <asp:div runat="server" id="errors" class="danger"></asp:div>
             </form>
-        } else {
-            <h3> Dashboard </h3>
+        } else 
+        {
+            <h2>Dashboard</h2>
+            @foreach (var item in Model.Tables)
+            {
+                <div>@item</div>
+            }
         }
     </div>
 </div>
