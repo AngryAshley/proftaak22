@@ -19,13 +19,12 @@ a.navbar-brand {
 }
 
 #map {
-    width: 600px;
-    border: 1px solid red;
+    width: 700px;
+    height: 525px;
 }
 
 #test {
     width: 600px;
-    border: 1px solid blue;
 }
 
 .btn-success {

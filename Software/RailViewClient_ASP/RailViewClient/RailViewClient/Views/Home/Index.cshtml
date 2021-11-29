@@ -5,7 +5,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col col-lg-3">
+        <div class="col col-lg-3 mr-3">
             <h4>Meldingen</h4>
             <div id="log" class="border border-dark border-2">
                 @foreach (var item in Model)
@@ -19,7 +19,7 @@
             </div>
 
             @*<a class="navbar-brand" asp-controller="Home" asp-action="Privacy">*@
-            <input type="button" class="btn btn-success my-2" id="btnpopup" value="Bel 112" onclick="ShowPopUp();"/>@*Bel 112</input>*@
+            <input type="button" class="btn btn-success my-2" id="btnpopup" value="Bel 112" onclick="ShowPopUp();" />@*Bel 112</input>*@
             @*</a>*@
 
         </div>
@@ -29,6 +29,14 @@
     </div>
 </div>
 
-<script type="text/javascript">
+@section Css
+{
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+}
 
-</script> 
+@section Scripts
+{
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+}
