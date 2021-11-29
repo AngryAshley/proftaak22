@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RailViewClient_WinForms")]
+[assembly: AssemblyTitle("MapWinGis_client")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RailViewClient_WinForms")]
+[assembly: AssemblyProduct("MapWinGis_client")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("faac02f7-7226-4cc8-921b-17a3cf8eb500")]
+[assembly: Guid("5081edbe-a2c5-47fe-bf70-86303aa5c20b")]
 
 // Version information for an assembly consists of the following four values:
 //
