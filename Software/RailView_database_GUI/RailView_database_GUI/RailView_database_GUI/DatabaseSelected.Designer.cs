@@ -201,7 +201,7 @@ namespace RailView_database_GUI
             // lblRows
             // 
             this.lblRows.AutoSize = true;
-            this.lblRows.Location = new System.Drawing.Point(422, 103);
+            this.lblRows.Location = new System.Drawing.Point(462, 103);
             this.lblRows.Name = "lblRows";
             this.lblRows.Size = new System.Drawing.Size(34, 13);
             this.lblRows.TabIndex = 25;
@@ -211,7 +211,7 @@ namespace RailView_database_GUI
             // 
             this.label9.AutoSize = true;
             this.label9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label9.Location = new System.Drawing.Point(158, 279);
+            this.label9.Location = new System.Drawing.Point(158, 463);
             this.label9.Name = "label9";
             this.label9.Padding = new System.Windows.Forms.Padding(50, 0, 300, 10);
             this.label9.Size = new System.Drawing.Size(352, 25);
@@ -221,7 +221,7 @@ namespace RailView_database_GUI
             // 
             this.label10.AutoSize = true;
             this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label10.Location = new System.Drawing.Point(158, 279);
+            this.label10.Location = new System.Drawing.Point(158, 463);
             this.label10.Name = "label10";
             this.label10.Padding = new System.Windows.Forms.Padding(50, 50, 300, 50);
             this.label10.Size = new System.Drawing.Size(352, 115);
@@ -230,7 +230,7 @@ namespace RailView_database_GUI
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(191, 285);
+            this.label11.Location = new System.Drawing.Point(191, 469);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(52, 13);
             this.label11.TabIndex = 28;
@@ -238,14 +238,14 @@ namespace RailView_database_GUI
             // 
             // txbTableName
             // 
-            this.txbTableName.Location = new System.Drawing.Point(170, 312);
+            this.txbTableName.Location = new System.Drawing.Point(170, 496);
             this.txbTableName.Name = "txbTableName";
             this.txbTableName.Size = new System.Drawing.Size(160, 20);
             this.txbTableName.TabIndex = 29;
             // 
             // txbTableColumns
             // 
-            this.txbTableColumns.Location = new System.Drawing.Point(338, 312);
+            this.txbTableColumns.Location = new System.Drawing.Point(338, 496);
             this.txbTableColumns.Name = "txbTableColumns";
             this.txbTableColumns.Size = new System.Drawing.Size(160, 20);
             this.txbTableColumns.TabIndex = 30;
@@ -254,12 +254,13 @@ namespace RailView_database_GUI
             // 
             this.btnAddTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(115)))), ((int)(((byte)(91)))));
             this.btnAddTable.ForeColor = System.Drawing.Color.White;
-            this.btnAddTable.Location = new System.Drawing.Point(170, 357);
+            this.btnAddTable.Location = new System.Drawing.Point(170, 541);
             this.btnAddTable.Name = "btnAddTable";
             this.btnAddTable.Size = new System.Drawing.Size(328, 23);
             this.btnAddTable.TabIndex = 31;
             this.btnAddTable.Text = "Add";
             this.btnAddTable.UseVisualStyleBackColor = false;
+            this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
             // 
             // DatabaseSelected
             // 

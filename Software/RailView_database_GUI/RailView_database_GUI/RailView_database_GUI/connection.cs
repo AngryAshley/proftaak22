@@ -12,7 +12,6 @@ namespace RailView_database_GUI
     public class connection
     {
         MySqlConnection conn = null;
-        MySqlCommand cmd = null;
 
         public void OpenConection(string connectionString)
         {
@@ -25,36 +24,38 @@ namespace RailView_database_GUI
             conn.Close();
         }
 
-        public List<string> ShowDatabase(string sql)
+        public List<string> ShowDatabase(string sql, bool countRows)
         {
             List<string> tableList = new List<string>();
             List<string> rowList = new List<string>();
-
-            MySqlCommand MSQLcrcommand1 = new MySqlCommand(sql, conn);
-            MSQLcrcommand1.ExecuteNonQuery();
-            MySqlDataReader dr = MSQLcrcommand1.ExecuteReader();
-
             int amountOfRows = 0;
 
-            while (dr.Read())
+            MySqlCommand command = new MySqlCommand(sql, conn);
+            command.ExecuteNonQuery();
+            MySqlDataReader data = command.ExecuteReader();
+
+            while (data.Read())
             {
-                amountOfRows++;
+                if (countRows == true) { amountOfRows++; }
 
-                for (int i = 0; i < dr.FieldCount; i++)
+                for (int i = 0; i < data.FieldCount; i++)
                 {
-                    //Console.WriteLine(dr.GetName(i));
-
-                    //Console.WriteLine($"Dit is een getString: {dr.GetValue(i)}");
-                    tableList.Add(dr.GetString(i));
+                    tableList.Add(data.GetString(i));
                 }
 
                 rowList.AddRange(tableList);
                 tableList.Clear();
             }
 
-            rowList.Add(amountOfRows.ToString());
+            if (countRows == true) { rowList.Add(amountOfRows.ToString()); }
 
             return rowList;
+        }
+
+        public void CreateTable(string sql)
+        {
+            MySqlCommand command = new MySqlCommand(sql, conn);
+            command.ExecuteNonQuery();
         }
     }
 }
