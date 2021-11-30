@@ -11,17 +11,28 @@ a.navbar-brand {
     width: 200px;
 }
 
+/*#tester {
+    border: 1px solid red;
+}
+#rowtest {
+    border: 1px solid blue;
+}*/
+/*#containertest {
+    border: 2px solid #21735B;
+}*/
+
 #log {
-    height: 400px;
-    width: 400px;
+    height: 440px;
     overflow-y: auto;
     text-transform: capitalize;
 }
 
 #map {
-    width: 700px;
+    /*width: 700px;*/
     height: 525px;
 }
+
+
 
 #test {
     width: 600px;
