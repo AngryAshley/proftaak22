@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using RailViewClient.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +19,7 @@ namespace RailViewClient.Controllers
         //string serverName = "192.168.161.205";
         //string userName = "admin";
         //string passWord = "TopMaster99";
+        List<TrainRoute> trainRoute = new List<TrainRoute>();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -60,6 +63,15 @@ namespace RailViewClient.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public void LoadJson()
+        {
+            using (StreamReader r = new StreamReader("~/Data"))
+            {
+                string json = r.ReadToEnd();
+                trainRoute = JsonConvert.DeserializeObject<List<TrainRoute>>(json);
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-var latlngs = [
+var coords = [
     [5.89918, 51.98506],
     [5.89965, 51.985],
     [5.90108, 51.98478],
@@ -45,6 +45,17 @@ var latlngs = [
     [5.91889, 51.98535],
     [5.91941, 51.98523]
 ];
+
+var latlngs = [];
+
+console.log(coords.length);
+
+for (let i = 0; i < coords.length; i++) {
+    latlngs.push([coords[i][1], coords[i][0]]);
+}
+
+console.log(coords);
+console.log(latlngs);
 
 var polyline = L.polyline(latlngs, { color: 'blue' }).addTo(map);
 
