@@ -13,7 +13,12 @@ namespace RailView_database_GUI
 {
     public partial class DatabaseSelected : Form
     {
-        connection conn = new connection();
+        Connection conn = new Connection();
+        ExecuteQuery executeQuery = new ExecuteQuery();
+        public string Table;
+        public string NewTableName;
+        public string AmountRowsNew;
+
         string connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;";
 
         public DatabaseSelected()
@@ -29,9 +34,7 @@ namespace RailView_database_GUI
             string sql = "SHOW TABLES";
             bool countRows = false;
 
-            conn.OpenConection(connectionString);
-            List<string> DataTables = conn.ShowDatabase(sql, countRows);
-            conn.CloseConnection();
+            List<string> DataTables = executeQuery.ShowDatabase(sql, countRows, connectionString);
 
             int chbLocationX = 165;
             int btnShowLocationX = 265;
@@ -42,21 +45,20 @@ namespace RailView_database_GUI
             foreach (string item in DataTables)
             {
                 // Checkboxes
-                setCheckBox(item, chbLocationX, LocationY);
+                SetCheckBox(item, chbLocationX, LocationY);
 
                 // Showbuttons
                 string NameShow = "Show";
-                setButton(item, NameShow, btnShowLocationX, LocationY);
+                SetButton(item, NameShow, btnShowLocationX, LocationY);
 
                 // Deleterbuttons
                 string NameDelete = "Delete";
-                setButton(item, NameDelete, btnDeleteLocationX, LocationY);
+                SetButton(item, NameDelete, btnDeleteLocationX, LocationY);
 
-
-                List<string> DataAlerts = getScript(connectionString, item.ToString(), lblLocationX, LocationY);
+                List<string> DataAlerts = GetScript(connectionString, item.ToString(), lblLocationX, LocationY);
 
                 // Row labels
-                setLabel(DataAlerts, lblLocationX, LocationY);
+                SetLabel(DataAlerts, lblLocationX, LocationY);
 
                 lblBorderRows.Padding = new Padding(50, 0, 910, Convert.ToInt32(lblBorderRows.Padding.Bottom) + 25);
                 LocationY = LocationY + 25;
@@ -65,29 +67,29 @@ namespace RailView_database_GUI
 
 
 
-        public List<string> getScript(string connectionString, string tableName, int lblLocationX ,int LocationY)
+        public List<string> GetScript(string connectionString, string tableName, int lblLocationX, int LocationY)
         {
             string sql = "SELECT * FROM " + tableName;
             bool countRows = true;
 
-            conn.OpenConection(connectionString);
-            List<string> DataAlerts = conn.ShowDatabase(sql, countRows);
-            conn.CloseConnection();
+            List<string> DataAlerts = executeQuery.ShowDatabase(sql, countRows, connectionString);
 
             return DataAlerts;
         }
 
-        public void setButton(string item, string Name, int LocationX, int LocationY)
+        public void SetButton(string item, string Name, int LocationX, int LocationY)
         {
             Button btn = new Button();
             btn.Name = "btn" + Name + item.ToString();
             btn.Text = Name;
             btn.Location = new Point(LocationX, LocationY);
+            btn.Click += (s, e) => { GetDatabaseForm(item.ToString()); };
             this.Controls.Add(btn);
             btn.BringToFront();
+
         }
 
-        public void setLabel(List<string> DataAlerts, int LocationX, int LocationY)
+        public void SetLabel(List<string> DataAlerts, int LocationX, int LocationY)
         {
             Label lbl = new Label();
             lbl.Name = "lbl" + DataAlerts.Last().ToString();
@@ -97,7 +99,7 @@ namespace RailView_database_GUI
             lbl.BringToFront();
         }
 
-        public void setCheckBox(string item, int LocationX, int LocationY)
+        public void SetCheckBox(string item, int LocationX, int LocationY)
         {
             CheckBox chb = new CheckBox();
             chb.Name = "chb" + item.ToString();
@@ -110,34 +112,20 @@ namespace RailView_database_GUI
         private void btnAddTable_Click(object sender, EventArgs e)
         {
             string sql = "CREATE TABLE " + txbTableName.Text + "(First_Name char(50));";
+            executeQuery.CreateTable(sql, connectionString);
 
-            using (MySqlConnection con = new MySqlConnection(connectionString))
-            {
+            NewTableName = txbTableName.Text;
+            AmountRowsNew = txbTableColumns.Text;
+            CreateTableForm createTableForm = new CreateTableForm(this);
+            createTableForm.ShowDialog();
+        }
 
-                try
-                {
-                    //
-                    // Open the SqlConnection.
-                    //
-                    con.Open();
-                    //
-                    // The following code uses an SqlCommand based on the SqlConnection.
-                    //
-                    using (MySqlCommand command = new MySqlCommand(sql, con))
-                        command.ExecuteNonQuery();
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-
-            //MySqlCommand command = new MySqlCommand(sql, conn);
-            //command.ExecuteNonQuery();
-
-            //conn.CreateTable(sql);
-            //conn.CloseConnection();
+        public void GetDatabaseForm(string tableName)
+        {
+            Table = tableName;
+            TableSelected tableSelected = new TableSelected(this);
+            this.Hide();
+            tableSelected.ShowDialog();
         }
     }
 }

@@ -15,8 +15,6 @@ namespace RailView_database_GUI
 {
     public partial class Dashboard : Form
     {
-        connection conn = new connection();
-
         public Dashboard()
         {
             InitializeComponent();
@@ -24,10 +22,9 @@ namespace RailView_database_GUI
 
         private void lblDatabase1_Click(object sender, EventArgs e)
         {
-
             DatabaseSelected databaseSelected = new DatabaseSelected();
             this.Hide();
             databaseSelected.ShowDialog();
-        }   
+        }
     }
 }

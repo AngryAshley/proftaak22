@@ -89,7 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="connection.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="Dashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +102,7 @@
     <Compile Include="DatabaseSelected.Designer.cs">
       <DependentUpon>DatabaseSelected.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExecuteQuery.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +111,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableSelected.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TableSelected.Designer.cs">
+      <DependentUpon>TableSelected.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Dashboard.resx">
       <DependentUpon>Dashboard.cs</DependentUpon>
     </EmbeddedResource>
