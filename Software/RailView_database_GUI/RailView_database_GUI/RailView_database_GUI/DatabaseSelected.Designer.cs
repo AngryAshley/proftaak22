@@ -40,17 +40,17 @@ namespace RailView_database_GUI
             this.lblDatabase1 = new System.Windows.Forms.Label();
             this.lblSQL = new System.Windows.Forms.Label();
             this.lblBorderLeft = new System.Windows.Forms.Label();
-            this.lblBorderRows = new System.Windows.Forms.Label();
-            this.lblBorderTxt = new System.Windows.Forms.Label();
-            this.lblTables = new System.Windows.Forms.Label();
-            this.lblRows = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.txbTableName = new System.Windows.Forms.TextBox();
             this.txbTableColumns = new System.Windows.Forms.TextBox();
             this.btnAddTable = new System.Windows.Forms.Button();
+            this.DgvFull = new System.Windows.Forms.DataGridView();
+            this.clmTables = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clmRows = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DgvFull)).BeginInit();
             this.SuspendLayout();
             // 
             // label6
@@ -169,44 +169,6 @@ namespace RailView_database_GUI
             this.lblBorderLeft.Size = new System.Drawing.Size(152, 661);
             this.lblBorderLeft.TabIndex = 15;
             // 
-            // lblBorderRows
-            // 
-            this.lblBorderRows.AutoSize = true;
-            this.lblBorderRows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblBorderRows.Location = new System.Drawing.Point(158, 121);
-            this.lblBorderRows.Name = "lblBorderRows";
-            this.lblBorderRows.Padding = new System.Windows.Forms.Padding(50, 0, 910, 20);
-            this.lblBorderRows.Size = new System.Drawing.Size(962, 35);
-            this.lblBorderRows.TabIndex = 22;
-            // 
-            // lblBorderTxt
-            // 
-            this.lblBorderTxt.AutoSize = true;
-            this.lblBorderTxt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblBorderTxt.Location = new System.Drawing.Point(158, 97);
-            this.lblBorderTxt.Name = "lblBorderTxt";
-            this.lblBorderTxt.Padding = new System.Windows.Forms.Padding(50, 0, 910, 10);
-            this.lblBorderTxt.Size = new System.Drawing.Size(962, 25);
-            this.lblBorderTxt.TabIndex = 23;
-            // 
-            // lblTables
-            // 
-            this.lblTables.AutoSize = true;
-            this.lblTables.Location = new System.Drawing.Point(178, 103);
-            this.lblTables.Name = "lblTables";
-            this.lblTables.Size = new System.Drawing.Size(39, 13);
-            this.lblTables.TabIndex = 24;
-            this.lblTables.Text = "Tables";
-            // 
-            // lblRows
-            // 
-            this.lblRows.AutoSize = true;
-            this.lblRows.Location = new System.Drawing.Point(462, 103);
-            this.lblRows.Name = "lblRows";
-            this.lblRows.Size = new System.Drawing.Size(34, 13);
-            this.lblRows.TabIndex = 25;
-            this.lblRows.Text = "Rows";
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -242,6 +204,7 @@ namespace RailView_database_GUI
             this.txbTableName.Name = "txbTableName";
             this.txbTableName.Size = new System.Drawing.Size(160, 20);
             this.txbTableName.TabIndex = 29;
+            this.txbTableName.Text = "Name";
             // 
             // txbTableColumns
             // 
@@ -249,18 +212,51 @@ namespace RailView_database_GUI
             this.txbTableColumns.Name = "txbTableColumns";
             this.txbTableColumns.Size = new System.Drawing.Size(160, 20);
             this.txbTableColumns.TabIndex = 30;
+            this.txbTableColumns.Text = "Number of columns";
             // 
             // btnAddTable
             // 
             this.btnAddTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(115)))), ((int)(((byte)(91)))));
+            this.btnAddTable.FlatAppearance.BorderSize = 0;
+            this.btnAddTable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddTable.ForeColor = System.Drawing.Color.White;
             this.btnAddTable.Location = new System.Drawing.Point(170, 541);
             this.btnAddTable.Name = "btnAddTable";
             this.btnAddTable.Size = new System.Drawing.Size(328, 23);
             this.btnAddTable.TabIndex = 31;
-            this.btnAddTable.Text = "Add";
+            this.btnAddTable.TabStop = false;
+            this.btnAddTable.Text = "Go";
             this.btnAddTable.UseVisualStyleBackColor = false;
             this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
+            // 
+            // DgvFull
+            // 
+            this.DgvFull.AllowUserToAddRows = false;
+            this.DgvFull.AllowUserToDeleteRows = false;
+            this.DgvFull.BackgroundColor = System.Drawing.Color.White;
+            this.DgvFull.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvFull.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.clmTables,
+            this.clmRows});
+            this.DgvFull.GridColor = System.Drawing.Color.Gray;
+            this.DgvFull.Location = new System.Drawing.Point(158, 97);
+            this.DgvFull.Name = "DgvFull";
+            this.DgvFull.ReadOnly = true;
+            this.DgvFull.Size = new System.Drawing.Size(962, 352);
+            this.DgvFull.TabIndex = 32;
+            this.DgvFull.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvFull_CellClick);
+            // 
+            // clmTables
+            // 
+            this.clmTables.HeaderText = "Tables";
+            this.clmTables.Name = "clmTables";
+            this.clmTables.ReadOnly = true;
+            // 
+            // clmRows
+            // 
+            this.clmRows.HeaderText = "Rows";
+            this.clmRows.Name = "clmRows";
+            this.clmRows.ReadOnly = true;
             // 
             // DatabaseSelected
             // 
@@ -268,15 +264,13 @@ namespace RailView_database_GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1128, 665);
+            this.Controls.Add(this.DgvFull);
             this.Controls.Add(this.btnAddTable);
             this.Controls.Add(this.txbTableColumns);
             this.Controls.Add(this.txbTableName);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.lblRows);
-            this.Controls.Add(this.lblTables);
-            this.Controls.Add(this.lblBorderTxt);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -287,10 +281,10 @@ namespace RailView_database_GUI
             this.Controls.Add(this.lblDatabase1);
             this.Controls.Add(this.lblSQL);
             this.Controls.Add(this.lblBorderLeft);
-            this.Controls.Add(this.lblBorderRows);
             this.Name = "DatabaseSelected";
             this.Text = "DatabaseSelected";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DgvFull)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -308,15 +302,14 @@ namespace RailView_database_GUI
         private System.Windows.Forms.Label lblDatabase1;
         private System.Windows.Forms.Label lblSQL;
         private System.Windows.Forms.Label lblBorderLeft;
-        private System.Windows.Forms.Label lblBorderRows;
-        private System.Windows.Forms.Label lblBorderTxt;
-        private System.Windows.Forms.Label lblTables;
-        private System.Windows.Forms.Label lblRows;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox txbTableName;
         private System.Windows.Forms.TextBox txbTableColumns;
         private System.Windows.Forms.Button btnAddTable;
+        private System.Windows.Forms.DataGridView DgvFull;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clmTables;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clmRows;
     }
 }

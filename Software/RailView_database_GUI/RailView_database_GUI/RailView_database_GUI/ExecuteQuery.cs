@@ -9,7 +9,6 @@ namespace RailView_database_GUI
 {
     class ExecuteQuery : Connection
     {
-
         public List<string> ShowDatabase(string sql, bool countRows, string connectionString)
         {
             OpenConection(connectionString);
