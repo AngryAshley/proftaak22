@@ -19,7 +19,7 @@ namespace RailViewClient.Controllers
         //string serverName = "192.168.161.205";
         //string userName = "admin";
         //string passWord = "TopMaster99";
-        List<TrainRoute> trainRoute = new List<TrainRoute>();
+        //List<Geometry> trainRoute = new List<Geometry>();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -51,6 +51,8 @@ namespace RailViewClient.Controllers
                 con.Close();
             }
 
+            LoadJson();
+
             return View(alerts);
         }
 
@@ -67,10 +69,12 @@ namespace RailViewClient.Controllers
 
         public void LoadJson()
         {
-            using (StreamReader r = new StreamReader("~/Data"))
+            Console.WriteLine("72");
+            using (StreamReader r = new StreamReader("Data/Railway_Trajects.json"))
             {
                 string json = r.ReadToEnd();
-                trainRoute = JsonConvert.DeserializeObject<List<TrainRoute>>(json);
+                Root trainRoute = JsonConvert.DeserializeObject<Root>(json);
+                Console.WriteLine("Testing: " + trainRoute);
             }
         }
     }
