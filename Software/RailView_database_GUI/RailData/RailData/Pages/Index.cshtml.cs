@@ -1,21 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using MySql.Data.MySqlClient;
+using RailData.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using MySql.Data.MySqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Html;
 
 namespace RailData.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-
+        ErrorHandling errorHandling = new ErrorHandling();
         public List<string> Tables = new List<string>();
 
         string connectionString = "";
@@ -28,7 +24,7 @@ namespace RailData.Pages
         }
 
         public void OnGet()
-        { 
+        {
             if (HttpContext.Session.GetString("Loggedin") != null && HttpContext.Session.GetString("connection") != null)
             {
                 _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
@@ -79,9 +75,13 @@ namespace RailData.Pages
                     {
                         case 0:
                             Console.WriteLine("Invalid username/password, please try again");
+                            errorHandling.ErrorType = "danger";
+                            errorHandling.ErrorMessage = "Invalid username/password, please try again";
                             break;
                         case 1045:
                             Console.WriteLine("Cannot connect to server");
+                            errorHandling.ErrorType = "danger";
+                            errorHandling.ErrorMessage = "Cannot connect to server";
                             break;
                     }
                 }
@@ -89,10 +89,15 @@ namespace RailData.Pages
                 {
                     ExitConnections();
                     Console.WriteLine("An error occurred " + ex);
+                    errorHandling.ErrorType = "danger";
+                    errorHandling.ErrorMessage = "An error occurred " + ex;
                 }
-            } else
+            }
+            else
             {
                 Console.WriteLine("Enter your username and password.");
+                errorHandling.ErrorType = "danger";
+                errorHandling.ErrorMessage = "Enter your username and password.";
             }
         }
 
