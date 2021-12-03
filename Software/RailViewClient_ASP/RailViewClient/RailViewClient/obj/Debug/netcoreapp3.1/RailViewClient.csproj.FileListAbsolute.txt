@@ -198,3 +198,5 @@ D:\School\Fontys\TalkToMeProftaak22\Software\RailViewClient_ASP\RailViewClient\R
 D:\School\Fontys\TalkToMeProftaak22\Software\RailViewClient_ASP\RailViewClient\RailViewClient\obj\Debug\netcoreapp3.1\RailViewClient.genruntimeconfig.cache
 D:\School\Fontys\TalkToMeProftaak22\Software\RailViewClient_ASP\RailViewClient\RailViewClient\bin\Debug\netcoreapp3.1\Data\Railway_Trajects.json
 D:\School\Fontys\TalkToMeProftaak22\Software\RailViewClient_ASP\RailViewClient\RailViewClient\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+D:\Documents\SchoolFontys\proftaak22\Software\RailViewClient_ASP\RailViewClient\RailViewClient\bin\Debug\netcoreapp3.1\Data\Railway_Trajects.json
+D:\Documents\SchoolFontys\proftaak22\Software\RailViewClient_ASP\RailViewClient\RailViewClient\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

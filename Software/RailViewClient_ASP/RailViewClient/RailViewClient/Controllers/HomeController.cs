@@ -16,10 +16,7 @@ namespace RailViewClient.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        //string serverName = "192.168.161.205";
-        //string userName = "admin";
-        //string passWord = "TopMaster99";
-        //List<Geometry> trainRoute = new List<Geometry>();
+        public Root trainRoute;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -73,8 +70,8 @@ namespace RailViewClient.Controllers
             using (StreamReader r = new StreamReader("Data/Railway_Trajects.json"))
             {
                 string json = r.ReadToEnd();
-                Root trainRoute = JsonConvert.DeserializeObject<Root>(json);
-                Console.WriteLine("Testing: " + trainRoute);
+                trainRoute = JsonConvert.DeserializeObject<Root>(json);
+                Console.WriteLine("Testing: " + trainRoute.Payload.Features[0].Geometry.Coordinates[0][1].ToString() + ", " + trainRoute.Payload.Features[0].Geometry.Coordinates[0][0].ToString());
             }
         }
     }
