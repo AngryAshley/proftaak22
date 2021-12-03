@@ -13,15 +13,13 @@ namespace RailView_database_GUI
     public partial class CreateTableForm : Form
     {
         DatabaseSelected databaseSelected = null;
-        List<string> Numbers = new List<string> { "Null", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen" };
+        List<string> numbers = new List<string> { "Null", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen" };
 
         public CreateTableForm(DatabaseSelected c_databaseSelected)
         {
             InitializeComponent();
 
             databaseSelected = c_databaseSelected;
-            Console.WriteLine(databaseSelected.NewTableName);
-            Console.WriteLine(databaseSelected.AmountRowsNew);
 
             lblTitle.Text = databaseSelected.NewTableName;
 
@@ -30,75 +28,78 @@ namespace RailView_database_GUI
             int txbLengthLocationX = 280;
             int cobDefaultLocationX = 390;
             int btnLocationX = 40;
-            int LocationY = 80;
-
+            int locationY = 80;
 
             for (int i = 0; i < Convert.ToInt32(databaseSelected.AmountRowsNew); i++)
             {
-                SetTextBox(Numbers[i], "Name", txbNameLocationX, LocationY);
-                SetComboBox(Numbers[i], "Type", cobTypeLocationX, LocationY);
-                SetTextBox(Numbers[i], "Lenght", txbLengthLocationX, LocationY);
-                SetComboBox(Numbers[i], "Default", cobDefaultLocationX, LocationY);
+                AddTextBox(numbers[i], "Name", txbNameLocationX, locationY);
+                AddComboBox(numbers[i], "Type", cobTypeLocationX, locationY);
+                AddTextBox(numbers[i], "Lenght", txbLengthLocationX, locationY);
+                AddComboBox(numbers[i], "Default", cobDefaultLocationX, locationY);
 
-                LocationY = LocationY + 25;
+                locationY = locationY + 25;
             }
 
             // SetButton --> Deze maakt dus de Tabel aan met de SQL Query
-            SetButton(btnLocationX, LocationY);
+            AddButton(btnLocationX, locationY);
+
         }
 
-        public void SetTextBox(string RowNumber, string Name, int LocationX, int LocationY)
+        public void AddTextBox(string rowNumber, string name, int locationX, int locationY)
         {
             TextBox txb = new TextBox();
-            txb.Name = "txb" + Name + "Row" + RowNumber;
-            txb.Location = new Point(LocationX, LocationY);
+            txb.Name = "txb" + name + "Row" + rowNumber;
+            txb.Location = new Point(locationX, locationY);
             this.Controls.Add(txb);
             txb.BringToFront();
         }
 
-        public void SetComboBox(string RowNumber, string Name, int LocationX, int LocationY)
+        public void AddComboBox(string rowNumber, string name, int locationX, int locationY)
         {
             ComboBox cob = new ComboBox();
-            cob.Name = "cob" + Name + "Row" + RowNumber;
-            cob.Location = new Point(LocationX, LocationY);
+            cob.Name = "cob" + name + "Row" + rowNumber;
+            cob.Location = new Point(locationX, locationY);
 
-            if(Name == "Type")
+            if (name == "Type")
             {
                 cob.Items.Add("INT");
                 cob.Items.Add("VARCHAR");
                 cob.Items.Add("TEXT");
                 cob.Items.Add("DOUBLE");
                 cob.Items.Add("BOOLEAN");
-            } else
+            }
+            else
             {
                 cob.Items.Add("None");
                 cob.Items.Add("NULL");
             }
 
             cob.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.Controls.Add(cob);
             cob.BringToFront();
+            this.Controls.Add(cob);
         }
 
-        public void SetButton(int LocationX, int LocationY)
+        public void AddButton(int locationX, int locationY)
         {
             Button btn = new Button();
             btn.Name = "btnAddTable";
             btn.Text = "Add";
-            btn.Location = new Point(LocationX, LocationY);
-            btn.Click += (s, e) => { ExecuteTableQuery(); };
+            btn.Location = new Point(locationX, locationY);
+
             btn.TabStop = false;
             btn.FlatStyle = FlatStyle.Flat;
             btn.FlatAppearance.BorderSize = 0;
             btn.BackColor = Color.FromArgb(33, 115, 91);
             btn.ForeColor = Color.White;
-            this.Controls.Add(btn);
+
             btn.BringToFront();
+            btn.Click += (s, e) => { ExecuteTableQuery(); };
+            this.Controls.Add(btn);
         }
 
         public void ExecuteTableQuery()
         {
-            string Query;
+            string query;
 
             foreach (Control c in this.Controls)
             {

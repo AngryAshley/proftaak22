@@ -14,71 +14,60 @@ namespace RailView_database_GUI
     public partial class DatabaseSelected : Form
     {
         ExecuteQuery executeQuery = new ExecuteQuery();
+        GridButton gridButton = new GridButton();
         public string Table;
         public string NewTableName;
         public string AmountRowsNew;
-        string connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;";
+        readonly string connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;";
 
         public DatabaseSelected()
         {
             InitializeComponent();
-            string Name;
-            string TableName;
+            string name;
+            string tableName;
+            bool countRows;
+            DataGridViewButtonColumn btn;
 
-            Name = "Show";
-            SetButton(Name);
+            name = "Show";
+            btn = gridButton.SetButton(name);
+            this.DgvFull.Columns.Add(btn);
 
-            Name = "Delete";
-            SetButton(Name);
+            name = "Delete";
+            btn = gridButton.SetButton(name);
+            this.DgvFull.Columns.Add(btn);
 
             string sql = "SHOW TABLES";
-            bool countRows = false;
-            List<string> DataTables = executeQuery.ShowDatabase(sql, countRows, connectionString);
+            countRows = false;
+            List<string> dataTables = executeQuery.ShowDatabase(sql, countRows, connectionString);
 
-            foreach (string item in DataTables)
+            foreach (string item in dataTables)
             {
-                TableName = item.ToString();
-                List<string> DataAlerts = GetScript(connectionString, TableName);                 
-                DgvFull.Rows.Add(TableName, DataAlerts.Last().ToString());
+                tableName = item.ToString();
+                countRows = true;
+
+                sql = "SELECT * FROM " + tableName;
+                List<string> dataAlerts = executeQuery.ShowDatabase(sql, countRows, connectionString);
+                
+                DgvFull.Rows.Add(tableName, dataAlerts.Last().ToString());
             }
         }
 
         private void DgvFull_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            int RowNumber = e.RowIndex;
-            DataGridViewRow SelectedRow = DgvFull.Rows[RowNumber];
+            int rowNumber = e.RowIndex;
+            DataGridViewRow selectedRow = DgvFull.Rows[rowNumber];
 
             if (e.ColumnIndex == DgvFull.Columns["btnShow"].Index)
             {
-                Console.WriteLine("Show button clicked = " + SelectedRow.Cells["clmTables"].Value);
-                string TableName = SelectedRow.Cells["clmTables"].Value.ToString();
-                GetDatabaseForm(TableName);
+                Console.WriteLine("Show button clicked = " + selectedRow.Cells["clmTables"].Value);
+                string tableName = selectedRow.Cells["clmTables"].Value.ToString();
+                GetDatabaseForm(tableName);
             }
 
             if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
             {
-                 Console.WriteLine("Delete button clicked = " + SelectedRow.Cells["clmTables"].Value);
+                 Console.WriteLine("Delete button clicked = " + selectedRow.Cells["clmTables"].Value);
             }
-        }
-
-        public void SetButton(string Name)
-        {
-            DataGridViewButtonColumn button = new DataGridViewButtonColumn();
-            button.Name = "btn" + Name;
-            button.HeaderText = Name;
-            button.Text = Name;
-            button.UseColumnTextForButtonValue = true;
-            this.DgvFull.Columns.Add(button);
-        }
-
-        public List<string> GetScript(string connectionString, string tableName)
-        {
-            string sql = "SELECT * FROM " + tableName;
-            bool countRows = true;
-
-            List<string> DataAlerts = executeQuery.ShowDatabase(sql, countRows, connectionString);
-
-            return DataAlerts;
         }
 
         private void btnAddTable_Click(object sender, EventArgs e)

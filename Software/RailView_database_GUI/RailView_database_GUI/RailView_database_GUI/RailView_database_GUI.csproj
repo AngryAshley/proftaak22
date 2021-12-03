@@ -109,6 +109,7 @@
       <DependentUpon>DatabaseSelected.cs</DependentUpon>
     </Compile>
     <Compile Include="ExecuteQuery.cs" />
+    <Compile Include="GridButton.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +145,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TableSelected.resx">
+      <DependentUpon>TableSelected.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
