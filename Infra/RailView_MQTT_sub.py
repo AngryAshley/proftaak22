@@ -3,13 +3,16 @@ import time
 import datetime
 import mysql.connector
 
+hostname = "192.168.161.205"
+username = "admin"
+passwd = "TopMaster99"
 ts = time.time()
 timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S') # get the current timestamp
 
 mydb = mysql.connector.connect(
-  host='192.168.161.205',
-  user='admin',
-  password='TopMaster99',
+  host=hostname,
+  user=username,
+  password=passwd,
   database='RailView'
 )
 
@@ -42,10 +45,10 @@ def on_message(client, userdata, message):
         updateDatabase("other")
         print("All clear or something else...")
 
-mqttBroker ="192.168.161.205"
+mqttBroker = hostname
 
 client = mqtt.Client()
-client.username_pw_set("admin", "TopMaster99")
+client.username_pw_set(username, passwd)
 client.connect(mqttBroker, 8883, 60)
 
 client.loop_start()
