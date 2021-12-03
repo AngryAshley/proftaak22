@@ -15,6 +15,12 @@ mydb = mysql.connector.connect(
 
 railviewdata = mydb.cursor()
 
+def updateDatabase(type): # function to update database on type of alert
+    updateSqlTrain = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
+    valuesTrain = (type, 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
+    railviewdata.execute(updateSqlTrain, valuesTrain)
+    mydb.commit()
+
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("Connected to MQTT Broker!")
@@ -27,29 +33,20 @@ def on_message(client, userdata, message):
     print("received message: ", timestamp, " ", recievedMessage)
 
     if (recievedMessage == "TRAIN"):
-        updateSqlTrain = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
-        valuesTrain = ("train", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
-        railviewdata.execute(updateSqlTrain, valuesTrain)
-        mydb.commit()
+        updateDatabase("TRAIN")
 
     elif (recievedMessage == "PERSON"):
-        updateSqlPerson = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
-        valuesPerson = ("person", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
-        railviewdata.execute(updateSqlPerson, valuesPerson)
-        mydb.commit()
+        updateDatabase("PERSON")
 
     else:
-        updateSqlOther = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
-        valuesOther = ("other", 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
-        railviewdata.execute(updateSqlOther, valuesOther)
-        mydb.commit()
+        updateDatabase("other")
         print("All clear or something else...")
 
 mqttBroker ="192.168.161.205"
 
 client = mqtt.Client()
 client.username_pw_set("admin", "TopMaster99")
-client.connect(mqttBroker, 1883, 60)
+client.connect(mqttBroker, 8883, 60)
 
 client.loop_start()
 client.on_connect=on_connect
