@@ -13,6 +13,15 @@ body {
     margin: 0 auto;
 }
 
+.container-dashboard {
+    max-width: 1850px;
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .btn-general {
     background-color: #21735B;
     color: white;
