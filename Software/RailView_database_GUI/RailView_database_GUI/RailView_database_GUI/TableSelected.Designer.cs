@@ -31,6 +31,7 @@ namespace RailView_database_GUI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableSelected));
             this.DgvFull = new System.Windows.Forms.DataGridView();
+            this.clmFirst = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -42,7 +43,6 @@ namespace RailView_database_GUI
             this.lblSQL = new System.Windows.Forms.Label();
             this.lblBorderLeft = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.clmFirst = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DgvFull)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -60,6 +60,12 @@ namespace RailView_database_GUI
             this.DgvFull.ReadOnly = true;
             this.DgvFull.Size = new System.Drawing.Size(966, 498);
             this.DgvFull.TabIndex = 0;
+            // 
+            // clmFirst
+            // 
+            this.clmFirst.HeaderText = "clmFirst";
+            this.clmFirst.Name = "clmFirst";
+            this.clmFirst.ReadOnly = true;
             // 
             // label6
             // 
@@ -153,6 +159,7 @@ namespace RailView_database_GUI
             this.lblDatabase1.Size = new System.Drawing.Size(48, 13);
             this.lblDatabase1.TabIndex = 24;
             this.lblDatabase1.Text = "RailView";
+            this.lblDatabase1.Click += new System.EventHandler(this.lblDatabase1_Click);
             // 
             // lblSQL
             // 
@@ -186,12 +193,6 @@ namespace RailView_database_GUI
             this.lblTitle.Size = new System.Drawing.Size(97, 31);
             this.lblTitle.TabIndex = 32;
             this.lblTitle.Text = "Tabel: ";
-            // 
-            // clmFirst
-            // 
-            this.clmFirst.HeaderText = "clmFirst";
-            this.clmFirst.Name = "clmFirst";
-            this.clmFirst.ReadOnly = true;
             // 
             // TableSelected
             // 

@@ -21,13 +21,35 @@ namespace RailView_database_GUI
         {
             InitializeComponent();
 
-            bool countRows = false;
+            bool countRows;
             string name;
+            string sql;
             databaseSelected = c_databaseSelected;
 
             lblTitle.Text = "Table: " + databaseSelected.Table;
 
-            string sql = "SELECT * FROM " + databaseSelected.Table;
+            //string sql = "SELECT * FROM " + databaseSelected.Table;
+            countRows = false;
+            sql = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'RailView' AND TABLE_NAME = '" + databaseSelected.Table + "'";
+            List<string> columns = executeQuery.ShowDatabase(sql, countRows, connectionString);
+
+
+            int countColumns = 0;
+            foreach (string item in columns)
+            {
+                //DgvFull.Columns["clmFirst"].HeaderText = "Name of Table thing";
+
+                DataGridViewColumn clm = new DataGridViewColumn();
+                clm.Name = item;
+                clm.HeaderText = item;
+                this.DgvFull.Columns.Add(clm);
+                countColumns++;
+            }
+
+
+
+            countRows = true;
+            sql = "SELECT * FROM " + databaseSelected.Table;
             List<string> dataAlerts = executeQuery.ShowDatabase(sql, countRows, connectionString);
 
             DataGridViewButtonColumn btn;
@@ -40,15 +62,24 @@ namespace RailView_database_GUI
             btn = gridButton.SetButton(name);
             this.DgvFull.Columns.Add(btn);
 
+            //int amountRows
 
             foreach (string item in dataAlerts)
             {
-                DgvFull.Columns["clmFirst"].HeaderText = "Name of Table thing";
+                for(int i = 0; i < countColumns; i++)
+                {
 
-                DgvFull.Rows.Add(item);
+                }
+
+                DgvFull.Rows.Add();
             }
         }
 
-
+        private void lblDatabase1_Click(object sender, EventArgs e)
+        {
+            DatabaseSelected databaseSelected = new DatabaseSelected();
+            this.Hide();
+            databaseSelected.ShowDialog();
+        }
     }
 }

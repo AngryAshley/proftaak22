@@ -89,5 +89,11 @@ namespace RailView_database_GUI
             tableSelected.ShowDialog();
         }
 
+        private void lblDatabase1_Click(object sender, EventArgs e)
+        {
+            DatabaseSelected databaseSelected = new DatabaseSelected();
+            this.Hide();
+            databaseSelected.ShowDialog();
+        }
     }
 }
