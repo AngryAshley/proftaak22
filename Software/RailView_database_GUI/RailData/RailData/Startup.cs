@@ -30,7 +30,7 @@ namespace RailData
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.IdleTimeout = TimeSpan.FromMinutes(10080);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
