@@ -8,6 +8,21 @@ function ShowPopUp() {
     window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
 }
 
+//var myVal = $("#myInput").data("myValue");
+//console.log(myVal);
+
+$.ajax({
+    url: '/Home/Test',
+    type: 'GET',
+    success: function (response) {
+        alert(response);
+    },
+    error: function (error) {
+        $(this).remove();
+        console.log(error.responseText);
+    }
+});
+
 //load in map and map settings
 var map = L.map('map', {
     center: [51.4993, 5.6570],

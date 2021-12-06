@@ -48,7 +48,7 @@ namespace RailViewClient.Controllers
                 con.Close();
             }
 
-            LoadJson();
+            //LoadJson();
 
             return View(alerts);
         }
@@ -64,14 +64,16 @@ namespace RailViewClient.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public void LoadJson()
+        public ActionResult Test()
         {
-            Console.WriteLine("72");
             using (StreamReader r = new StreamReader("Data/Railway_Trajects.json"))
             {
                 string json = r.ReadToEnd();
                 trainRoute = JsonConvert.DeserializeObject<Root>(json);
                 Console.WriteLine("Testing: " + trainRoute.Payload.Features[0].Geometry.Coordinates[0][1].ToString() + ", " + trainRoute.Payload.Features[0].Geometry.Coordinates[0][0].ToString());
+                ViewBag.test = trainRoute.Payload.Features[0].Geometry.Coordinates[0][1].ToString();
+                Console.WriteLine(ViewBag.test);
+                return Json(trainRoute.Payload.Features[0].Geometry.Coordinates[0][1].ToString(), new System.Text.Json.JsonSerializerOptions());
             }
         }
     }
