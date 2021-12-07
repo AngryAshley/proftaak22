@@ -16,7 +16,7 @@ namespace RailViewClient.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public Root trainRoute;
+        //public Root trainRoute;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -64,17 +64,9 @@ namespace RailViewClient.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public ActionResult Test()
-        {
-            using (StreamReader r = new StreamReader("Data/Railway_Trajects.json"))
-            {
-                string json = r.ReadToEnd();
-                trainRoute = JsonConvert.DeserializeObject<Root>(json);
-                Console.WriteLine("Testing: " + trainRoute.Payload.Features[0].Geometry.Coordinates[0][1].ToString() + ", " + trainRoute.Payload.Features[0].Geometry.Coordinates[0][0].ToString());
-                ViewBag.test = trainRoute.Payload.Features[0].Geometry.Coordinates[0][1].ToString();
-                Console.WriteLine(ViewBag.test);
-                return Json(trainRoute.Payload.Features[0].Geometry.Coordinates[0][1].ToString(), new System.Text.Json.JsonSerializerOptions());
-            }
-        }
+        //public ActionResult Test()
+        //{
+
+        //}
     }
 }

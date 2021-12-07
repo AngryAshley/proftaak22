@@ -3,26 +3,6 @@
 
 // Write your JavaScript code.
 
-function ShowPopUp() {
-    console.log("test");
-    window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
-}
-
-//var myVal = $("#myInput").data("myValue");
-//console.log(myVal);
-
-$.ajax({
-    url: '/Home/Test',
-    type: 'GET',
-    success: function (response) {
-        alert(response);
-    },
-    error: function (error) {
-        $(this).remove();
-        console.log(error.responseText);
-    }
-});
-
 //load in map and map settings
 var map = L.map('map', {
     center: [51.4993, 5.6570],
@@ -40,39 +20,38 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-var coords = [
-    [5.89918, 51.98506],
-    [5.89965, 51.985],
-    [5.90108, 51.98478],
-    [5.90187, 51.98468],
-    [5.90238, 51.98464],
-    [5.90346, 51.98464],
-    [5.90476, 51.98477],
-    [5.91167, 51.98567],
-    [5.91245, 51.98574],
-    [5.91316, 51.98579],
-    [5.9139, 51.98581],
-    [5.9146, 51.98582],
-    [5.91535, 51.98579],
-    [5.9161, 51.98574],
-    [5.91741, 51.9856],
-    [5.91821, 51.98547],
-    [5.91889, 51.98535],
-    [5.91941, 51.98523]
-];
-
-var latlngs = [];
-
-console.log(coords.length);
-
-for (let i = 0; i < coords.length; i++) {
-    latlngs.push([coords[i][1], coords[i][0]]);
+function ShowPopUp() {
+    console.log("test");
+    window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
 }
 
-console.log(coords);
-console.log(latlngs);
+//var myVal = $("#myInput").data("myValue");
+//console.log(myVal);
 
-var polyline = L.polyline(latlngs, { color: 'blue' }).addTo(map);
+function LoadCoords() {
+    $.ajax({
+        url: '/Route/Index',
+        type: 'GET',
+        success: function (response) {
+            console.log(latlngs);
+            var latlngs = [];
+            console.log(response.length);
+            for (let i = 1; i <= response.length; i++) {
+                latlngs.push([response[i - 1], response[i]]);
+                console.log("38" + "test: " + i);
+                i++;
+            }
 
-// zoom the map to the polyline
-map.fitBounds(polyline.getBounds());
+            console.log(latlngs);
+
+            var polyline = L.polyline(latlngs, { color: 'blue' }).addTo(map);
+
+            //zoom the map to the polyline
+            map.fitBounds(polyline.getBounds());
+        },
+        error: function (error) {
+            $(this).remove();
+            console.log(error.responseText);
+        }
+    });
+}
