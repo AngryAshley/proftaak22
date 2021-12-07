@@ -27,7 +27,15 @@ namespace RailView_database_GUI
 
                 for (int i = 0; i < data.FieldCount; i++)
                 {
-                    tableList.Add(data.GetString(i));
+                    if(data.GetString(i) != null)
+                    {
+                        tableList.Add(data.GetString(i));
+                    }
+                    else
+                    {
+                        tableList.Add("NULL");
+                    }
+
                 }
 
                 rowList.AddRange(tableList);

@@ -145,6 +145,7 @@ namespace RailView_database_GUI
             this.lblDatabase1.Size = new System.Drawing.Size(48, 13);
             this.lblDatabase1.TabIndex = 13;
             this.lblDatabase1.Text = "RailView";
+            this.lblDatabase1.Click += new System.EventHandler(this.lblDatabase1_Click);
             // 
             // lblSQL
             // 
