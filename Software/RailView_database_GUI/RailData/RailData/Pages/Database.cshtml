@@ -1,0 +1,13 @@
+﻿@page
+@using Microsoft.AspNetCore.Http
+@model RailData.Pages.DatabaseModel
+@{
+
+}
+@if (HttpContext.Session.GetString("Loggedin") == null)
+{
+    <div>Hello there</div>
+} else
+{
+    <div>general kenobi</div>
+}

@@ -11,7 +11,8 @@ namespace RailData.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        public List<string> Tables = new List<string>();
+        public List<string> Databases = new List<string>();
+        public List<string> DatabaseLinks = new List<string>();
 
         public ErrorHandling errorHandling = new ErrorHandling();
 
@@ -41,7 +42,12 @@ namespace RailData.Pages
                 {
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        Tables.Add(reader.GetString(i));
+                        Databases.Add(reader.GetString(i));
+                    }
+
+                    for (int j = 0; j < reader.FieldCount; j++)
+                    {
+                        DatabaseLinks.Add("USE" + reader.GetString(j));
                     }
                 }
                 _connection.Close();

@@ -4,6 +4,7 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Video surveillance";
+
 }
 
 @if (HttpContext.Session.GetString("Loggedin") == null)
@@ -38,10 +39,12 @@
                 }
             </ul>
         </div>
-        <div class="row">
-            @foreach (var item in Model.Tables)
+        <div class="row">            
+            @foreach (var item in Model.Databases)
             {
-                <div class="col border rounded p-5 m-2">@item</div>
+                <div class="col border rounded p-5 m-2">
+                    @*<a asp-page="Index" asp-page-handler="SelectDatabase">@item</a>*@
+                </div>
             }
         </div>
     </div>
