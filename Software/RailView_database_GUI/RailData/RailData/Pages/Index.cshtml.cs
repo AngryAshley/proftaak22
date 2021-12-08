@@ -10,15 +10,18 @@ namespace RailData.Pages
 {
     public class IndexModel : PageModel
     {
+        // Class handlers
         private readonly ILogger<IndexModel> _logger;
-        public List<string> Databases = new List<string>();
-        public List<string> DatabaseLinks = new List<string>();
-
         public ErrorHandling errorHandling = new ErrorHandling();
-
-        string connectionString = "";
+        SelectDatabase selectDatabase = new SelectDatabase();
         MySqlConnection _connection;
         MySqlCommand cmd = null;
+
+        // Objects and variables
+        public List<string> Databases = new List<string>();
+        public List<string> DatabaseLinks = new List<string>();
+        string connectionString = "";
+        
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -110,6 +113,16 @@ namespace RailData.Pages
             HttpContext.Session.Remove("connection");
             _connection.Close();
             Console.WriteLine("Disconnecting...");
+        }
+
+        public void OnGetSelectDatabase(string databaseName)
+        {
+            Console.WriteLine(databaseName);
+            selectDatabase.DatabaseName = databaseName;
+            selectDatabase.Username = HttpContext.Session.GetString("Loggedin");
+
+            Console.WriteLine("SET: " + databaseName + " " + HttpContext.Session.GetString("Loggedin"));
+            Response.Redirect("/Database");
         }
     }
 }
