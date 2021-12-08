@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,50 +13,34 @@ namespace RailViewClient.Controllers
 {
     public class RouteController : Controller
     {
-        public Root trainRoute;
-        string tester;
 
         public IActionResult Index()
         {
+            Route trainRoute = new Route();
+            var client = new RestClient("https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/spoorkaart");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Ocp-Apim-Subscription-Key", "c4f11ff5e4ea4e13981610420db4a3b1");
+            IRestResponse response = client.Execute(request);
+            trainRoute = JsonConvert.DeserializeObject<Route>(response.Content);
+            Console.WriteLine(response.Content);
 
-            using (StreamReader r = new StreamReader("Data/Railway_Trajects.json"))
+            List<double> coords = new List<double>();
+            int count = 0;
+            for (int i = 0; i < trainRoute.Payload.Features.Count; i++)
             {
-                GetJsonData();
-                string json = r.ReadToEnd();
-                List<double> test = new List<double>();
-                int count = 0;
-                trainRoute = JsonConvert.DeserializeObject<Root>(json);
-
-                for (int i = 0; i < trainRoute.Payload.Features.Count; i++)
+                if (trainRoute.Payload.Features[i].Properties.From == "ehv" && trainRoute.Payload.Features[i].Properties.To == "hmbv")
                 {
-                    if (trainRoute.Payload.Features[i].Properties.From == "ehv" && trainRoute.Payload.Features[i].Properties.To == "hmbv")
+                    while (trainRoute.Payload.Features[i].Geometry.Coordinates.Count != count)
                     {
-                        while (trainRoute.Payload.Features[i].Geometry.Coordinates.Count != count)
-                        {
-                            test.Add(trainRoute.Payload.Features[i].Geometry.Coordinates[count][1]);
-                            test.Add(trainRoute.Payload.Features[i].Geometry.Coordinates[count][0]);
-                            count++;
-                        }
+                        coords.Add(trainRoute.Payload.Features[i].Geometry.Coordinates[count][1]);
+                        coords.Add(trainRoute.Payload.Features[i].Geometry.Coordinates[count][0]);
+                        count++;
                     }
                 }
-                Console.WriteLine(test);
-                return Json(tester, new System.Text.Json.JsonSerializerOptions());
             }
-        }
 
-        public async void GetJsonData()
-        {
-            var client = new HttpClient();
-            var queryString = HttpUtility.ParseQueryString(string.Empty);
-
-            // Request headers
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "{subscription key}");
-
-            var uri = "https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/spoorkaart?" + queryString;
-
-            var tester = await client.GetAsync(uri);
-
-            Console.WriteLine(tester);
+            return Json(coords, new System.Text.Json.JsonSerializerOptions());
         }
     }
 }

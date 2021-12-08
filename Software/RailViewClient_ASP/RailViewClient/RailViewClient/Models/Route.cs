@@ -48,7 +48,7 @@ public class Links
     {
     }
 
-    public class Root
+    public class Route
     {
         [JsonProperty("links")]
         public Links Links { get; set; }
