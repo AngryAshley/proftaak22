@@ -13,7 +13,6 @@ namespace RailData.Pages
         // Class handlers
         private readonly ILogger<IndexModel> _logger;
         public ErrorHandling errorHandling = new ErrorHandling();
-        SelectDatabase selectDatabase = new SelectDatabase();
         MySqlConnection _connection;
         MySqlCommand cmd = null;
 
@@ -117,12 +116,7 @@ namespace RailData.Pages
 
         public void OnGetSelectDatabase(string databaseName)
         {
-            Console.WriteLine(databaseName);
-            selectDatabase.DatabaseName = databaseName;
-            selectDatabase.Username = HttpContext.Session.GetString("Loggedin");
-
-            Console.WriteLine("SET: " + databaseName + " " + HttpContext.Session.GetString("Loggedin"));
-            Response.Redirect("/Database");
+            Response.Redirect($"/Database?databaseName={databaseName}");
         }
     }
 }

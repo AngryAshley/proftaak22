@@ -26,7 +26,14 @@
         </div>
     </div>
 } else {
-    <div class="container-dashboard">
+    <div class="sidenav">
+        <img src="/images/logo.png" width="175px"/>
+        @foreach (var item in Model.Databases)
+        {
+            <a asp-page="Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>
+        }
+    </div>
+    <div class="container-dashboard main">
         <h2>Dashboard</h2>
         <div>
             <h4>Serverinformatie:</h4>

@@ -6,6 +6,13 @@
 }
 @if (HttpContext.Session.GetString("Loggedin") != null)
 {
+     <div class="sidenav">
+         <img src="/images/logo.png" width="175px"/>
+        @foreach (var item in Model.Databases)
+        {
+            <a asp-page="Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>
+        }
+    </div>
     <div class="container-dashboard">
         <h2>Database: @TempData["databaseName"]</h2>
         <ul>
