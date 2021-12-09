@@ -23,7 +23,7 @@ namespace RailViewClient.Controllers
 
         public IActionResult Index()
         {
-            List<Alert> alerts = new List<Alert>();
+            List<Notification> notifications = new List<Notification>();
 
             //Connect to Mysql
             using (MySqlConnection con = new MySqlConnection("Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;"))
@@ -34,19 +34,19 @@ namespace RailViewClient.Controllers
 
                 while (reader.Read())
                 {
-                    Alert alert = new Alert();
-                    alert.id = Convert.ToInt32(reader["id"]);
-                    alert.alert = reader["alert"].ToString();
-                    alert.route = reader["route"].ToString();
-                    alert.times = reader["times"].ToString();
+                    Notification notification = new Notification();
+                    notification.Id = Convert.ToInt32(reader["id"]);
+                    notification.Alert = reader["alert"].ToString();
+                    notification.Route = reader["route"].ToString();
+                    notification.Times = reader["times"].ToString();
 
-                    alerts.Add(alert);
+                    notifications.Add(notification);
                 }
                 reader.Close();
                 con.Close();
             }
 
-            return View(alerts);
+            return View(notifications);
         }
 
         public IActionResult Privacy()

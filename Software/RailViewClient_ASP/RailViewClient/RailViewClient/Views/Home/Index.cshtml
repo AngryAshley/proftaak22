@@ -1,4 +1,4 @@
-﻿@model List<Alert>
+﻿@model List<Notification>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -12,17 +12,15 @@
                 {
                     <div class="text-center border-top border-dark border-2">
                         <p class="px-2 pt-2 text-capitalize">
-                            @item.times<br />@item.route<br /><b>@item.alert</b>
+                            @item.Times<br />@item.Route<br /><b>@item.Alert</b>
                         </p>
                     </div>
                 }
             </div>
 
-            @*<a class="navbar-brand" asp-controller="Home" asp-action="Privacy">*@
-            <input type="button" class="btn btn-success my-2" id="btnpopup" value="Bel 112" onclick="ShowPopUp();" />@*Bel 112</input>*@
-            <input type="button" class="btn btn-success my-2" id="btnpopup" value="Test" onclick="LoadCoords();" />@*Bel 112</input>*@
-            @*<input type="hidden" id="myInput" data-myValue="@ViewBag.test" />*@
-            @*</a>*@
+            <input type="button" class="btn btn-success my-2" id="btnpopup" value="Bel 112" onclick="ShowPopUp();" />
+            <input type="button" class="btn btn-success my-2" id="btnloadcoords" value="Test" onclick="LoadCoords();" />
+            <input type="button" class="btn btn-success my-2" id="btntrain" value="Hide Active Trains" onclick="ShowAndHideTrains();" />
 
         </div>
         <div class="col-8 map-style">

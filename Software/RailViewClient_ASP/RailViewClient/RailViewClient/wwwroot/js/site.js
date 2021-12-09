@@ -4,10 +4,23 @@
 // Write your JavaScript code.
 var trainLocation = [];
 var trainMarker = [];
+var latlngs = [];
+var test;
+var hideActiveTrain = false;
 
 var trainIcon = L.icon({
-    iconUrl: 'images/train2.png',
+    iconUrl: 'images/train.png',
     iconSize: [25, 25],
+});
+
+var cctvIcon = L.icon({
+    iconUrl: 'images/cctv.png',
+    iconSize: [30, 30],
+});
+
+var alertIcon = L.icon({
+    iconUrl: 'images/alert.png',
+    iconSize: [30, 30],
 });
 
 //load in map and map settings
@@ -22,6 +35,10 @@ var map = L.map('map', {
     ],
     zoomControl: false
 });
+
+//cctv cams
+var camera = L.marker([51.4531, 5.5680], { icon: cctvIcon }).addTo(map);
+var camera2 = L.marker([51.4432, 5.4797], { icon: cctvIcon }).addTo(map);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -45,8 +62,10 @@ setInterval(function () {
             }
 
             console.log(trainLocation);
-            for (let i = 0; i < trainLocation.length; i++) {
-                trainMarker[i] = L.marker(trainLocation[i], { icon: trainIcon }).addTo(map);
+            if (!hideActiveTrain) {
+                for (let i = 0; i < trainLocation.length; i++) {
+                    trainMarker[i] = L.marker(trainLocation[i], { icon: trainIcon }).addTo(map);
+                }
             }
         },
         error: function (error) {
@@ -69,7 +88,7 @@ function LoadCoords() {
         type: 'GET',
         success: function (response) {
             console.log(latlngs);
-            var latlngs = [];
+            latlngs = [];
             console.log(response.length);
             for (let i = 0; i < response.length; i += 2) {
                 latlngs.push([response[i], response[i + 1]]);
@@ -89,3 +108,31 @@ function LoadCoords() {
         }
     });
 }
+
+function ShowAndHideTrains() {
+    hideActiveTrain = !hideActiveTrain;
+
+    if (hideActiveTrain) {
+        $("#btntrain").prop('value', 'Show Active Trains');
+        for (let i = 0; i < trainLocation.length; i++) {
+            map.removeLayer(trainMarker[i]);
+        }
+    }
+    else {
+        $("#btntrain").prop('value', 'Hide Active Trains');
+        trainMarker = [];
+        for (let i = 0; i < trainLocation.length; i++) {
+            trainMarker[i] = L.marker(trainLocation[i], { icon: trainIcon }).addTo(map);
+        }
+    }
+}
+
+map.on('zoomend', function () {
+    test = map.getZoom();
+    console.log(test);
+});
+
+camera.on('click', function () {
+    console.log("test");
+    window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
+});
