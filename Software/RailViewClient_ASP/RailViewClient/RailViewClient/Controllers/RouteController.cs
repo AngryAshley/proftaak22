@@ -17,11 +17,9 @@ namespace RailViewClient.Controllers
         public IActionResult Index()
         {
             Route trainRoute = new Route();
-            var client = new RestClient("https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/spoorkaart");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("Ocp-Apim-Subscription-Key", "c4f11ff5e4ea4e13981610420db4a3b1");
-            IRestResponse response = client.Execute(request);
+            NsApiController nsApiController = new NsApiController();
+
+            IRestResponse response = nsApiController.Index("https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/spoorkaart");
             trainRoute = JsonConvert.DeserializeObject<Route>(response.Content);
             Console.WriteLine(response.Content);
 

@@ -4,6 +4,14 @@
 }
 
 <div class="container-fluid" id="containertest">
+    @*<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>A PERSON DETECTED!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>*@
+    @*<button type="button" class="btn btn-primary" id="liveToastBtn" onclick="ShowToast();">Show live toast</button>*@
+
     <div class="row d-flex justify-content-md-around" id="rowtest">
         <div class="col-4" id="tester">
             <h4>Meldingen</h4>
@@ -19,12 +27,26 @@
             </div>
 
             <input type="button" class="btn btn-success my-2" id="btnpopup" value="Bel 112" onclick="ShowPopUp();" />
-            <input type="button" class="btn btn-success my-2" id="btnloadcoords" value="Test" onclick="LoadCoords();" />
+            <input type="button" class="btn btn-success my-2" id="liveToastBtn" value="Test" onclick="ShowToast();"/>
             <input type="button" class="btn btn-success my-2" id="btntrain" value="Hide Active Trains" onclick="ShowAndHideTrains();" />
 
         </div>
         <div class="col-8 map-style">
             <div id="map" class="map-style"></div>
+        </div>
+    </div>
+    <div class="row d-flex">
+        <div id="toastplaceholder" class="d-flex">
+            <div class="toast float-right w-100" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                <div class="toast-header">
+                    <strong class="mr-auto">PERSON DETECTED</strong>
+                    <small>11 mins ago</small>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">CAMERA 01: Ehv - Hmbv</div>
+            </div>
         </div>
     </div>
 </div>

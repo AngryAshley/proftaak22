@@ -29,7 +29,7 @@ namespace RailViewClient.Controllers
             using (MySqlConnection con = new MySqlConnection("Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;"))
             {
                 con.Open();
-                MySqlCommand cmd = new MySqlCommand("select * from alerts", con);
+                MySqlCommand cmd = new MySqlCommand("select * from alerts order by times DESC", con);
                 MySqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())

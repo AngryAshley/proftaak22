@@ -14,12 +14,9 @@ namespace RailViewClient.Controllers
         public IActionResult Index()
         {
             Train trainLocation = new Train();
+            NsApiController nsApiController = new NsApiController();
 
-            var client = new RestClient("https://gateway.apiportal.ns.nl/virtual-train-api/api/vehicle");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("Ocp-Apim-Subscription-Key", "c4f11ff5e4ea4e13981610420db4a3b1");
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = nsApiController.Index("https://gateway.apiportal.ns.nl/virtual-train-api/api/vehicle");
             trainLocation = JsonConvert.DeserializeObject<Train>(response.Content);
             Console.WriteLine(response.Content);
 

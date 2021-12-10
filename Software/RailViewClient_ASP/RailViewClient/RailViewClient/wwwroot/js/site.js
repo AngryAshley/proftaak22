@@ -38,7 +38,6 @@ var map = L.map('map', {
 
 //cctv cams
 var camera = L.marker([51.4531, 5.5680], { icon: cctvIcon }).addTo(map);
-var camera2 = L.marker([51.4432, 5.4797], { icon: cctvIcon }).addTo(map);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -136,3 +135,7 @@ camera.on('click', function () {
     console.log("test");
     window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
 });
+
+function ShowToast() {
+    $('.toast').toast('show');
+}
