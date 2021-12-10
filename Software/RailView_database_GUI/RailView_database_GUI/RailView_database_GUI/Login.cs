@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RailView_database_GUI
@@ -17,7 +9,10 @@ namespace RailView_database_GUI
         public Login()
         {
             InitializeComponent();
+        }
 
+        private void Login_Load(object sender, EventArgs e)
+        {
             txbUsername.Text = "Username";
             txbPassword.PasswordChar = '*';
             btnLogin.TabStop = false;
@@ -27,7 +22,7 @@ namespace RailView_database_GUI
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            string connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=" + txbUsername.Text + ";Pwd=" + txbPassword.Text + ";";
+            string connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=" + txbUsername.Text + ";Pwd=" + txbPassword.Text + ";Convert Zero Datetime=true;";
 
             try
             {

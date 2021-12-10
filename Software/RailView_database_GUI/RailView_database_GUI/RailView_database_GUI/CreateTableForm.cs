@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RailView_database_GUI
@@ -13,7 +7,6 @@ namespace RailView_database_GUI
     public partial class CreateTableForm : Form
     {
         DatabaseSelected databaseSelected = null;
-        List<string> numbers = new List<string> { "Null", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen" };
 
         public CreateTableForm(DatabaseSelected c_databaseSelected)
         {
@@ -32,10 +25,10 @@ namespace RailView_database_GUI
 
             for (int i = 0; i < Convert.ToInt32(databaseSelected.AmountRowsNew); i++)
             {
-                AddTextBox(numbers[i], "Name", txbNameLocationX, locationY);
-                AddComboBox(numbers[i], "Type", cobTypeLocationX, locationY);
-                AddTextBox(numbers[i], "Lenght", txbLengthLocationX, locationY);
-                AddComboBox(numbers[i], "Default", cobDefaultLocationX, locationY);
+                //AddTextBox(numbers[i], "Name", txbNameLocationX, locationY);
+                //AddComboBox(numbers[i], "Type", cobTypeLocationX, locationY);
+                //AddTextBox(numbers[i], "Lenght", txbLengthLocationX, locationY);
+                //AddComboBox(numbers[i], "Default", cobDefaultLocationX, locationY);
 
                 locationY = locationY + 25;
             }

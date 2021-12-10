@@ -1,30 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using MySql.Data.MySqlClient;
 
 namespace RailView_database_GUI
 {
     public partial class Dashboard : Form
     {
+        Navigation navigation = new Navigation();
+        public string DatabaseName { get; set; }
+
         public Dashboard()
         {
             InitializeComponent();
         }
 
-        private void lblDatabase1_Click(object sender, EventArgs e)
+        private void Dashboard_Load(object sender, EventArgs e)
         {
-            DatabaseSelected databaseSelected = new DatabaseSelected();
+            List<Control> myControls = navigation.AddNaviagtion();
+            foreach (Control c in myControls)
+            {
+                c.Click += new EventHandler(DatabaseClicked);
+                this.Controls.Add(c);
+                c.BringToFront();
+            }
+        }
+
+        public void DatabaseClicked(object sender, EventArgs e)
+        {
+            DatabaseName = (sender as Label).Text;
+            Data data = new Data(this);
             this.Hide();
-            databaseSelected.ShowDialog();
+            data.ShowDialog();
+        }
+
+        public void RedirectDatabaseSelected(object sender)
+        {
+            DatabaseClicked(sender, EventArgs.Empty);
         }
     }
 }

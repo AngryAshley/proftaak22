@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RailView_database_GUI
@@ -15,23 +9,37 @@ namespace RailView_database_GUI
         DatabaseSelected databaseSelected = null;
         GridButton gridButton = new GridButton();
         ExecuteQuery executeQuery = new ExecuteQuery();
-        string connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;";
+        Navigation navigation = new Navigation();
 
         public TableSelected(DatabaseSelected c_databaseSelected)
         {
             InitializeComponent();
+            databaseSelected = c_databaseSelected;
+        }
+
+        private void TableSelected_Load(object sender, EventArgs e)
+        {
+            string connectionString = "Server=192.168.161.205;Port=3306;Database=" + databaseSelected.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
+
+            List<Control> myControls = navigation.AddNaviagtion();
+            foreach (Control c in myControls)
+            {
+                c.Click += new EventHandler(MenuLabelClicked);
+                this.Controls.Add(c);
+                c.BringToFront();
+            }
 
             bool countRows;
             string name;
             string sql;
-            databaseSelected = c_databaseSelected;
 
-            lblTitle.Text = "Table: " + databaseSelected.Table;
+            lblTitle.Text = lblTitle.Text + databaseSelected.Table;
 
-            //string sql = "SELECT * FROM " + databaseSelected.Table;
+            Console.WriteLine(databaseSelected.DatabaseName);
+
             countRows = false;
-            sql = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'RailView' AND TABLE_NAME = '" + databaseSelected.Table + "'";
-            List<string> columns = executeQuery.ShowDatabase(sql, countRows, connectionString);
+            sql = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + databaseSelected.DatabaseName + "' AND TABLE_NAME = '" + databaseSelected.Table + "' ORDER BY ORDINAL_POSITION ASC";
+            List<string> columns = executeQuery.GetData(sql, countRows, connectionString);
 
 
             int countColumns = 0;
@@ -39,47 +47,51 @@ namespace RailView_database_GUI
             {
                 //DgvFull.Columns["clmFirst"].HeaderText = "Name of Table thing";
 
-                DataGridViewColumn clm = new DataGridViewColumn();
-                clm.Name = item;
+                DataGridViewTextBoxColumn clm = new DataGridViewTextBoxColumn();
+                clm.Name = item; 
                 clm.HeaderText = item;
                 this.DgvFull.Columns.Add(clm);
                 countColumns++;
             }
 
-
-
-            countRows = true;
+            countRows = false;
             sql = "SELECT * FROM " + databaseSelected.Table;
-            List<string> dataAlerts = executeQuery.ShowDatabase(sql, countRows, connectionString);
+            List<string> dataAlerts = executeQuery.GetData(sql, countRows, connectionString);
 
             DataGridViewButtonColumn btn;
-
-            name = "Show";
-            btn = gridButton.SetButton(name);
-            this.DgvFull.Columns.Add(btn);
 
             name = "Delete";
             btn = gridButton.SetButton(name);
             this.DgvFull.Columns.Add(btn);
 
-            //int amountRows
+            int i = 0;
 
-            foreach (string item in dataAlerts)
+            List<string> listRow = new List<string> { };
+
+            Console.WriteLine(countColumns);
+            Console.WriteLine(countColumns - 1);
+            for (int x = 0; x < dataAlerts.Count; x++)
             {
-                for(int i = 0; i < countColumns; i++)
+                if (i % countColumns != countColumns - 1)
                 {
-
+                    listRow.Add(dataAlerts[x].ToString());
                 }
-
-                DgvFull.Rows.Add();
+                else
+                {
+                    //Voeg toe aan lijst maar reset hem daarna. 
+                    listRow.Add(dataAlerts[x].ToString());
+                    DgvFull.Rows.Add(listRow.ToArray());
+                    listRow.Clear();
+                }
+                i++;
             }
         }
 
-        private void lblDatabase1_Click(object sender, EventArgs e)
+        public void MenuLabelClicked(object sender, EventArgs e)
         {
-            DatabaseSelected databaseSelected = new DatabaseSelected();
+            Dashboard dashboard = new Dashboard();
             this.Hide();
-            databaseSelected.ShowDialog();
+            dashboard.RedirectDatabaseSelected(sender);
         }
     }
 }

@@ -37,7 +37,6 @@ namespace RailView_database_GUI
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lblDatabase1 = new System.Windows.Forms.Label();
             this.lblSQL = new System.Windows.Forms.Label();
             this.lblBorderLeft = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -135,17 +134,6 @@ namespace RailView_database_GUI
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
-            // 
-            // lblDatabase1
-            // 
-            this.lblDatabase1.AutoSize = true;
-            this.lblDatabase1.Location = new System.Drawing.Point(9, 142);
-            this.lblDatabase1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblDatabase1.Name = "lblDatabase1";
-            this.lblDatabase1.Size = new System.Drawing.Size(48, 13);
-            this.lblDatabase1.TabIndex = 13;
-            this.lblDatabase1.Text = "RailView";
-            this.lblDatabase1.Click += new System.EventHandler(this.lblDatabase1_Click);
             // 
             // lblSQL
             // 
@@ -279,11 +267,11 @@ namespace RailView_database_GUI
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.lblDatabase1);
             this.Controls.Add(this.lblSQL);
             this.Controls.Add(this.lblBorderLeft);
             this.Name = "DatabaseSelected";
             this.Text = "DatabaseSelected";
+            this.Load += new System.EventHandler(this.DatabaseSelected_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DgvFull)).EndInit();
             this.ResumeLayout(false);
@@ -300,7 +288,6 @@ namespace RailView_database_GUI
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label lblDatabase1;
         private System.Windows.Forms.Label lblSQL;
         private System.Windows.Forms.Label lblBorderLeft;
         private System.Windows.Forms.Label label9;

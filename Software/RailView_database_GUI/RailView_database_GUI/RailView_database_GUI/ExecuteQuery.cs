@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
 namespace RailView_database_GUI
 {
     class ExecuteQuery : Connection
     {
-        public List<string> ShowDatabase(string sql, bool countRows, string connectionString)
+        public List<string> GetData(string sql, bool countRows, string connectionString)
         {
             OpenConection(connectionString);
 
-            List<string> tableList = new List<string>();
-            List<string> rowList = new List<string>();
+            List<string> list = new List<string>();
             int amountOfRows = 0;
 
             MySqlCommand command = new MySqlCommand(sql, conn);
@@ -23,29 +19,30 @@ namespace RailView_database_GUI
 
             while (data.Read())
             {
-                if (countRows == true) { amountOfRows++; }
-
-                for (int i = 0; i < data.FieldCount; i++)
-                {
-                    if(data.GetString(i) != null)
-                    {
-                        tableList.Add(data.GetString(i));
-                    }
-                    else
-                    {
-                        tableList.Add("NULL");
-                    }
-
+                if (countRows == true) 
+                { 
+                    amountOfRows++; 
                 }
-
-                rowList.AddRange(tableList);
-                tableList.Clear();
+                else
+                {
+                    for (int i = 0; i < data.FieldCount; i++)
+                    {
+                        if (data.IsDBNull(i) == false)
+                        {
+                            list.Add(data.GetString(i));
+                        }
+                        else
+                        {
+                            list.Add("NULL");
+                        }
+                    }
+                }
             }
 
-            if (countRows == true) { rowList.Add(amountOfRows.ToString()); }
+            if (countRows == true) { list.Add(amountOfRows.ToString()); }
 
             CloseConnection();
-            return rowList;
+            return list;
         }
 
         public void CreateTable(string sql, string connectionString)

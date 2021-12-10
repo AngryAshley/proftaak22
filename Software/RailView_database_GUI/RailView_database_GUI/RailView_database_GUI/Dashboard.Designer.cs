@@ -31,8 +31,6 @@ namespace RailView_database_GUI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashboard));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lblDatabase1 = new System.Windows.Forms.Label();
-            this.lblTest = new System.Windows.Forms.Label();
             this.lblSQL = new System.Windows.Forms.Label();
             this.lblBorderLeft = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -48,33 +46,12 @@ namespace RailView_database_GUI
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(4, 10);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(142, 115);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            // 
-            // lblDatabase1
-            // 
-            this.lblDatabase1.AutoSize = true;
-            this.lblDatabase1.Location = new System.Drawing.Point(9, 141);
-            this.lblDatabase1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblDatabase1.Name = "lblDatabase1";
-            this.lblDatabase1.Size = new System.Drawing.Size(48, 13);
-            this.lblDatabase1.TabIndex = 1;
-            this.lblDatabase1.Text = "RailView";
-            this.lblDatabase1.Click += new System.EventHandler(this.lblDatabase1_Click);
-            // 
-            // lblTest
-            // 
-            this.lblTest.AutoSize = true;
-            this.lblTest.Location = new System.Drawing.Point(9, 617);
-            this.lblTest.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblTest.Name = "lblTest";
-            this.lblTest.Size = new System.Drawing.Size(115, 13);
-            this.lblTest.TabIndex = 3;
-            this.lblTest.Text = "tabelnaam van railview";
             // 
             // lblSQL
             // 
@@ -183,14 +160,13 @@ namespace RailView_database_GUI
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.lblTest);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.lblDatabase1);
             this.Controls.Add(this.lblSQL);
             this.Controls.Add(this.lblBorderLeft);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Dashboard";
             this.Text = "Dashboard";
+            this.Load += new System.EventHandler(this.Dashboard_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -200,8 +176,6 @@ namespace RailView_database_GUI
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label lblDatabase1;
-        private System.Windows.Forms.Label lblTest;
         private System.Windows.Forms.Label lblSQL;
         private System.Windows.Forms.Label lblBorderLeft;
         private System.Windows.Forms.Label label1;
