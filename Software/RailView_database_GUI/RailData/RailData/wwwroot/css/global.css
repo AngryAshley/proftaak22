@@ -14,10 +14,10 @@ body {
 }
 
 .container-dashboard {
-    max-width: 1850px;
+    max-width: 1500px;
     width: 100%;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 20px;
+    padding-right: 10px;
     margin-right: auto;
     margin-left: auto;
 }

@@ -11,7 +11,7 @@
     <div class="container">
         <div class="text-center d-flex justify-content-center">
             <div>
-                <img src="/images/logo.png"/>
+                <img src="/images/logo.png" alt="RailView logo"/>
                 <form method="post">
                     <div class="form-group mb-2">
                     <input runat="server" id="Username" name="Username" type="text" class="form-control" placeholder="Gebruikersnaam"/>
@@ -26,7 +26,14 @@
         </div>
     </div>
 } else {
-    <div class="container-dashboard">
+    <div class="sidenav">
+        <img src="/images/logo.png" class="sidenav-img" alt="RailView logo"/>
+        @foreach (var item in Model.Databases)
+        {
+            <a asp-page="Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>
+        }
+    </div>
+    <div class="container-dashboard main">
         <h2>Dashboard</h2>
         <div>
             <h4>Serverinformatie:</h4>
@@ -38,10 +45,12 @@
                 }
             </ul>
         </div>
-        <div class="row">
-            @foreach (var item in Model.Tables)
+        <div class="row">            
+            @foreach (var item in Model.Databases)
             {
-                <div class="col border rounded p-5 m-2">@item</div>
+                <div class="col border rounded p-5 m-2">
+                    <a asp-page="Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>
+                </div>
             }
         </div>
     </div>
