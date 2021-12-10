@@ -1,17 +1,21 @@
 import sys
 import time
 import datetime
-import socket
+import socket, ssl
 import mysql.connector
 
 ts = time.time()
 timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S') # get the current timestamp
 
+context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+context.load_cert_chain(certfile="cert.pem", keyfile="cert.pem")
+
 s = socket.socket()
-host = '192.168.161.205'
 buffer_size = 100
-port = 6023
-s.bind((host, port))
+
+sslsoc = context.wrap_socket(s)
+sslsoc.bind(('192.168.161.205', 6023))
+sslsoc.listen(5)
 
 doOnce = 0
 
@@ -33,15 +37,16 @@ def updateDatabase(type): # function to update database on type of alert
   railviewdata.execute(updateSqlTrain, valuesTrain)
   mydb.commit()
 
-s.listen(5)
-c, addr = s.accept()
 while True:
+  newsocket, fromaddr = sslsoc.accept()
+  request = sslsoc.read()
+  print(request)
 
   if doOnce == 0:
-    print('Got connection from ', addr)
+    print('Got connection from ', fromaddr)
     doOnce = 1
 
-  data = c.recv(buffer_size).decode('ascii')
+  data = newsocket.recv(buffer_size).decode('ascii')
 
   if data == "PERSON":
     # select the id where the location = alert location send by the PI
@@ -60,7 +65,7 @@ while True:
     updateDatabase("train")
     
   if data == "!":
-    print('Closing...', addr)
+    print('Closing...', fromaddr)
     doOnce = 0
-    c.close()
+    newsocket.close()
     #break #close the script after recieving the closing message
