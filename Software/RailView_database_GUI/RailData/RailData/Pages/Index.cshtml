@@ -11,7 +11,7 @@
     <div class="container">
         <div class="text-center d-flex justify-content-center">
             <div>
-                <img src="/images/logo.png"/>
+                <img src="/images/logo.png" alt="RailView logo"/>
                 <form method="post">
                     <div class="form-group mb-2">
                     <input runat="server" id="Username" name="Username" type="text" class="form-control" placeholder="Gebruikersnaam"/>
@@ -27,7 +27,7 @@
     </div>
 } else {
     <div class="sidenav">
-        <img src="/images/logo.png" width="175px"/>
+        <img src="/images/logo.png" class="sidenav-img" alt="RailView logo"/>
         @foreach (var item in Model.Databases)
         {
             <a asp-page="Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>

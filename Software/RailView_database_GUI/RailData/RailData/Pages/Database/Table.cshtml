@@ -1,0 +1,52 @@
+﻿@page
+@using Microsoft.AspNetCore.Http
+@model RailData.Pages.Database.TableModel
+@{
+    ViewData["Title"] = "Video surveillance";
+}
+@if (HttpContext.Session.GetString("Loggedin") != null)
+{
+    <div class="sidenav">
+        <img src="/images/logo.png" class="sidenav-img" alt="RailView logo" />
+        @foreach (var item in Model.Databases)
+        {
+            <a asp-page="/Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>
+        }
+    </div>
+    <div class="container-dashboard">
+        <div class="alert-danger mt-4 text-center" role="alert">@Model.errorHandling.Error()</div>
+        <h2>Database: @TempData["databaseName"], table: @TempData["tableName"]</h2>
+        <table>
+            <tr class="col">
+                @foreach (var colName in Model.TableStruct)
+                {
+                    <td class="border rounded p-2">@colName</td>
+                }
+            </tr>
+            <tr>
+                @foreach (var item in Model.TableContents)
+                {
+                    <td>@item</td>
+                }
+            </tr>
+            <tr>
+                @for (int i = 0; i < Model.TableContents.Count; i++)
+                {
+                    <td>@Model.TableContents[i]</td>
+                }
+            </tr>
+        </table>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="text-center d-flex justify-content-center">
+            <div>
+                <img src="/images/logo.png" />
+                <h2>You are logged out</h2>
+                <p>Try to login <a href="/">here</a>...</p>
+            </div>
+        </div>
+    </div>
+}

@@ -7,19 +7,20 @@
 @if (HttpContext.Session.GetString("Loggedin") != null)
 {
      <div class="sidenav">
-         <img src="/images/logo.png" width="175px"/>
+         <img src="/images/logo.png" class="sidenav-img" alt="RailView logo"/>
         @foreach (var item in Model.Databases)
         {
             <a asp-page="Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>
         }
     </div>
     <div class="container-dashboard">
+        <div class="alert-danger mt-4 text-center" role="alert">@Model.errorHandling.Error()</div>
         <h2>Database: @TempData["databaseName"]</h2>
         <ul>
             @foreach (var item in Model.DescribedDatabase)
             {
                 <li class="col border rounded p-5 m-2">
-                    <a asp-page="Database" asp-page-handler="SelectTable" asp-route-tableName="@item">@item</a>
+                    <a asp-page="Database" asp-page-handler="SelectTable" asp-route-databaseName="@TempData["databaseName"]" asp-route-tableName="@item">@item</a>
                 </li>
             }
         </ul>

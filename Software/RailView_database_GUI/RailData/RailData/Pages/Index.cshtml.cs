@@ -18,7 +18,6 @@ namespace RailData.Pages
 
         // Objects and variables
         public List<string> Databases = new List<string>();
-        public List<string> DatabaseLinks = new List<string>();
         string connectionString = "";
         
 
@@ -46,11 +45,6 @@ namespace RailData.Pages
                     {
                         Databases.Add(reader.GetString(i));
                     }
-
-                    for (int j = 0; j < reader.FieldCount; j++)
-                    {
-                        DatabaseLinks.Add("USE" + reader.GetString(j));
-                    }
                 }
                 _connection.Close();
             }
@@ -65,12 +59,10 @@ namespace RailData.Pages
             if (Username != "" && Password != "")
             {
                 connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=" + Username + ";Pwd=" + Password + ";";
-                Console.WriteLine("Connecting...");
 
                 try
                 {
                     _connection = new MySqlConnection(connectionString);
-                    Console.WriteLine("SUCCESS");
 
                     HttpContext.Session.SetString("Loggedin", Username);
                     HttpContext.Session.SetString("connection", connectionString);
@@ -83,11 +75,9 @@ namespace RailData.Pages
                     switch (ex.Number)
                     {
                         case 0:
-                            Console.WriteLine("Invalid username/password, please try again");
                             errorHandling.ErrorMessage = "Invalid username/password, please try again";
                             break;
                         case 1045:
-                            Console.WriteLine("Cannot connect to server");
                             errorHandling.ErrorMessage = "Cannot connect to server";
                             break;
                     }
@@ -95,13 +85,11 @@ namespace RailData.Pages
                 catch (Exception ex)
                 {
                     ExitConnections();
-                    Console.WriteLine("An error occurred " + ex);
                     errorHandling.ErrorMessage = "An error occurred " + ex;
                 }
             }
             else
             {
-                Console.WriteLine("Enter your username and password.");
                 errorHandling.ErrorMessage = "Enter your username and password.";
             }
         }
@@ -111,7 +99,6 @@ namespace RailData.Pages
             HttpContext.Session.Remove("Loggedin");
             HttpContext.Session.Remove("connection");
             _connection.Close();
-            Console.WriteLine("Disconnecting...");
         }
 
         public void OnGetSelectDatabase(string databaseName)

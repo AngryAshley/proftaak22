@@ -23,6 +23,10 @@
     display: block;
 }
 
+.sidenav-img {
+    width: 100%;
+}
+
 .main {
     margin-left: 190px; /* Same as the width of the sidebar */
 }
