@@ -1,0 +1,16 @@
+﻿To do list:
+
+Alert:
+- Update the list when a change/new entry has occured in the database
+
+GMAP:
+- Make specified markers for the popout
+- API get time is depended on the zoom level of the map (max and min update rate)
+
+GUI:
+- Clean
+
+Done:
+- Tooltip for every train marker
+- Use API to display NS train locations that updates it every few seconds using a timer
+- Create routes for each traject

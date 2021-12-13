@@ -1,34 +1,33 @@
 ﻿using System;
-//API
 using System.Net.Http.Headers;
 using System.Text;
 using System.Net.Http;
 using System.Web;
+using System.Threading;
 
 namespace CSHttpClientSample
 {
-    static class Program
+    public class Program
     {
-        static void Main()
+        
+        public static void Main()
         {
-            MakeRequest();
-            Console.WriteLine("Hit ENTER to exit...");
+            Console.WriteLine("Starting timer with callback every 1 second.");
+            Timer timer = new Timer(callback, "Some state", TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+            //Thread.Sleep(4500); // Wait a bit over 4 seconds.
+
+            //Console.WriteLine("Changing timer to callback every 2 seconds.");
+            //timer.Change(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
+            //Thread.Sleep(9000);
+            //timer.Change(-1, -1); // Stop the timer from running.
+
+            Console.WriteLine("Done. Press ENTER");
             Console.ReadLine();
         }
-
-        static async void MakeRequest()
+        private static void callback(object state)
         {
-            var client = new HttpClient();
-            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            Console.WriteLine("Called back with state = " + state);
 
-            // Request headers
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aec6b0eaaa984650838bc80");
-
-            var uri = "https://gateway.apiportal.ns.nl/virtual-train-api/api/v1/ingekort?" + queryString;
-
-            var response = await client.GetAsync(uri);
-
-            Console.WriteLine(response);
         }
     }
 }
