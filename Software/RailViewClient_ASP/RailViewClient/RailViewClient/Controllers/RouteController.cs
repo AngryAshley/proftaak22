@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -18,6 +19,7 @@ namespace RailViewClient.Controllers
         {
             Route trainRoute = new Route();
             NsApiController nsApiController = new NsApiController();
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
             IRestResponse response = nsApiController.Index("https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/spoorkaart");
             trainRoute = JsonConvert.DeserializeObject<Route>(response.Content);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
@@ -23,13 +24,17 @@ namespace RailViewClient.Controllers
 
         public IActionResult Index()
         {
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            //var myValue = config["Database:ConnectionString"];
+            //Console.WriteLine(myValue);
+
             List<Notification> notifications = new List<Notification>();
 
             //Connect to Mysql
-            using (MySqlConnection con = new MySqlConnection("Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;"))
+            using (MySqlConnection con = new MySqlConnection(config["Database:ConnectionString"]))
             {
                 con.Open();
-                MySqlCommand cmd = new MySqlCommand("select * from alerts order by times DESC", con);
+                MySqlCommand cmd = new MySqlCommand(config["Database:Queries:GetAlert"], con);
                 MySqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())

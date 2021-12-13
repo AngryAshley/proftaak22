@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RailViewClient.Models;
 using RestSharp;
@@ -15,6 +16,7 @@ namespace RailViewClient.Controllers
         {
             Train trainLocation = new Train();
             NsApiController nsApiController = new NsApiController();
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
             IRestResponse response = nsApiController.Index("https://gateway.apiportal.ns.nl/virtual-train-api/api/vehicle");
             trainLocation = JsonConvert.DeserializeObject<Train>(response.Content);

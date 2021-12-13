@@ -3,7 +3,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container-fluid" id="containertest">
+@*<div class="container-fluid" id="containertest">blasdadwefererger*@
     @*<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>A PERSON DETECTED!</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -13,9 +13,9 @@
     @*<button type="button" class="btn btn-primary" id="liveToastBtn" onclick="ShowToast();">Show live toast</button>*@
 
     <div class="row d-flex justify-content-md-around" id="rowtest">
-        <div class="col-4" id="tester">
+        <div class="col-4 div-containers" id="tester">
             <h4>Meldingen</h4>
-            <div id="log" class="border border-dark border-2">
+            <div id="log" class="border border-dark border-2 div-containers">
                 @foreach (var item in Model)
                 {
                     <div class="text-center border-top border-dark border-2">
@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-</div>
+@*</div>*@
 
 @section Css
 {

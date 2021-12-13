@@ -12,17 +12,19 @@ a.navbar-brand {
 }
 
 #log {
-    height: 440px;
+    /*height: 440px;*/
     overflow-y: auto;
     text-transform: capitalize;
 }
 
 #map {
     /*width: 700px;*/
-    height: 100%;
+    height: calc(100vh - 110px);
 }
 
-
+.div-containers {
+    height: calc(100vh - 190px);
+}
 
 #test {
     width: 600px;
