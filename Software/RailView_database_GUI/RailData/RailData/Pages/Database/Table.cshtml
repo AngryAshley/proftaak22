@@ -3,6 +3,7 @@
 @model RailData.Pages.Database.TableModel
 @{
     ViewData["Title"] = "Video surveillance";
+    int z = 0;
 }
 @if (HttpContext.Session.GetString("Loggedin") != null)
 {
@@ -20,21 +21,20 @@
             <tr class="col">
                 @foreach (var colName in Model.TableStruct)
                 {
-                    <td class="border rounded p-2">@colName</td>
+                    <td class="border rounded p-2 font-weight-bold">@colName</td>
                 }
+                <td class="border rounded p-2 font-weight-bold">Edit</td>
             </tr>
-            <tr>
-                @foreach (var item in Model.TableContents)
-                {
-                    <td>@item</td>
-                }
-            </tr>
-            <tr>
-                @for (int i = 0; i < Model.TableContents.Count; i++)
-                {
-                    <td>@Model.TableContents[i]</td>
-                }
-            </tr>
+            @for (int i = 0; i < Model.FinalRow.Count; i++)
+            {
+                <tr>
+                    @for (int j = 0; j < Model.FinalRow[i].Length; j++)
+                    {
+                        <td class="border rounded p-2">@Model.FinalRow[i].GetValue(j)</td>
+                    }
+                    <td><button class="btn btn-general">Edit</button></td>
+                </tr>
+            }
         </table>
     </div>
 }

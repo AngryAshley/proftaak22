@@ -48,9 +48,7 @@
         <div class="row">            
             @foreach (var item in Model.Databases)
             {
-                <div class="col border rounded p-5 m-2">
-                    <a asp-page="Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>
-                </div>
+                <a class="col border rounded p-5 m-2" asp-page="Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>
             }
         </div>
     </div>
