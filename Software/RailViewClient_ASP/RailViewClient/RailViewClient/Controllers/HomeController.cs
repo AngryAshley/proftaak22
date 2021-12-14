@@ -54,7 +54,7 @@ namespace RailViewClient.Controllers
             return View(notifications);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Popup()
         {
             return View();
         }
@@ -63,6 +63,11 @@ namespace RailViewClient.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        protected void Timer1_Tick(object sender, EventArgs e)
+        {
+            // Label1.Text = DateTime.Now.Second.ToString();
         }
     }
 }

@@ -43,41 +43,21 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+LoadTrains();
+
 //Load active train locations
 setInterval(function () {
-    $.ajax({
-        url: '/Location/Index',
-        type: 'GET',
-        success: function (response) {
-            for (let i = 0; i < trainLocation.length; i++) {
-                map.removeLayer(trainMarker[i]);
-            }
-
-            trainLocation = [];
-            trainMarker = [];
-            console.log(response);
-            for (let i = 0; i < response.length; i += 2) {
-                trainLocation.push([response[i], response[i + 1]]);
-            }
-
-            console.log(trainLocation);
-            if (!hideActiveTrain) {
-                for (let i = 0; i < trainLocation.length; i++) {
-                    trainMarker[i] = L.marker(trainLocation[i], { icon: trainIcon }).addTo(map);
-                }
-            }
-        },
-        error: function (error) {
-            $(this).remove();
-            console.log(error.responseText);
-        }
-    });
+    LoadTrains();
 }, 10000);
+
+setInterval(function () {
+    //Load Alerts and cams through database
+}, 1000);
 
 //On click functions
 function ShowPopUp() {
     console.log("test");
-    window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
+    window.open('/Home/Popup', "Live Feed", 'fullscreen="yes"');
 }
 
 //Load coords from route
@@ -108,6 +88,36 @@ function LoadCoords() {
     });
 }
 
+function LoadTrains() {
+    $.ajax({
+        url: '/Location/Index',
+        type: 'GET',
+        success: function (response) {
+            for (let i = 0; i < trainLocation.length; i++) {
+                map.removeLayer(trainMarker[i]);
+            }
+
+            trainLocation = [];
+            trainMarker = [];
+            console.log(response);
+            for (let i = 0; i < response.length; i += 2) {
+                trainLocation.push([response[i], response[i + 1]]);
+            }
+
+            console.log(trainLocation);
+            if (!hideActiveTrain) {
+                for (let i = 0; i < trainLocation.length; i++) {
+                    trainMarker[i] = L.marker(trainLocation[i], { icon: trainIcon }).addTo(map);
+                }
+            }
+        },
+        error: function (error) {
+            $(this).remove();
+            console.log(error.responseText);
+        }
+    });
+}
+
 function ShowAndHideTrains() {
     hideActiveTrain = !hideActiveTrain;
 
@@ -126,6 +136,10 @@ function ShowAndHideTrains() {
     }
 }
 
+function ShowToast() {
+    $('.toast').toast('show');
+}
+
 map.on('zoomend', function () {
     test = map.getZoom();
     console.log(test);
@@ -135,7 +149,3 @@ camera.on('click', function () {
     console.log("test");
     window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
 });
-
-function ShowToast() {
-    $('.toast').toast('show');
-}

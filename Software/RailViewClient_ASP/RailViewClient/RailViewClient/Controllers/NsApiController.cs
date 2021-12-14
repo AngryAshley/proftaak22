@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace RailViewClient.Controllers
 {
-    [ApiController]
     public class NsApiController : Controller
     {
         public IRestResponse Index(string requestUrl)

@@ -19,15 +19,15 @@ a.navbar-brand {
 
 #map {
     /*width: 700px;*/
-    height: calc(100vh - 110px);
+    height: calc(100vh - 170px);
 }
 
-.div-containers {
-    height: calc(100vh - 190px);
+.notifications {
+    height: calc(100vh - 250px);
 }
 
-#test {
-    width: 600px;
+.video-stream {
+    height: calc(100vh - 235px);
 }
 
 .btn-success {

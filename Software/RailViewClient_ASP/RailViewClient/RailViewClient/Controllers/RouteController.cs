@@ -21,7 +21,7 @@ namespace RailViewClient.Controllers
             NsApiController nsApiController = new NsApiController();
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-            IRestResponse response = nsApiController.Index("https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/spoorkaart");
+            IRestResponse response = nsApiController.Index(config["Api:Links:Route"]);
             trainRoute = JsonConvert.DeserializeObject<Route>(response.Content);
             Console.WriteLine(response.Content);
 

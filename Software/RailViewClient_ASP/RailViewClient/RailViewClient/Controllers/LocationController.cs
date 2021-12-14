@@ -18,7 +18,7 @@ namespace RailViewClient.Controllers
             NsApiController nsApiController = new NsApiController();
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-            IRestResponse response = nsApiController.Index("https://gateway.apiportal.ns.nl/virtual-train-api/api/vehicle");
+            IRestResponse response = nsApiController.Index(config["Api:Links:Trains"]);
             trainLocation = JsonConvert.DeserializeObject<Train>(response.Content);
             Console.WriteLine(response.Content);
 

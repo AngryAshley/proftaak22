@@ -12,10 +12,10 @@
         </div>*@
     @*<button type="button" class="btn btn-primary" id="liveToastBtn" onclick="ShowToast();">Show live toast</button>*@
 
-    <div class="row d-flex justify-content-md-around" id="rowtest">
-        <div class="col-4 div-containers" id="tester">
+    <div class="row d-flex justify-content-md-around">
+        <div class="col-3 notifications">
             <h4>Meldingen</h4>
-            <div id="log" class="border border-dark border-2 div-containers">
+            <div id="log" class="border border-dark border-2 notifications">
                 @foreach (var item in Model)
                 {
                     <div class="text-center border-top border-dark border-2">
@@ -31,15 +31,15 @@
             <input type="button" class="btn btn-success my-2" id="btntrain" value="Hide Active Trains" onclick="ShowAndHideTrains();" />
 
         </div>
-        <div class="col-8 map-style">
+        <div class="col-9 map-style">
             <div id="map" class="map-style"></div>
         </div>
     </div>
-    <div class="row d-flex">
-        <div id="toastplaceholder" class="d-flex">
-            <div class="toast float-right w-100" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+    <div class="row">
+        <div id="toastplaceholder" class="w-100 fixed-bottom">
+            <div class="toast float-right" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
                 <div class="toast-header">
-                    <strong class="mr-auto">PERSON DETECTED</strong>
+                    <strong class="mr-auto">PERSON DETECTED!</strong>
                     <small>11 mins ago</small>
                     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
