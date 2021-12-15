@@ -5,8 +5,9 @@
 var trainLocation = [];
 var trainMarker = [];
 var latlngs = [];
-var test;
+var currentZoomLevel;
 var hideActiveTrain = false;
+var predefined_val = null;
 
 var trainIcon = L.icon({
     iconUrl: 'images/train.png',
@@ -52,13 +53,45 @@ setInterval(function () {
 
 setInterval(function () {
     //Load Alerts and cams through database
-}, 1000);
+    $.ajax({
+        url: '/Alert/Index',
+        type: 'GET',
+        success: function (response) {
+            console.log(response);
+            var data = response;
 
-//On click functions
-function ShowPopUp() {
-    console.log("test");
-    window.open('/Home/Popup', "Live Feed", 'fullscreen="yes"');
-}
+            if (JSON.stringify(predefined_val) != JSON.stringify(data)) {
+                // window.location.href=window.location.href;
+                //Get the template
+                var template = $("#all-data-template").html();
+                //Render output with Mustache.js
+                var renderTemplate = Mustache.render(template, data);
+                //Append the data to the body
+                $("#log").append(renderTemplate);
+
+                // camAlert = data;
+                predefined_val = data;
+
+                // store alerts for check
+                //data.forEach(element => {
+                //    if (element['alert_checked'] == false && element['alert'] == 'person') {
+                //        cam_alerts[counter] = element;
+                //        counter++;
+                //    }
+                //});
+
+                //camAlerts(cam_alerts);
+            }
+
+            if (predefined_val == null) {
+                predefined_val = data;
+            }
+        },
+        error: function (error) {
+            console.log(error.responseText);
+        }
+    });
+}, 1000);
 
 //Load coords from route
 function LoadCoords() {
@@ -136,16 +169,19 @@ function ShowAndHideTrains() {
     }
 }
 
+function ShowPopUp() {
+    window.open('/Home/Popup', "Live Feed", 'fullscreen="yes"');
+}
 function ShowToast() {
     $('.toast').toast('show');
 }
 
 map.on('zoomend', function () {
-    test = map.getZoom();
-    console.log(test);
+    currentZoomLevel = map.getZoom();
+    console.log(currentZoomLevel);
 });
 
 camera.on('click', function () {
-    console.log("test");
     window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
+    LoadCoords();
 });

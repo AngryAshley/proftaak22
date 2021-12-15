@@ -1,55 +1,54 @@
-﻿@model List<Notification>
+﻿@*@model List<Notification>*@
 @{
     ViewData["Title"] = "Home Page";
 }
 
-@*<div class="container-fluid" id="containertest">blasdadwefererger*@
-    @*<div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>A PERSON DETECTED!</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>*@
-    @*<button type="button" class="btn btn-primary" id="liveToastBtn" onclick="ShowToast();">Show live toast</button>*@
-
-    <div class="row d-flex justify-content-md-around">
-        <div class="col-3 notifications">
-            <h4>Meldingen</h4>
-            <div id="log" class="border border-dark border-2 notifications">
-                @foreach (var item in Model)
+<div class="row d-flex justify-content-md-around">
+    <div class="col-3 notifications">
+        <h4>Meldingen</h4>
+        <div id="log" class="border border-dark border-2 notifications">
+            @*@foreach (var item in Model)
                 {
                     <div class="text-center border-top border-dark border-2">
                         <p class="px-2 pt-2 text-capitalize">
                             @item.Times<br />@item.Route<br /><b>@item.Alert</b>
                         </p>
                     </div>
-                }
-            </div>
-
-            <input type="button" class="btn btn-success my-2" id="btnpopup" value="Bel 112" onclick="ShowPopUp();" />
-            <input type="button" class="btn btn-success my-2" id="liveToastBtn" value="Test" onclick="ShowToast();"/>
-            <input type="button" class="btn btn-success my-2" id="btntrain" value="Hide Active Trains" onclick="ShowAndHideTrains();" />
-
+                }*@
         </div>
-        <div class="col-9 map-style">
-            <div id="map" class="map-style"></div>
+
+        <input type="button" class="btn btn-success my-2" id="btnpopup" value="Bel 112" onclick="ShowPopUp();" />
+        <input type="button" class="btn btn-success my-2" id="liveToastBtn" value="Test" onclick="ShowToast();" />
+        <input type="button" class="btn btn-success my-2" id="btntrain" value="Hide Active Trains" onclick="ShowAndHideTrains();" />
+    </div>
+    <div class="col-9 map-style">
+        <div id="map" class="map-style"></div>
+    </div>
+</div>
+<div class="row">
+    <div id="toastplaceholder" class="w-100 fixed-bottom">
+        <div class="toast float-right" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+            <div class="toast-header">
+                <strong class="mr-auto">PERSON DETECTED!</strong>
+                <small>11 mins ago</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">CAMERA 01: Ehv - Hmbv</div>
         </div>
     </div>
-    <div class="row">
-        <div id="toastplaceholder" class="w-100 fixed-bottom">
-            <div class="toast float-right" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
-                <div class="toast-header">
-                    <strong class="mr-auto">PERSON DETECTED!</strong>
-                    <small>11 mins ago</small>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="toast-body">CAMERA 01: Ehv - Hmbv</div>
-            </div>
-        </div>
+</div>
+
+<template id="all-data-template">
+    {{#.}}
+    <div class="text-center border-top border-dark border-2">
+        <p class="px-2 pt-2 text-capitalize">
+            {{Times}} <br /> {{Route}} <br /> <b>{{Alert}}</b>
+        </p>
     </div>
-@*</div>*@
+    {{/.}}
+</template>
 
 @section Css
 {
@@ -61,4 +60,5 @@
 {
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
 }
