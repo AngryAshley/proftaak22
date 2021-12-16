@@ -18,6 +18,7 @@ namespace RailData.Pages
 
         // Objects and variables
         public List<string> Databases = new List<string>();
+        public List<string> Status = new List<string>();
         string connectionString = "";
         
 
@@ -33,7 +34,7 @@ namespace RailData.Pages
                 _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
                 _connection.Open();
                 // log database
-                string sql = "SHOW DATABASES";
+                string sql = "SHOW DATABASES;";
                 cmd = new MySqlCommand(sql, _connection);
                 cmd.ExecuteNonQuery();
 
@@ -47,6 +48,8 @@ namespace RailData.Pages
                     }
                 }
                 _connection.Close();
+
+                GetMysqlStatus();
             }
         }
 
@@ -98,6 +101,27 @@ namespace RailData.Pages
         {
             HttpContext.Session.Remove("Loggedin");
             HttpContext.Session.Remove("connection");
+            _connection.Close();
+        }
+
+        private void GetMysqlStatus()
+        {
+            _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
+            _connection.Open();
+            // log database
+            string sql = "SHOW VARIABLES WHERE Variable_Name LIKE 'time_zone' OR Variable_Name LIKE 'version';";
+            cmd = new MySqlCommand(sql, _connection);
+            cmd.ExecuteNonQuery();
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    Status.Add(reader.GetString(i));
+                }
+            }
             _connection.Close();
         }
 
