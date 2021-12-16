@@ -12,16 +12,18 @@ using System.Web;
 
 namespace RailViewClient.Controllers
 {
+    [Route("Controllers/NsApiController")]
+    [ApiController]
     public class RouteController : Controller
     {
-
+        
         public IActionResult Index()
         {
             Route trainRoute = new Route();
             NsApiController nsApiController = new NsApiController();
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-            IRestResponse response = nsApiController.Index(config["Api:Links:Route"]);
+            IRestResponse response = nsApiController.GetData(config["Api:Links:Route"]);
             trainRoute = JsonConvert.DeserializeObject<Route>(response.Content);
             Console.WriteLine(response.Content);
 

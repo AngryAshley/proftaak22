@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace RailViewClient.Controllers
 {
+    [Route("Controllers/HomeController")]
+    [ApiController]
     public class NsApiController : Controller
     {
-        public IRestResponse Index(string requestUrl)
+        public IRestResponse GetData(string requestUrl)
         {
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 

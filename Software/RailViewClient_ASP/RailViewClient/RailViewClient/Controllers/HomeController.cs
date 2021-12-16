@@ -24,33 +24,6 @@ namespace RailViewClient.Controllers
 
         public IActionResult Index()
         {
-            //var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            ////var myValue = config["Database:ConnectionString"];
-            ////Console.WriteLine(myValue);
-
-            //List<Notification> notifications = new List<Notification>();
-
-            ////Connect to Mysql
-            //using (MySqlConnection con = new MySqlConnection(config["Database:ConnectionString"]))
-            //{
-            //    con.Open();
-            //    MySqlCommand cmd = new MySqlCommand(config["Database:Queries:GetAlert"], con);
-            //    MySqlDataReader reader = cmd.ExecuteReader();
-
-            //    while (reader.Read())
-            //    {
-            //        Notification notification = new Notification();
-            //        notification.Id = Convert.ToInt32(reader["id"]);
-            //        notification.Alert = reader["alert"].ToString();
-            //        notification.Route = reader["route"].ToString();
-            //        notification.Times = reader["times"].ToString();
-
-            //        notifications.Add(notification);
-            //    }
-            //    reader.Close();
-            //    con.Close();
-            //}
-
             return View();
         }
 

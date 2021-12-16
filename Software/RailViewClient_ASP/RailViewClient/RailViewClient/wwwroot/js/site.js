@@ -9,8 +9,18 @@ var currentZoomLevel;
 var hideActiveTrain = false;
 var predefined_val = null;
 
-var trainIcon = L.icon({
-    iconUrl: 'images/train.png',
+var intercityIcon = L.icon({
+    iconUrl: 'images/ic.png',
+    iconSize: [25, 25],
+});
+
+var sprinterIcon = L.icon({
+    iconUrl: 'images/spr.png',
+    iconSize: [25, 25],
+});
+
+var arrivaIcon = L.icon({
+    iconUrl: 'images/arr.png',
     iconSize: [25, 25],
 });
 
@@ -73,12 +83,14 @@ setInterval(function () {
                 predefined_val = data;
 
                 // store alerts for check
-                //data.forEach(element => {
-                //    if (element['alert_checked'] == false && element['alert'] == 'person') {
-                //        cam_alerts[counter] = element;
-                //        counter++;
-                //    }
-                //});
+                data.forEach(element => {
+                    if (element['Alert_Checked'] == false && element['Alert'] == 'person') {
+                        //cam_alerts[counter] = element;
+                        //counter++;
+                        notify("error", element["Id"]);
+                        console.log("test: " + element["Id"]);
+                    }
+                });
 
                 //camAlerts(cam_alerts);
             }
@@ -133,14 +145,19 @@ function LoadTrains() {
             trainLocation = [];
             trainMarker = [];
             console.log(response);
-            for (let i = 0; i < response.length; i += 2) {
-                trainLocation.push([response[i], response[i + 1]]);
+            for (let i = 0; i < response.length; i += 3) {
+                trainLocation.push([response[i], response[i + 1], response[i + 2]]);
             }
 
             console.log(trainLocation);
             if (!hideActiveTrain) {
                 for (let i = 0; i < trainLocation.length; i++) {
-                    trainMarker[i] = L.marker(trainLocation[i], { icon: trainIcon }).addTo(map);
+                    if (trainLocation[i][2] == "ARR")
+                        trainMarker[i] = L.marker(trainLocation[i], { icon: arrivaIcon }).addTo(map);
+                    else if (trainLocation[i][2] == "SPR")
+                        trainMarker[i] = L.marker(trainLocation[i], { icon: sprinterIcon }).addTo(map);
+                    else
+                        trainMarker[i] = L.marker(trainLocation[i], { icon: intercityIcon }).addTo(map);
                 }
             }
         },
@@ -164,7 +181,12 @@ function ShowAndHideTrains() {
         $("#btntrain").prop('value', 'Hide Active Trains');
         trainMarker = [];
         for (let i = 0; i < trainLocation.length; i++) {
-            trainMarker[i] = L.marker(trainLocation[i], { icon: trainIcon }).addTo(map);
+            if (trainLocation[i][2] == "ARR")
+                trainMarker[i] = L.marker(trainLocation[i], { icon: arrivaIcon }).addTo(map);
+            else if (trainLocation[i][2] == "SPR")
+                trainMarker[i] = L.marker(trainLocation[i], { icon: sprinterIcon }).addTo(map);
+            else
+                trainMarker[i] = L.marker(trainLocation[i], { icon: intercityIcon }).addTo(map);
         }
     }
 }
@@ -173,7 +195,8 @@ function ShowPopUp() {
     window.open('/Home/Popup', "Live Feed", 'fullscreen="yes"');
 }
 function ShowToast() {
-    $('.toast').toast('show');
+    //$('.toast').toast('show');
+    notify("error", "This is demo error notification message");
 }
 
 map.on('zoomend', function () {
@@ -182,6 +205,28 @@ map.on('zoomend', function () {
 });
 
 camera.on('click', function () {
-    window.open('/Home/Privacy', "Live Feed", 'fullscreen="yes"');
+    ShowPopUp();
+    //Delete later
     LoadCoords();
 });
+
+
+function notify(type, message) {
+    (() => {
+        let n = document.createElement("div");
+        let id = Math.random().toString(36).substr(2, 10);
+        n.setAttribute("id", id);
+        n.classList.add("notification", type);
+        n.innerText = message;
+        document.getElementById("notification-area").appendChild(n);
+        setTimeout(() => {
+            var notifications = document.getElementById("notification-area").getElementsByClassName("notification");
+            for (let i = 0; i < notifications.length; i++) {
+                if (notifications[i].getAttribute("id") == id) {
+                    notifications[i].remove();
+                    break;
+                }
+            }
+        }, 5000);
+    })();
+}

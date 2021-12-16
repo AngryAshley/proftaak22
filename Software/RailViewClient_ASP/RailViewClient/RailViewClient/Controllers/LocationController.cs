@@ -18,16 +18,17 @@ namespace RailViewClient.Controllers
             NsApiController nsApiController = new NsApiController();
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-            IRestResponse response = nsApiController.Index(config["Api:Links:Trains"]);
+            IRestResponse response = nsApiController.GetData(config["Api:Links:Trains"]);
             trainLocation = JsonConvert.DeserializeObject<Train>(response.Content);
             Console.WriteLine(response.Content);
 
-            List<double> coords = new List<double>();
+            List<string> coords = new List<string>();
 
             for (int i = 0; i < trainLocation.Payload.Treinen.Count; i++)
             {
-                coords.Add(trainLocation.Payload.Treinen[i].Lat);
-                coords.Add(trainLocation.Payload.Treinen[i].Lng);
+                coords.Add(trainLocation.Payload.Treinen[i].Lat.ToString());
+                coords.Add(trainLocation.Payload.Treinen[i].Lng.ToString());
+                coords.Add(trainLocation.Payload.Treinen[i].Type);
             }
 
             return Json(coords, new System.Text.Json.JsonSerializerOptions());
