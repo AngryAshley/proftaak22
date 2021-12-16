@@ -19,7 +19,10 @@ namespace RailData.Pages.Database
         public List<string> Databases = new List<string>();
         public List<string> TableStruct = new List<string>();
         public List<string> TableContents = new List<string>();
+        public List<string> Row = new List<string>();
+        public List<Array> FinalRow = new List<Array>();
         public int rowLength = 0;
+        public int colLength = 0;
         string newConnectionString = "";
 
         public void OnGet()
@@ -79,36 +82,30 @@ namespace RailData.Pages.Database
 
         public void ShowTable(string databaseName, string tableName)
         {
+            int z = 0;
+
+            _connection = new MySqlConnection(newConnectionString);
             _connection.Open();
 
             string sql = $"USE {databaseName}; select * from {tableName}";
             TempData["databaseName"] = databaseName;
             TempData["tableName"] = tableName;
 
-            //cmd = new MySqlCommand(sql, _connection);
-            //cmd.ExecuteNonQuery();
-
-            //MySqlDataReader tableReader = cmd.ExecuteReader();
-
             try
             {
-                MySqlDataAdapter adapter = new MySqlDataAdapter(sql, _connection);
-                DataTable data = new DataTable();
-                adapter.Fill(data);
+                cmd = new MySqlCommand(sql, _connection);
+                cmd.ExecuteNonQuery();
 
-                foreach (DataColumn column in data.Columns)
-                {
-                    TableStruct.Add(column.ToString());
+                MySqlDataReader databaseReader = cmd.ExecuteReader();
 
-                    foreach (DataRow row in data.Rows)
-                    {
-                        TableContents.Add(row[column].ToString());
-                    }
-                }
-
-                foreach (DataRow row in data.Rows)
+                while (databaseReader.Read())
                 {
                     rowLength += 1;
+
+                    for (int i = 0; i < databaseReader.FieldCount; i++)
+                    {
+                        TableContents.Add(databaseReader.GetString(i));
+                    }
                 }
 
             } catch (Exception ex)
@@ -119,18 +116,41 @@ namespace RailData.Pages.Database
                 _connection.Close();
             }
 
+            try
+            {
+                _connection.Open();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(sql, _connection);
+                DataTable data = new DataTable();
+                adapter.Fill(data);
 
+                foreach (DataColumn column in data.Columns)
+                {
+                    colLength += 1;
+                    TableStruct.Add(column.ToString());
+                }
 
-            //while (tableReader.Read())
-            //{
-            //    Console.WriteLine(tableReader["COLUMN_NAME"]);
-            //    for (int i = 0; i < tableReader.FieldCount; i++)
-            //    {
-            //        TableContents.Add(tableReader.GetString(i));
-            //    }
-            //}
-
-            //_connection.Close();
+                for (int i = 0; i < TableContents.Count; i++)
+                {
+                    if ((z % colLength) != (colLength - 1))
+                    {
+                        Row.Add(TableContents[i]);
+                    } else
+                    {
+                        Row.Add(TableContents[i]);
+                        FinalRow.Add(Row.ToArray());
+                        Row.Clear();
+                    }
+                    z++;
+                }
+            }
+            catch (Exception ex)
+            {
+                errorHandling.ErrorMessage = ex.ToString();
+            }
+            finally
+            {
+                _connection.Close();
+            }
         }
     }
 }
