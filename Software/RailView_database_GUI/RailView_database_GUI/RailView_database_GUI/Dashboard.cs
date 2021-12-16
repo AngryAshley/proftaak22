@@ -32,10 +32,5 @@ namespace RailView_database_GUI
             this.Hide();
             data.ShowDialog();
         }
-
-        public void RedirectDatabaseSelected(object sender)
-        {
-            DatabaseClicked(sender, EventArgs.Empty);
-        }
     }
 }

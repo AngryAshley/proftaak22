@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RailView_database_GUI
 {
     public partial class Data : Form
     {
-        ExecuteQuery executeQuery = new ExecuteQuery();
-        GridButton gridButton = new GridButton();
         Navigation navigation = new Navigation();
         Dashboard dashboard = null;
         public string CurrentTableName;
         public string AmountRowsNew;
         public string DatabaseName;
+        public string ConnectionString;
         bool IsDatabase;
 
         public Data(Dashboard c_dashboard)
@@ -30,12 +24,12 @@ namespace RailView_database_GUI
 
         private void Data_Load(object sender, EventArgs e)
         {
-            string connectionString = "Server=192.168.161.205;Port=3306;Database=" + dashboard.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
+            ConnectionString = "Server=192.168.161.205;Port=3306;Database=" + dashboard.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
+            ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
             string name;
             string sql;
             string tableName;
             bool countRows;
-            DataGridViewButtonColumn btn;
             DataGridViewTextBoxColumn clm;
 
             if (sender != null)
@@ -49,13 +43,13 @@ namespace RailView_database_GUI
                 }
             }
 
-
-            //If stetement en laat daarin zien wat er te zien moet zijn 
-            if(IsDatabase == true)
+            if (IsDatabase == true)
             {
+                txbTableAmount.Visible = true;
+                txbTableName.Visible = true;
                 lblTitle.Text = "Database: " + dashboard.DatabaseName;
 
-                if(IsDatabase == true)
+                if (IsDatabase == true)
                 {
                     name = "Tables";
                     clm = new DataGridViewTextBoxColumn();
@@ -69,20 +63,13 @@ namespace RailView_database_GUI
                     clm.HeaderText = name;
                     this.DgvFull.Columns.Add(clm);
 
-
-                    name = "Show";
-                    btn = gridButton.SetButton(name);
-                    this.DgvFull.Columns.Add(btn);
-
-                    name = "Delete";
-                    btn = gridButton.SetButton(name);
-                    this.DgvFull.Columns.Add(btn);
+                    AddGridButtons();
 
                 }
 
                 sql = "SHOW TABLES";
                 countRows = false;
-                List<string> dataTables = executeQuery.GetData(sql, countRows, connectionString);
+                List<string> dataTables = executeQuery.GetData(sql, countRows);
 
                 foreach (string item in dataTables)
                 {
@@ -90,17 +77,22 @@ namespace RailView_database_GUI
                     countRows = true;
                     sql = "SELECT * FROM " + tableName;
 
-                    List<string> dataAlerts = executeQuery.GetData(sql, countRows, connectionString);
+                    List<string> dataAlerts = executeQuery.GetData(sql, countRows);
                     DgvFull.Rows.Add(tableName, dataAlerts.Last().ToString());
                 }
             }
             else
             {
+                lblAddSomething.Text = "Add entity to " + CurrentTableName;
                 lblTitle.Text = "Table: " + CurrentTableName;
+
+                txbTableAmount.Visible = false;
+                txbTableName.Visible = false;
+
 
                 countRows = false;
                 sql = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + dashboard.DatabaseName + "' AND TABLE_NAME = '" + CurrentTableName + "' ORDER BY ORDINAL_POSITION ASC";
-                List<string> columns = executeQuery.GetData(sql, countRows, connectionString);
+                List<string> columns = executeQuery.GetData(sql, countRows);
 
 
                 int countColumns = 0;
@@ -113,17 +105,11 @@ namespace RailView_database_GUI
                     countColumns++;
                 }
 
-                name = "Show";
-                btn = gridButton.SetButton(name);
-                this.DgvFull.Columns.Add(btn);
-
-                name = "Delete";
-                btn = gridButton.SetButton(name);
-                this.DgvFull.Columns.Add(btn);
+                AddGridButtons();
 
                 countRows = false;
                 sql = "SELECT * FROM " + CurrentTableName;
-                List<string> dataAlerts = executeQuery.GetData(sql, countRows, connectionString);
+                List<string> dataAlerts = executeQuery.GetData(sql, countRows);
 
                 int i = 0;
 
@@ -148,39 +134,70 @@ namespace RailView_database_GUI
 
         }
 
+        private void AddGridButtons()
+        {
+            GridButton gridButtonShow = new GridButton("Show");
+            this.DgvFull.Columns.Add(gridButtonShow.SetButton());
+
+            GridButton gridButtonDelete = new GridButton("Delete");
+            this.DgvFull.Columns.Add(gridButtonDelete.SetButton());
+        }
+
         private void DgvFull_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
+
             int rowNumber = e.RowIndex;
-            DataGridViewRow selectedRow = DgvFull.Rows[rowNumber];
 
-            if (e.ColumnIndex == DgvFull.Columns["btnShow"].Index)
+            if(rowNumber >= 0)
             {
-                if(IsDatabase == true)
+                DataGridViewRow selectedRow = DgvFull.Rows[rowNumber];
+
+                if (e.ColumnIndex == DgvFull.Columns["btnShow"].Index)
                 {
-                    Console.WriteLine("Show button clicked = " + selectedRow.Cells["Tables"].Value);
-                    CurrentTableName = selectedRow.Cells["Tables"].Value.ToString();
-                    DatabaseName = dashboard.DatabaseName;
+                    if (IsDatabase == true)
+                    {
+                        CurrentTableName = selectedRow.Cells["Tables"].Value.ToString();
+                        DatabaseName = dashboard.DatabaseName;
 
-                    IsDatabase = false;
+                        IsDatabase = false;
 
-                    DgvFull.Rows.Clear();
-                    DgvFull.Columns.Clear();
-                    DgvFull.Refresh();
+                        DgvFull.Rows.Clear();
+                        DgvFull.Columns.Clear();
+                        DgvFull.Refresh();
 
-                    Data_Load(null, EventArgs.Empty);
+                        Data_Load(null, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Show button clicked = " + selectedRow.Cells[0].Value);
+                        //show/edit entity
+
+                    }
                 }
-                else
+
+                if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
                 {
-                    Console.WriteLine("Show button clicked = " + selectedRow.Cells[0].Value);
+                    if (IsDatabase == true)
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete table: " + selectedRow.Cells["Tables"].Value, "Sure?", MessageBoxButtons.OKCancel);
+                        if (dialogResult == DialogResult.OK)
+                        {
+                            string sql = "DROP TABLE " + selectedRow.Cells["Tables"].Value;
+                            executeQuery.SimpleExecute(sql);
+                        }
+                    }
+                    else
+                    {
+                        //delete entity
+                        Console.WriteLine("Delete button clicked = " + selectedRow.Cells[0].Value);
 
+
+                    }
                 }
-
             }
 
-            //if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
-            //{
-            //    Console.WriteLine("Delete button clicked = " + selectedRow.Cells["Tables"].Value);
-            //}
+            
         }
 
         public void lblClicked(object sender, EventArgs e)
@@ -194,6 +211,23 @@ namespace RailView_database_GUI
             IsDatabase = true;
 
             Data_Load(null, EventArgs.Empty);
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (IsDatabase == true)
+            {
+
+            }
+            else
+            {
+                //add entity to current table 
+                //open form with the entitys of the table
+                Console.WriteLine("add entity current table: " + CurrentTableName);
+
+                AddRowToTable addRowToTable = new AddRowToTable(this);
+                addRowToTable.ShowDialog();
+            }
         }
     }
 }

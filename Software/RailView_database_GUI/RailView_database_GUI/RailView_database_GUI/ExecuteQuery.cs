@@ -4,16 +4,23 @@ using MySql.Data.MySqlClient;
 
 namespace RailView_database_GUI
 {
-    class ExecuteQuery : Connection
+    class ExecuteQuery
     {
-        public List<string> GetData(string sql, bool countRows, string connectionString)
+        public MySqlConnection Conn { get; set; }
+
+        public ExecuteQuery(string connectionString)
         {
-            OpenConection(connectionString);
+            Conn = new MySqlConnection(connectionString);
+        }
+
+        public List<string> GetData(string sql, bool countRows)
+        {
+            Conn.Open();
 
             List<string> list = new List<string>();
             int amountOfRows = 0;
 
-            MySqlCommand command = new MySqlCommand(sql, conn);
+            MySqlCommand command = new MySqlCommand(sql, Conn);
             command.ExecuteNonQuery();
             MySqlDataReader data = command.ExecuteReader();
 
@@ -41,16 +48,16 @@ namespace RailView_database_GUI
 
             if (countRows == true) { list.Add(amountOfRows.ToString()); }
 
-            CloseConnection();
+            Conn.Close();
             return list;
         }
 
-        public void CreateTable(string sql, string connectionString)
+        public void SimpleExecute(string sql)
         {
-            OpenConection(connectionString);
-            MySqlCommand command = new MySqlCommand(sql, conn);
+            Conn.Open();
+            MySqlCommand command = new MySqlCommand(sql, Conn);
             command.ExecuteNonQuery();
-            CloseConnection();
+            Conn.Close();
         }
     }
 }

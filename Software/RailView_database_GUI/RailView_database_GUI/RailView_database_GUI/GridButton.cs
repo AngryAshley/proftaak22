@@ -15,12 +15,12 @@ namespace RailView_database_GUI
             ButtonName = buttonName;
         }
 
-        public DataGridViewButtonColumn SetButton(string name)
+        public DataGridViewButtonColumn SetButton()
         {
             DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
-            btn.Name = "btn" + name;
-            btn.HeaderText = name;
-            btn.Text = name;
+            btn.Name = "btn" + ButtonName;
+            btn.HeaderText = ButtonName;
+            btn.Text = ButtonName;
             btn.UseColumnTextForButtonValue = true;
 
             return btn;

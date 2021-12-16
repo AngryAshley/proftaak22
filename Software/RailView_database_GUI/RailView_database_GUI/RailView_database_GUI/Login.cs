@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace RailView_database_GUI
 {
     public partial class Login : Form
     {
-        Connection conn = new Connection();
         public Login()
         {
             InitializeComponent();
@@ -23,18 +23,18 @@ namespace RailView_database_GUI
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=" + txbUsername.Text + ";Pwd=" + txbPassword.Text + ";Convert Zero Datetime=true;";
+            MySqlConnection conn = new MySqlConnection(connectionString);
 
             try
             {
-                conn.OpenConection(connectionString);
-
+                conn.Open();
                 Dashboard dahsboard = new Dashboard();
                 this.Hide();
                 dahsboard.ShowDialog();
-                conn.CloseConnection();
+                conn.Close();
 
             }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
+            catch (MySqlException ex)
             {
                 switch (ex.Number)
                 {

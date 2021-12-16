@@ -89,7 +89,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connection.cs" />
+    <Compile Include="AddRowToTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddRowToTable.Designer.cs">
+      <DependentUpon>AddRowToTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="CreateTableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,12 +113,6 @@
     <Compile Include="Data.Designer.cs">
       <DependentUpon>Data.cs</DependentUpon>
     </Compile>
-    <Compile Include="DatabaseSelected.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DatabaseSelected.Designer.cs">
-      <DependentUpon>DatabaseSelected.cs</DependentUpon>
-    </Compile>
     <Compile Include="ExecuteQuery.cs" />
     <Compile Include="GridButton.cs" />
     <Compile Include="Login.cs">
@@ -125,12 +124,9 @@
     <Compile Include="Navigation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TableSelected.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TableSelected.Designer.cs">
-      <DependentUpon>TableSelected.cs</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="AddRowToTable.resx">
+      <DependentUpon>AddRowToTable.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CreateTableForm.resx">
       <DependentUpon>CreateTableForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -139,9 +135,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Data.resx">
       <DependentUpon>Data.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DatabaseSelected.resx">
-      <DependentUpon>DatabaseSelected.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -155,9 +148,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="TableSelected.resx">
-      <DependentUpon>TableSelected.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

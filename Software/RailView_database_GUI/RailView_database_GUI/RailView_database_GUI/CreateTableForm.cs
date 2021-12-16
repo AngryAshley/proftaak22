@@ -6,15 +6,14 @@ namespace RailView_database_GUI
 {
     public partial class CreateTableForm : Form
     {
-        DatabaseSelected databaseSelected = null;
 
-        public CreateTableForm(DatabaseSelected c_databaseSelected)
+        public CreateTableForm()
         {
             InitializeComponent();
 
-            databaseSelected = c_databaseSelected;
+            //databaseSelected = c_databaseSelected;
 
-            lblTitle.Text = databaseSelected.NewTableName;
+            //lblTitle.Text = databaseSelected.NewTableName;
 
             int txbNameLocationX = 40;
             int cobTypeLocationX = 150;
@@ -23,15 +22,15 @@ namespace RailView_database_GUI
             int btnLocationX = 40;
             int locationY = 80;
 
-            for (int i = 0; i < Convert.ToInt32(databaseSelected.AmountRowsNew); i++)
-            {
-                //AddTextBox(numbers[i], "Name", txbNameLocationX, locationY);
-                //AddComboBox(numbers[i], "Type", cobTypeLocationX, locationY);
-                //AddTextBox(numbers[i], "Lenght", txbLengthLocationX, locationY);
-                //AddComboBox(numbers[i], "Default", cobDefaultLocationX, locationY);
+            //for (int i = 0; i < Convert.ToInt32(databaseSelected.AmountRowsNew); i++)
+            //{
+            //    //AddTextBox(numbers[i], "Name", txbNameLocationX, locationY);
+            //    //AddComboBox(numbers[i], "Type", cobTypeLocationX, locationY);
+            //    //AddTextBox(numbers[i], "Lenght", txbLengthLocationX, locationY);
+            //    //AddComboBox(numbers[i], "Default", cobDefaultLocationX, locationY);
 
-                locationY = locationY + 25;
-            }
+            //    locationY = locationY + 25;
+            //}
 
             // SetButton --> Deze maakt dus de Tabel aan met de SQL Query
             AddButton(btnLocationX, locationY);
