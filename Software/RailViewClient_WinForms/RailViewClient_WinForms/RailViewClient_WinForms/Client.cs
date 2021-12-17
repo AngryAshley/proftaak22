@@ -500,15 +500,22 @@ namespace RailViewClient_WinForms
 
         private void button9_Click(object sender, EventArgs e)
         {
-            listBox1.DataSource = null;
-            alertList.Add("Test:\n" + DateTime.Now + "\n" + "Eindhoven naar Tilburg\n" + "0 person");
-            alertPerson = true;
-            refreshAlerts = false;
-            SQLrequest();
-            //alertPopUp();
-            refreshAlerts = true;
+            using (MySqlConnection con = new MySqlConnection("Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;"))
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO alerts(id, cam_id, alert, location_x, location_y, route, alert_checked) VALUES(20, 4, 'person', 12, 12, 'test', 0);", con);
+                cmd.ExecuteNonQuery();
+            }
 
-        }
+                //string test = DateTime.Now + "\n" + "Test naar test\n" + "0 person";
+                //listBox1.DataSource = null;
+                //refreshAlerts = false;
+                //SQLrequest();
+                //alertList.Add(test);
+                //alertPerson = true;                   
+                ////alertPopUp();
+                //refreshAlerts = true;
+            }
 
         private void button10_Click(object sender, EventArgs e)
         {
