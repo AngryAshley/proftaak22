@@ -24,6 +24,12 @@ namespace RailView_database_GUI
 
         private void Data_Load(object sender, EventArgs e)
         {
+            bool noButtons = false;
+            if(dashboard.DatabaseName == "information_schema" || dashboard.DatabaseName == "sys" || dashboard.DatabaseName == "performance_schema")
+            {
+                noButtons = true;
+            }
+
             ConnectionString = "Server=192.168.161.205;Port=3306;Database=" + dashboard.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
             ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
             string name;
@@ -49,22 +55,21 @@ namespace RailView_database_GUI
                 txbTableName.Visible = true;
                 lblTitle.Text = "Database: " + dashboard.DatabaseName;
 
-                if (IsDatabase == true)
+                name = "Tables";
+                clm = new DataGridViewTextBoxColumn();
+                clm.Name = name;
+                clm.HeaderText = name;
+                this.DgvFull.Columns.Add(clm);
+
+                name = "Rows";
+                clm = new DataGridViewTextBoxColumn();
+                clm.Name = name;
+                clm.HeaderText = name;
+                this.DgvFull.Columns.Add(clm);
+
+                if(noButtons == false)
                 {
-                    name = "Tables";
-                    clm = new DataGridViewTextBoxColumn();
-                    clm.Name = name;
-                    clm.HeaderText = name;
-                    this.DgvFull.Columns.Add(clm);
-
-                    name = "Rows";
-                    clm = new DataGridViewTextBoxColumn();
-                    clm.Name = name;
-                    clm.HeaderText = name;
-                    this.DgvFull.Columns.Add(clm);
-
                     AddGridButtons();
-
                 }
 
                 sql = "SHOW TABLES";
@@ -105,7 +110,10 @@ namespace RailView_database_GUI
                     countColumns++;
                 }
 
-                AddGridButtons();
+                if (noButtons == false)
+                {
+                    AddGridButtons();
+                }
 
                 countRows = false;
                 sql = "SELECT * FROM " + CurrentTableName;
@@ -162,11 +170,7 @@ namespace RailView_database_GUI
 
                         IsDatabase = false;
 
-                        DgvFull.Rows.Clear();
-                        DgvFull.Columns.Clear();
-                        DgvFull.Refresh();
-
-                        Data_Load(null, EventArgs.Empty);
+                        RefreshFrom();
                     }
                     else
                     {
@@ -185,30 +189,39 @@ namespace RailView_database_GUI
                         {
                             string sql = "DROP TABLE " + selectedRow.Cells["Tables"].Value;
                             executeQuery.SimpleExecute(sql);
+                            RefreshFrom();
                         }
                     }
                     else
                     {
-                        //delete entity
-                        Console.WriteLine("Delete button clicked = " + selectedRow.Cells[0].Value);
+                        // Get the name id from table
+                        DataGridViewColumn topRow = DgvFull.Columns[0];
+                        string sql = "DELETE FROM " + CurrentTableName + " WHERE " + topRow.HeaderText + " = " + selectedRow.Cells[0].Value + ";";
 
-
+                        DialogResult dialogResult = MessageBox.Show("Do you really want to execute: " + sql, "Confirm", MessageBoxButtons.OKCancel);
+                        if (dialogResult == DialogResult.OK)
+                        {
+                            executeQuery.SimpleExecute(sql);
+                            RefreshFrom();
+                        }
                     }
                 }
             }
-
-            
         }
 
         public void lblClicked(object sender, EventArgs e)
         {
             dashboard.DatabaseName = (sender as Label).Text;
 
+            IsDatabase = true;
+            RefreshFrom();
+        }
+
+        public void RefreshFrom()
+        {
             DgvFull.Rows.Clear();
             DgvFull.Columns.Clear();
             DgvFull.Refresh();
-
-            IsDatabase = true;
 
             Data_Load(null, EventArgs.Empty);
         }
