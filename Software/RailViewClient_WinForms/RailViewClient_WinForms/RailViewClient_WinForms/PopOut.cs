@@ -30,5 +30,11 @@ namespace RailViewClient_WinForms
             var url = "https://www.youtube.com/embed/FfEJhEVcK4Q?rel=0&autoplay=1;showinfo=0";
             this.webBrowser1.DocumentText = string.Format(embed, url);
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+
+        }
     }
 }
