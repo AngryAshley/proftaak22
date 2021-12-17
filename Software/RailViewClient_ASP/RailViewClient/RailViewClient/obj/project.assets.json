@@ -912,19 +912,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ben\\.nuget\\packages\\": {}
+    "C:\\Users\\bende\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj",
+      "projectUniqueName": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj",
       "projectName": "RailViewClient",
-      "projectPath": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj",
-      "packagesPath": "C:\\Users\\Ben\\.nuget\\packages\\",
-      "outputPath": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\obj\\",
+      "projectPath": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\RailViewClient.csproj",
+      "packagesPath": "C:\\Users\\bende\\.nuget\\packages\\",
+      "outputPath": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewClient_ASP\\RailViewClient\\RailViewClient\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Ben\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\bende\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -973,6 +973,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.10, 3.1.10]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[3.1.22, 3.1.22]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[3.1.0, 3.1.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[3.1.0, 3.1.0]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -981,7 +999,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }
