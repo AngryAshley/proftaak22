@@ -18,12 +18,10 @@ namespace RailData.Pages.Database
         // Objects and variables
         public List<string> Databases = new List<string>();
         public List<string> TableStruct = new List<string>();
-        public List<string> TableContents = new List<string>();
-        public List<string> Row = new List<string>();
-        public List<Array> FinalRow = new List<Array>();
-        public int rowLength = 0;
-        public int colLength = 0;
+        public List<Array> TableRecords = new List<Array>();
+        public List<Array> TableValues = new List<Array>();
         string newConnectionString = "";
+        string tableStructure = "";
 
         public void OnGet()
         {
@@ -38,6 +36,7 @@ namespace RailData.Pages.Database
                     SelectDatabases();
 
                     ShowTable(getDatabaseName, getTableName);
+                    AddEntry(getDatabaseName, getTableName);
                 }
                 catch (MySqlException ex)
                 {
@@ -58,7 +57,31 @@ namespace RailData.Pages.Database
             }
         }
 
-        public void SelectDatabases()
+        public void OnPost()
+        {
+            if (HttpContext.Session.GetString("Loggedin") != null && HttpContext.Session.GetString("connection") != null)
+            {
+                GetTableStructure();
+
+                string values = "";
+
+                try
+                {
+                    // namen ophalen en op volgorde zetten
+                    string sql = $"INSERT INTO {Request.Query["tableName"]} ({tableStructure}) VALUES ({values})";
+                }
+                catch (Exception ex)
+                {
+                    errorHandling.ErrorMessage = ex.ToString();
+                }
+                finally
+                {
+                    _connection.Close();
+                }
+            }
+        }
+
+        private void SelectDatabases()
         {
             _connection = new MySqlConnection(newConnectionString);
             _connection.Open();
@@ -80,16 +103,20 @@ namespace RailData.Pages.Database
             _connection.Close();
         }
 
-        public void ShowTable(string databaseName, string tableName)
+        private void ShowTable(string databaseName, string tableName)
         {
-            int z = 0;
-
             _connection = new MySqlConnection(newConnectionString);
             _connection.Open();
 
             string sql = $"USE {databaseName}; select * from {tableName}";
             TempData["databaseName"] = databaseName;
             TempData["tableName"] = tableName;
+
+            List<string> TableContents = new List<string>();
+            List<string> Row = new List<string>();
+            int z = 0;
+            int rowLength = 0;
+            int colLength = 0;
 
             try
             {
@@ -108,10 +135,12 @@ namespace RailData.Pages.Database
                     }
                 }
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 errorHandling.ErrorMessage = ex.ToString();
-            } finally
+            }
+            finally
             {
                 _connection.Close();
             }
@@ -134,14 +163,120 @@ namespace RailData.Pages.Database
                     if ((z % colLength) != (colLength - 1))
                     {
                         Row.Add(TableContents[i]);
-                    } else
+                    }
+                    else
                     {
                         Row.Add(TableContents[i]);
-                        FinalRow.Add(Row.ToArray());
+                        TableRecords.Add(Row.ToArray());
                         Row.Clear();
                     }
                     z++;
                 }
+            }
+            catch (Exception ex)
+            {
+                errorHandling.ErrorMessage = ex.ToString();
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        private void AddEntry(string databaseName, string tableName)
+        {
+            _connection = new MySqlConnection(newConnectionString);
+            _connection.Open();
+
+            string sql = $"SELECT COLUMN_NAME, COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{databaseName}' AND TABLE_NAME='{tableName}' ORDER BY ORDINAL_POSITION ASC;";
+
+            List<string> TableContents = new List<string>();
+            List<string> Row = new List<string>();
+            int z = 0;
+            int rowLength = 0;
+            int colLength = 0;
+
+            try
+            {
+                cmd = new MySqlCommand(sql, _connection);
+                cmd.ExecuteNonQuery();
+
+                MySqlDataReader databaseReader = cmd.ExecuteReader();
+
+                while (databaseReader.Read())
+                {
+                    rowLength += 1;
+
+                    for (int i = 0; i < databaseReader.FieldCount; i++)
+                    {
+                        TableContents.Add(databaseReader.GetString(i));
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errorHandling.ErrorMessage = ex.ToString();
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            try
+            {
+                _connection.Open();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(sql, _connection);
+                DataTable data = new DataTable();
+                adapter.Fill(data);
+
+                foreach (DataColumn column in data.Columns)
+                {
+                    colLength += 1;
+                }
+
+                for (int i = 0; i < TableContents.Count; i++)
+                {
+                    if ((z % colLength) != (colLength - 1))
+                    {
+                        Row.Add(TableContents[i]);
+                    }
+                    else
+                    {
+                        Row.Add(TableContents[i]);
+                        TableValues.Add(Row.ToArray());
+                        Row.Clear();
+                    }
+                    z++;
+                }
+            }
+            catch (Exception ex)
+            {
+                errorHandling.ErrorMessage = ex.ToString();
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        private void GetTableStructure()
+        {
+            try
+            {
+                string sql = $"select * from {Request.Query["tableName"]};";
+
+                _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
+                _connection.Open();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(sql, _connection);
+                DataTable data = new DataTable();
+                adapter.Fill(data);
+
+                foreach (DataColumn column in data.Columns)
+                {
+                    tableStructure += column.ToString() + ", ";
+                }
+                Console.WriteLine(tableStructure);
             }
             catch (Exception ex)
             {

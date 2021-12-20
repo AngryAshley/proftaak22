@@ -5,6 +5,7 @@
 }
 
 .sidenav {
+    background-color: white;
     height: 100%;
     width: 190px;
     position: fixed;
@@ -29,6 +30,10 @@
 
 .main {
     margin-left: 190px; /* Same as the width of the sidebar */
+}
+
+.modal-dialog {
+    max-width: 85%!important;
 }
 
 .footer {
