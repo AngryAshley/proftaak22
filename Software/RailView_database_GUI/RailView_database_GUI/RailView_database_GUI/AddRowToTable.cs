@@ -92,7 +92,7 @@ namespace RailView_database_GUI
                     }
 
                     column = 1;
-                    positionY = positionY + 35;
+                    positionY = positionY +25;
                 }
             }
         }

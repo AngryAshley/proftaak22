@@ -21,7 +21,6 @@ namespace RailView_database_GUI
             string sql = "SHOW DATABASES";
             List<string> tables = executeQuery.GetData(sql, countRows);
 
-
             for (int i = 0; i < tables.Count(); i++)
             {
                 string name = tables[i].ToString();

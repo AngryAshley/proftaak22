@@ -36,15 +36,7 @@ namespace RailView_database_GUI
             }
             catch (MySqlException ex)
             {
-                switch (ex.Number)
-                {
-                    case 0:
-                        MessageBox.Show("Cannot connect to server");
-                        break;
-                    case 1045:
-                        MessageBox.Show("invalid username/password");
-                        break;
-                }
+                MessageBox.Show("#" + ex.Number.ToString() + ": " + ex.Message, "Error", MessageBoxButtons.OK);
             }
         }
     }

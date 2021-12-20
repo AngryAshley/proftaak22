@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 namespace RailView_database_GUI
 {
@@ -15,49 +16,64 @@ namespace RailView_database_GUI
 
         public List<string> GetData(string sql, bool countRows)
         {
-            Conn.Open();
-
             List<string> list = new List<string>();
             int amountOfRows = 0;
 
-            MySqlCommand command = new MySqlCommand(sql, Conn);
-            command.ExecuteNonQuery();
-            MySqlDataReader data = command.ExecuteReader();
-
-            while (data.Read())
+            try
             {
-                if (countRows == true) 
-                { 
-                    amountOfRows++; 
-                }
-                else
+                Conn.Open();
+                MySqlCommand command = new MySqlCommand(sql, Conn);
+                command.ExecuteNonQuery();
+                MySqlDataReader data = command.ExecuteReader();
+
+                while (data.Read())
                 {
-                    for (int i = 0; i < data.FieldCount; i++)
+                    if (countRows == true)
                     {
-                        if (data.IsDBNull(i) == false)
+                        amountOfRows++;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < data.FieldCount; i++)
                         {
-                            list.Add(data.GetString(i));
-                        }
-                        else
-                        {
-                            list.Add("NULL");
+                            if (data.IsDBNull(i) == false)
+                            {
+                                list.Add(data.GetString(i));
+                            }
+                            else
+                            {
+                                list.Add("NULL");
+                            }
                         }
                     }
                 }
+
+                if (countRows == true) { list.Add(amountOfRows.ToString()); }
+
+                Conn.Close();
+            } 
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("#" + ex.Number.ToString() + ": " + ex.Message, "Error", MessageBoxButtons.OK);
             }
 
-            if (countRows == true) { list.Add(amountOfRows.ToString()); }
-
-            Conn.Close();
             return list;
         }
 
         public void SimpleExecute(string sql)
         {
-            Conn.Open();
-            MySqlCommand command = new MySqlCommand(sql, Conn);
-            command.ExecuteNonQuery();
-            Conn.Close();
+            try 
+            { 
+                Conn.Open();
+                MySqlCommand command = new MySqlCommand(sql, Conn);
+                command.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("#" + ex.Number.ToString() + ": " + ex.Message, "Error", MessageBoxButtons.OK);
+            }
+           
         }
     }
 }
