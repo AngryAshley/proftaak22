@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj": {}
+    "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj": {}
   },
   "projects": {
-    "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj": {
+    "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj",
+        "projectUniqueName": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj",
         "projectName": "RailViewApi",
-        "projectPath": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj",
-        "packagesPath": "C:\\Users\\bende\\.nuget\\packages\\",
-        "outputPath": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\obj\\",
+        "projectPath": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj",
+        "packagesPath": "C:\\Users\\Ben\\.nuget\\packages\\",
+        "outputPath": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\bende\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ben\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -48,13 +52,25 @@
               "target": "Package",
               "version": "[6.0.1, )"
             },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
               "version": "[6.0.1, )"
             },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[6.0.1, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
