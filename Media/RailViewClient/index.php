@@ -25,7 +25,7 @@
     {{#.}}
     <div class="text-center border-top border-dark border-2">
         <p class="px-2 pt-2 text-capitalize">
-            {{Times}} <br /> {{Route}} <br /> <b>{{Alert}}</b>
+            {{times}} <br /> {{route}} <br /> <b>{{alert1}}</b>
         </p>
     </div>
     {{/.}}

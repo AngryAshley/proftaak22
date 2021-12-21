@@ -61,8 +61,13 @@ setInterval(function () {
 setInterval(function () {
     //Load Alerts and cams through database
     $.ajax({
-        url: '/Alert/Index',
+        url: 'http://127.0.0.1:5256/api/alerts',
         type: 'GET',
+        dataType: "json",
+        // headers:{
+        //     "Access-Control-Allow-Origin": "http://127.0.0.1:5256/api/alerts",
+        //     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+        // },
         success: function (response) {
             console.log(response);
             var data = response;
@@ -132,8 +137,17 @@ function LoadCoords() {
 
 function LoadTrains() {
     $.ajax({
-        url: '/Location/Index',
+        url: 'https://gateway.apiportal.ns.nl/virtual-train-api/api/vehicle',
         type: 'GET',
+        dataType: "json",
+        contentType:'application/json',
+        // headers:{
+        //     'Access-Control-Allow-Origin':'*'
+        // },
+        beforeSend: function(xhrObj){
+            // Request headers
+            xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","c4f11ff5e4ea4e13981610420db4a3b1");
+        },
         success: function (response) {
             for (let i = 0; i < trainLocation.length; i++) {
                 map.removeLayer(trainMarker[i]);
@@ -160,7 +174,7 @@ function LoadTrains() {
         },
         error: function (error) {
             $(this).remove();
-            console.log(error.responseText);
+            console.log(error);
         }
     });
 }

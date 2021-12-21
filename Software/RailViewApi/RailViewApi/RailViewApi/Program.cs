@@ -9,7 +9,25 @@ builder.Services.AddDbContext<RailViewContext>(o =>
     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.23-mysql"));
 
 });
+
+//Origins need to be changed in the future!
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins,
+        builder =>
+        {
+            builder.WithOrigins("http://localhost",
+                                "http://127.0.0.1")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
+
+//Use CORS policy
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapGet("/", () => "Hello World!");
 
