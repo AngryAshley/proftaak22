@@ -43,7 +43,7 @@ namespace RailView_database_GUI
             this.txbTableName = new System.Windows.Forms.TextBox();
             this.txbTableAmount = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lblBorderForm = new System.Windows.Forms.Label();
             this.lblAddSomething = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DgvFull)).BeginInit();
@@ -194,16 +194,16 @@ namespace RailView_database_GUI
             this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // label7
+            // lblBorderForm
             // 
-            this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.Transparent;
-            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label7.Location = new System.Drawing.Point(247, 670);
-            this.label7.Name = "label7";
-            this.label7.Padding = new System.Windows.Forms.Padding(0, 120, 280, 0);
-            this.label7.Size = new System.Drawing.Size(282, 135);
-            this.label7.TabIndex = 48;
+            this.lblBorderForm.AutoSize = true;
+            this.lblBorderForm.BackColor = System.Drawing.Color.Transparent;
+            this.lblBorderForm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblBorderForm.Location = new System.Drawing.Point(247, 670);
+            this.lblBorderForm.Name = "lblBorderForm";
+            this.lblBorderForm.Padding = new System.Windows.Forms.Padding(0, 120, 280, 0);
+            this.lblBorderForm.Size = new System.Drawing.Size(282, 135);
+            this.lblBorderForm.TabIndex = 48;
             // 
             // lblAddSomething
             // 
@@ -235,7 +235,7 @@ namespace RailView_database_GUI
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblSQL);
             this.Controls.Add(this.DgvFull);
-            this.Controls.Add(this.label7);
+            this.Controls.Add(this.lblBorderForm);
             this.Name = "Data";
             this.Text = "Data";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -262,7 +262,7 @@ namespace RailView_database_GUI
         private System.Windows.Forms.TextBox txbTableName;
         private System.Windows.Forms.TextBox txbTableAmount;
         private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblBorderForm;
         private System.Windows.Forms.Label lblAddSomething;
     }
 }

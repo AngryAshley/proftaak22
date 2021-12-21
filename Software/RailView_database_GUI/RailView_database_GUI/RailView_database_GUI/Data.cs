@@ -24,10 +24,10 @@ namespace RailView_database_GUI
 
         private void Data_Load(object sender, EventArgs e)
         {
-            bool noButtons = false;
+            bool databaseIsGenerated = false;
             if(dashboard.DatabaseName == "information_schema" || dashboard.DatabaseName == "sys" || dashboard.DatabaseName == "performance_schema")
             {
-                noButtons = true;
+                databaseIsGenerated = true;
             }
 
             ConnectionString = "Server=192.168.161.205;Port=3306;Database=" + dashboard.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
@@ -51,9 +51,8 @@ namespace RailView_database_GUI
 
             if (IsDatabase == true)
             {
-                txbTableAmount.Visible = true;
-                txbTableName.Visible = true;
                 lblTitle.Text = "Database: " + dashboard.DatabaseName;
+                lblAddSomething.Text = "Add table to " + dashboard.DatabaseName;
 
                 name = "Tables";
                 clm = new DataGridViewTextBoxColumn();
@@ -67,9 +66,20 @@ namespace RailView_database_GUI
                 clm.HeaderText = name;
                 this.DgvFull.Columns.Add(clm);
 
-                if(noButtons == false)
+                if(databaseIsGenerated == true)
+                {
+                    GridButton gridButtonShow = new GridButton("Show");
+                    this.DgvFull.Columns.Add(gridButtonShow.SetButton());
+                    MakeFormInvisable();
+                }
+                else
                 {
                     AddGridButtons();
+                    txbTableAmount.Visible = true;
+                    txbTableName.Visible = true;
+                    lblAddSomething.Visible = true;
+                    lblBorderForm.Visible = true;
+                    btnAdd.Visible = true;
                 }
 
                 sql = "SHOW TABLES";
@@ -110,9 +120,16 @@ namespace RailView_database_GUI
                     countColumns++;
                 }
 
-                if (noButtons == false)
+                if (databaseIsGenerated == true)
+                {
+                    MakeFormInvisable();
+                }
+                else
                 {
                     AddGridButtons();
+                    lblAddSomething.Visible = true;
+                    lblBorderForm.Visible = true;
+                    btnAdd.Visible = true;
                 }
 
                 countRows = false;
@@ -140,6 +157,15 @@ namespace RailView_database_GUI
                 }
             }
 
+        }
+
+        private void MakeFormInvisable()
+        {
+            txbTableAmount.Visible = false;
+            txbTableName.Visible = false;
+            lblAddSomething.Visible = false;
+            lblBorderForm.Visible = false;
+            btnAdd.Visible = false;
         }
 
         private void AddGridButtons()
@@ -179,8 +205,7 @@ namespace RailView_database_GUI
 
                     }
                 }
-
-                if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
+                else if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
                 {
                     if (IsDatabase == true)
                     {

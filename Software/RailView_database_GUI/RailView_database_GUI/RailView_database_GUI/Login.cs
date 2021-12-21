@@ -18,6 +18,8 @@ namespace RailView_database_GUI
             btnLogin.TabStop = false;
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.FlatAppearance.BorderSize = 0;
+            txbPassword.KeyDown += new KeyEventHandler(tb_KeyDown);
+            txbUsername.KeyDown += new KeyEventHandler(tb_KeyDown);
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -37,6 +39,15 @@ namespace RailView_database_GUI
             catch (MySqlException ex)
             {
                 MessageBox.Show("#" + ex.Number.ToString() + ": " + ex.Message, "Error", MessageBoxButtons.OK);
+            }
+        }
+
+
+        private void tb_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnLogin_Click(sender, e);
             }
         }
     }
