@@ -5,6 +5,7 @@ var latlngs = [];
 var currentZoomLevel;
 var hideActiveTrain = false;
 var predefined_val = null;
+//var proxy = 'https://cors-anywhere.herokuapp.com/';
 
 var intercityIcon = L.icon({
     iconUrl: 'images/ic.png',
@@ -141,6 +142,7 @@ function LoadTrains() {
         type: 'GET',
         dataType: "json",
         contentType:'application/json',
+        // Origin: "http://normal-website.com/example/",
         // headers:{
         //     'Access-Control-Allow-Origin':'*'
         // },

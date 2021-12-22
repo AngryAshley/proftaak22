@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ByM0U6zvrjR1DO7QFZDOEt7DMAvOApgJwLrsOzLGwWLGTPTnU+Dkw9h9NX0hGO/mq3wNczTiAibNHMQ8sUzNRg==",
+  "dgSpecHash": "vfMaXVUHu3Pxi+kVMW1gXiBIWUhgW8skJyrcmZsgNbZsav56A+MMCm6ma15ka4yqjfCxBZxTpQlzk9bRhLlkQA==",
   "success": true,
   "projectFilePath": "D:\\School\\Fontys\\TalkToMeProftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj",
   "expectedPackageFiles": [
@@ -25,7 +25,9 @@
     "C:\\Users\\Ben\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\Ben\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\Ben\\.nuget\\packages\\mysqlconnector\\2.0.0\\mysqlconnector.2.0.0.nupkg.sha512",
+    "C:\\Users\\Ben\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Ben\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\6.0.0\\pomelo.entityframeworkcore.mysql.6.0.0.nupkg.sha512",
+    "C:\\Users\\Ben\\.nuget\\packages\\restsharp\\106.15.0\\restsharp.106.15.0.nupkg.sha512",
     "C:\\Users\\Ben\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "C:\\Users\\Ben\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "C:\\Users\\Ben\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",

@@ -66,3 +66,5 @@ D:\School\Fontys\TalkToMeProftaak22\Software\RailViewApi\RailViewApi\RailViewApi
 D:\School\Fontys\TalkToMeProftaak22\Software\RailViewApi\RailViewApi\RailViewApi\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
 D:\School\Fontys\TalkToMeProftaak22\Software\RailViewApi\RailViewApi\RailViewApi\bin\Debug\net6.0\MySqlConnector.dll
 D:\School\Fontys\TalkToMeProftaak22\Software\RailViewApi\RailViewApi\RailViewApi\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\School\Fontys\TalkToMeProftaak22\Software\RailViewApi\RailViewApi\RailViewApi\bin\Debug\net6.0\RestSharp.dll
+D:\School\Fontys\TalkToMeProftaak22\Software\RailViewApi\RailViewApi\RailViewApi\bin\Debug\net6.0\Newtonsoft.Json.dll

@@ -11,8 +11,7 @@ namespace RailViewApi.Models
         {
         }
 
-        public RailViewContext(DbContextOptions<RailViewContext> options)
-            : base(options)
+        public RailViewContext(DbContextOptions<RailViewContext> options): base(options)
         {
         }
 
