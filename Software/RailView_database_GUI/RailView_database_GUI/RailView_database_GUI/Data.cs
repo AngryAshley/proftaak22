@@ -13,13 +13,13 @@ namespace RailView_database_GUI
         public string AmountRowsNew;
         public string DatabaseName;
         public string ConnectionString;
-        bool IsDatabase;
+        bool isDatabase;
 
         public Data(Dashboard c_dashboard)
         {
             InitializeComponent();
             dashboard = c_dashboard;
-            IsDatabase = true;
+            isDatabase = true;
         }
 
         private void Data_Load(object sender, EventArgs e)
@@ -49,7 +49,7 @@ namespace RailView_database_GUI
                 }
             }
 
-            if (IsDatabase == true)
+            if (isDatabase == true)
             {
                 lblTitle.Text = "Database: " + dashboard.DatabaseName;
                 lblAddSomething.Text = "Add table to " + dashboard.DatabaseName;
@@ -189,12 +189,12 @@ namespace RailView_database_GUI
 
                 if (e.ColumnIndex == DgvFull.Columns["btnShow"].Index)
                 {
-                    if (IsDatabase == true)
+                    if (isDatabase == true)
                     {
                         CurrentTableName = selectedRow.Cells["Tables"].Value.ToString();
                         DatabaseName = dashboard.DatabaseName;
 
-                        IsDatabase = false;
+                        isDatabase = false;
 
                         RefreshFrom();
                     }
@@ -207,7 +207,7 @@ namespace RailView_database_GUI
                 }
                 else if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
                 {
-                    if (IsDatabase == true)
+                    if (isDatabase == true)
                     {
                         DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete table: " + selectedRow.Cells["Tables"].Value, "Sure?", MessageBoxButtons.OKCancel);
                         if (dialogResult == DialogResult.OK)
@@ -238,7 +238,7 @@ namespace RailView_database_GUI
         {
             dashboard.DatabaseName = (sender as Label).Text;
 
-            IsDatabase = true;
+            isDatabase = true;
             RefreshFrom();
         }
 
@@ -253,9 +253,13 @@ namespace RailView_database_GUI
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (IsDatabase == true)
+            if (isDatabase == true)
             {
+                Console.WriteLine("add Table to: " + dashboard.DatabaseName);
 
+                DatabaseName = dashboard.DatabaseName;
+                CreateTableForm createTableForm = new CreateTableForm(this);
+                createTableForm.ShowDialog();
             }
             else
             {

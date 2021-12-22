@@ -34,13 +34,14 @@ namespace RailView_database_GUI
             this.lblType = new System.Windows.Forms.Label();
             this.lblLength = new System.Windows.Forms.Label();
             this.lblDefault = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.tlpFull = new System.Windows.Forms.TableLayoutPanel();
+            this.txbName0 = new System.Windows.Forms.TextBox();
+            this.cobType0 = new System.Windows.Forms.ComboBox();
+            this.txbLenVal0 = new System.Windows.Forms.TextBox();
+            this.cobDefault0 = new System.Windows.Forms.ComboBox();
             this.btnAddRow = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.btnAddTable = new System.Windows.Forms.Button();
+            this.tlpFull.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -88,65 +89,92 @@ namespace RailView_database_GUI
             this.lblDefault.TabIndex = 4;
             this.lblDefault.Text = "Default";
             // 
-            // tableLayoutPanel1
+            // tlpFull
             // 
-            this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Controls.Add(this.textBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.textBox2, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox2, 3, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(40, 76);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(388, 27);
-            this.tableLayoutPanel1.TabIndex = 5;
+            this.tlpFull.ColumnCount = 4;
+            this.tlpFull.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpFull.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpFull.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpFull.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpFull.Controls.Add(this.txbName0, 0, 0);
+            this.tlpFull.Controls.Add(this.cobType0, 1, 0);
+            this.tlpFull.Controls.Add(this.txbLenVal0, 2, 0);
+            this.tlpFull.Controls.Add(this.cobDefault0, 3, 0);
+            this.tlpFull.Location = new System.Drawing.Point(40, 76);
+            this.tlpFull.Name = "tlpFull";
+            this.tlpFull.RowCount = 1;
+            this.tlpFull.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpFull.Size = new System.Drawing.Size(388, 28);
+            this.tlpFull.TabIndex = 5;
             // 
-            // textBox1
+            // txbName0
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(91, 20);
-            this.textBox1.TabIndex = 0;
+            this.txbName0.Location = new System.Drawing.Point(3, 3);
+            this.txbName0.Name = "txbName0";
+            this.txbName0.Size = new System.Drawing.Size(91, 20);
+            this.txbName0.TabIndex = 0;
             // 
-            // comboBox1
+            // cobType0
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(100, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(91, 21);
-            this.comboBox1.TabIndex = 1;
+            this.cobType0.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cobType0.FormattingEnabled = true;
+            this.cobType0.Items.AddRange(new object[] {
+            "INT",
+            "VARCHAR",
+            "TEXT",
+            "BOOLEAN",
+            "DOUBLE ",
+            "TIMESTAMP"});
+            this.cobType0.Location = new System.Drawing.Point(100, 3);
+            this.cobType0.Name = "cobType0";
+            this.cobType0.Size = new System.Drawing.Size(91, 21);
+            this.cobType0.TabIndex = 1;
             // 
-            // textBox2
+            // txbLenVal0
             // 
-            this.textBox2.Location = new System.Drawing.Point(197, 3);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(91, 20);
-            this.textBox2.TabIndex = 2;
+            this.txbLenVal0.Location = new System.Drawing.Point(197, 3);
+            this.txbLenVal0.Name = "txbLenVal0";
+            this.txbLenVal0.Size = new System.Drawing.Size(91, 20);
+            this.txbLenVal0.TabIndex = 2;
             // 
-            // comboBox2
+            // cobDefault0
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(294, 3);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(91, 21);
-            this.comboBox2.TabIndex = 3;
+            this.cobDefault0.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cobDefault0.FormattingEnabled = true;
+            this.cobDefault0.Items.AddRange(new object[] {
+            "NONE ",
+            "NULL",
+            "CURRENT_TIMESTAMP"});
+            this.cobDefault0.Location = new System.Drawing.Point(294, 3);
+            this.cobDefault0.Name = "cobDefault0";
+            this.cobDefault0.Size = new System.Drawing.Size(91, 21);
+            this.cobDefault0.TabIndex = 3;
             // 
             // btnAddRow
             // 
             this.btnAddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(115)))), ((int)(((byte)(91)))));
             this.btnAddRow.ForeColor = System.Drawing.Color.White;
-            this.btnAddRow.Location = new System.Drawing.Point(442, 79);
+            this.btnAddRow.Location = new System.Drawing.Point(467, 79);
             this.btnAddRow.Margin = new System.Windows.Forms.Padding(2);
             this.btnAddRow.Name = "btnAddRow";
-            this.btnAddRow.Size = new System.Drawing.Size(157, 20);
+            this.btnAddRow.Size = new System.Drawing.Size(125, 20);
             this.btnAddRow.TabIndex = 48;
             this.btnAddRow.Text = "Add row";
             this.btnAddRow.UseVisualStyleBackColor = false;
+            this.btnAddRow.Click += new System.EventHandler(this.btnAddRow_Click);
+            // 
+            // btnAddTable
+            // 
+            this.btnAddTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(115)))), ((int)(((byte)(91)))));
+            this.btnAddTable.ForeColor = System.Drawing.Color.White;
+            this.btnAddTable.Location = new System.Drawing.Point(623, 79);
+            this.btnAddTable.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAddTable.Name = "btnAddTable";
+            this.btnAddTable.Size = new System.Drawing.Size(125, 20);
+            this.btnAddTable.TabIndex = 49;
+            this.btnAddTable.Text = "Add Table";
+            this.btnAddTable.UseVisualStyleBackColor = false;
+            this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
             // 
             // CreateTableForm
             // 
@@ -154,8 +182,9 @@ namespace RailView_database_GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(792, 433);
+            this.Controls.Add(this.btnAddTable);
             this.Controls.Add(this.btnAddRow);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tlpFull);
             this.Controls.Add(this.lblDefault);
             this.Controls.Add(this.lblLength);
             this.Controls.Add(this.lblType);
@@ -163,8 +192,9 @@ namespace RailView_database_GUI
             this.Controls.Add(this.lblTitle);
             this.Name = "CreateTableForm";
             this.Text = "CreateTableForm";
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.Load += new System.EventHandler(this.CreateTableForm_Load);
+            this.tlpFull.ResumeLayout(false);
+            this.tlpFull.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -177,11 +207,12 @@ namespace RailView_database_GUI
         private System.Windows.Forms.Label lblType;
         private System.Windows.Forms.Label lblLength;
         private System.Windows.Forms.Label lblDefault;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.TableLayoutPanel tlpFull;
+        private System.Windows.Forms.TextBox txbName0;
+        private System.Windows.Forms.ComboBox cobType0;
+        private System.Windows.Forms.TextBox txbLenVal0;
+        private System.Windows.Forms.ComboBox cobDefault0;
         private System.Windows.Forms.Button btnAddRow;
+        private System.Windows.Forms.Button btnAddTable;
     }
 }

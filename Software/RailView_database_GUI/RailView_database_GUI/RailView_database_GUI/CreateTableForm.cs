@@ -6,36 +6,74 @@ namespace RailView_database_GUI
 {
     public partial class CreateTableForm : Form
     {
-
-        public CreateTableForm()
+        Data data = null;
+        public CreateTableForm(Data c_data)
         {
             InitializeComponent();
-
-            //databaseSelected = c_databaseSelected;
-
-            //lblTitle.Text = databaseSelected.NewTableName;
-
-            int txbNameLocationX = 40;
-            int cobTypeLocationX = 150;
-            int txbLengthLocationX = 280;
-            int cobDefaultLocationX = 390;
-            int btnLocationX = 40;
-            int locationY = 80;
-
-            //for (int i = 0; i < Convert.ToInt32(databaseSelected.AmountRowsNew); i++)
-            //{
-            //    //AddTextBox(numbers[i], "Name", txbNameLocationX, locationY);
-            //    //AddComboBox(numbers[i], "Type", cobTypeLocationX, locationY);
-            //    //AddTextBox(numbers[i], "Lenght", txbLengthLocationX, locationY);
-            //    //AddComboBox(numbers[i], "Default", cobDefaultLocationX, locationY);
-
-            //    locationY = locationY + 25;
-            //}
-
-            // SetButton --> Deze maakt dus de Tabel aan met de SQL Query
-            AddButton(btnLocationX, locationY);
-
+            data = c_data;
         }
+
+        private void CreateTableForm_Load(object sender, EventArgs e)
+        {
+            tlpFull.ColumnCount = 4;
+            tlpFull.RowCount = 1;
+        }
+
+
+        private void btnAddRow_Click(object sender, EventArgs e)
+        {
+            tlpFull.Height = tlpFull.Height + 25;
+            int i = 1;
+            TextBox txbName = new TextBox();
+            ComboBox cobType = new ComboBox();
+            TextBox txbLenVal = new TextBox();
+            ComboBox cobDefault = new ComboBox();
+            txbName.Name = "txbName" + i;
+            cobType.Name = "cobType" + i;
+            txbLenVal.Name = "txbLenVal" + i;
+            cobDefault.Name = "cobDefault" + i;
+
+            cobType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cobDefault.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            for (int j = 0; j < cobType0.Items.Count; j++)
+            {
+                cobType.Items.Add(cobType0.Items[j].ToString());
+            }
+
+            for (int j = 0; j < cobDefault0.Items.Count; j++)
+            {
+                cobDefault.Items.Add(cobDefault0.Items[j].ToString());
+            }
+
+
+            RowStyle temp = tlpFull.RowStyles[tlpFull.RowCount - 1];
+            tlpFull.RowCount++;
+            tlpFull.RowStyles.Add(new RowStyle(temp.SizeType, temp.Height));
+
+            tlpFull.Controls.Add(txbName, 0, tlpFull.RowCount - 1);
+            tlpFull.Controls.Add(cobType, 1, tlpFull.RowCount - 1);
+            tlpFull.Controls.Add(txbLenVal, 2, tlpFull.RowCount - 1);
+            tlpFull.Controls.Add(cobDefault, 3, tlpFull.RowCount - 1);
+            i++;
+        }
+
+        private void btnAddTable_Click(object sender, EventArgs e)
+        {
+            foreach (Control c in this.Controls)
+            {
+                if (c.GetType().Equals(typeof(TableLayoutPanel)))
+                {
+                    foreach (Control ctr in tlpFull.Controls)
+                    {
+                        Console.WriteLine(ctr.Text);
+                        // Maak hier een string aan en daarna uit de loop execute de query 
+                    }
+
+                }
+            }
+        }
+
 
         public void AddTextBox(string rowNumber, string name, int locationX, int locationY)
         {
@@ -85,36 +123,10 @@ namespace RailView_database_GUI
             btn.ForeColor = Color.White;
 
             btn.BringToFront();
-            btn.Click += (s, e) => { ExecuteTableQuery(); };
+            //btn.Click += (s, e) => { ExecuteTableQuery(); };
             this.Controls.Add(btn);
         }
 
-        public void ExecuteTableQuery()
-        {
-            string query;
 
-            foreach (Control c in this.Controls)
-            {
-                if (c.GetType() == typeof(TextBox))
-                {
-                    Console.WriteLine(c.Text);
-                    // Make list with te texts
-                }
-
-                //if (c.GetType() != typeof(ComboBox))
-                //{
-                //    Console.WriteLine(c.);
-
-                //}
-            }
-
-            //List.Reverse() 
-
-            //for (int i = 0; i < Convert.ToInt32(databaseSelected.AmountRowsNew); i++)
-            //{
-            //    //Query = $"({txbNameRowOne.Text} )";
-            //    Console.WriteLine(txbNameRowOne.Text);
-            //}
-        }
     }
 }
