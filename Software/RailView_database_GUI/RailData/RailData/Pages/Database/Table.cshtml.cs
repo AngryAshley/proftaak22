@@ -20,8 +20,9 @@ namespace RailData.Pages.Database
         public List<string> TableStruct = new List<string>();
         public List<Array> TableRecords = new List<Array>();
         public List<Array> TableValues = new List<Array>();
+        public string tableStructure = "";
         string newConnectionString = "";
-        string tableStructure = "";
+        string values = "";
 
         public void OnGet()
         {
@@ -32,11 +33,14 @@ namespace RailData.Pages.Database
                     string getDatabaseName = Request.Query["databaseName"];
                     string getTableName = Request.Query["tableName"];
                     newConnectionString = $"Server=192.168.161.205;Port=3306;Database={getDatabaseName};Uid=admin;Pwd=TopMaster99;";
+                    HttpContext.Session.Remove("connection");
+                    HttpContext.Session.SetString("connection", newConnectionString);
 
                     SelectDatabases();
 
                     ShowTable(getDatabaseName, getTableName);
                     AddEntry(getDatabaseName, getTableName);
+                    GetTableStructure();
                 }
                 catch (MySqlException ex)
                 {
@@ -53,30 +57,6 @@ namespace RailData.Pages.Database
                 catch (Exception ex)
                 {
                     errorHandling.ErrorMessage = "Could not connect to server: " + ex;
-                }
-            }
-        }
-
-        public void OnPost()
-        {
-            if (HttpContext.Session.GetString("Loggedin") != null && HttpContext.Session.GetString("connection") != null)
-            {
-                GetTableStructure();
-
-                string values = "";
-
-                try
-                {
-                    // namen ophalen en op volgorde zetten
-                    string sql = $"INSERT INTO {Request.Query["tableName"]} ({tableStructure}) VALUES ({values})";
-                }
-                catch (Exception ex)
-                {
-                    errorHandling.ErrorMessage = ex.ToString();
-                }
-                finally
-                {
-                    _connection.Close();
                 }
             }
         }
@@ -192,9 +172,11 @@ namespace RailData.Pages.Database
 
             List<string> TableContents = new List<string>();
             List<string> Row = new List<string>();
+            List<string> joe2 = new List<string>();
             int z = 0;
             int rowLength = 0;
             int colLength = 0;
+            string hoer = "";
 
             try
             {
@@ -211,7 +193,30 @@ namespace RailData.Pages.Database
                     {
                         TableContents.Add(databaseReader.GetString(i));
                     }
+
+                    for (int i = 0; i < databaseReader.FieldCount; i++)
+                    {
+                        if (i + 1 < databaseReader.FieldCount)
+                        {
+                            hoer = databaseReader.GetString(i + 1);
+                        }
+
+                        if (hoer != "timestamp")
+                        {
+                            if (i == i % 1)
+                            {
+                                joe2.Add(databaseReader.GetString(i));
+                            }
+                        }
+                    }
                 }
+
+                foreach (var item in joe2)
+                {
+                    tableStructure += item + ",";
+                }
+                Console.WriteLine(tableStructure);
+                TempData["tableStructure"] = tableStructure;
 
             }
             catch (Exception ex)
@@ -266,7 +271,7 @@ namespace RailData.Pages.Database
             {
                 string sql = $"select * from {Request.Query["tableName"]};";
 
-                _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
+                _connection = new MySqlConnection(newConnectionString);
                 _connection.Open();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(sql, _connection);
                 DataTable data = new DataTable();
@@ -274,13 +279,50 @@ namespace RailData.Pages.Database
 
                 foreach (DataColumn column in data.Columns)
                 {
-                    tableStructure += column.ToString() + ", ";
+                    //tableStructure += column.ToString() + ",";
                 }
-                Console.WriteLine(tableStructure);
+                //TempData["tableStructure"] = tableStructure;
             }
             catch (Exception ex)
             {
                 errorHandling.ErrorMessage = ex.ToString();
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public void OnPostFormHandler(string inputs, string layout, string tableName)
+        {
+            Console.WriteLine(inputs);
+            string enumValue = inputs;
+            char[] charsToTrim = { '(', ')', ',', '"', '[', ']' };
+            enumValue = enumValue.Trim(charsToTrim);
+            var enumArr = enumValue.Split(',');
+
+            foreach (var item in enumArr)
+            {
+                values += item + ",";
+            }
+
+            try
+            {
+                string TrimmedLayout = layout.Remove(layout.Length - 1, 1);
+                string TrimmedValues = values.Remove(values.Length - 1, 1);
+
+                string sql = $"INSERT INTO {tableName} ({TrimmedLayout}) VALUES ({TrimmedValues})";
+                Console.WriteLine(sql);
+
+                _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
+                _connection.Open();
+                cmd = new MySqlCommand(sql, _connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                errorHandling.ErrorMessage = ex.ToString();
+                Console.WriteLine(ex);
             }
             finally
             {

@@ -52,7 +52,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="post">
+                    <form method="post" id="insertTableForm">
                         <div class="modal-body">
                             <table>
                                 <tr class="col">
@@ -90,7 +90,7 @@
                                         }
                                         else if (Model.TableValues[i].GetValue(1).ToString().Contains("time"))
                                         {
-                                            <td class="border rounded p-2"><input value="@DateTime.Now" name="timestamp-@i"/></td>
+                                            <td class="border rounded p-2"><input type="datetime" value="@DateTime.Now" name="timestamp-@i" class="form-control" disabled/></td>
                                         }
                                         else 
                                         {
@@ -102,8 +102,10 @@
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-general">Add</button>
+                            <button type="button" id="insertTable" class="btn btn-general">Add</button>
                         </div>
+                        <input type="hidden" value="@TempData["tableStructure"]" class="tableLayout" disabled />
+                        <input type="hidden" value="@TempData["tableName"]" class="tableName" disabled />
                     </form>
                 </div>
             </div>
