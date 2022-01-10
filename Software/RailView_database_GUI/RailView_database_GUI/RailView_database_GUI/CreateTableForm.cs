@@ -8,7 +8,7 @@ namespace RailView_database_GUI
     {
         Data data = null;
         int i = 1;
-        
+
         public CreateTableForm(Data c_data)
         {
             InitializeComponent();
@@ -68,113 +68,137 @@ namespace RailView_database_GUI
             int j = 1;
             string fullString = "";
             string tempString = "";
-            bool error = false; 
+            bool error = false;
 
             string prev = null;
+            string primaryKey = null;
             string name = null;
+
+            bool pkChecked = false;
+            bool aiChecked = false;
+
+            if (chbPK.Checked)
+            {
+                pkChecked = true;
+            }
+
+            if (chbAI.Checked)
+            {
+                aiChecked = true;
+            }
 
             //check if leng/values ingevuld zijn 
 
             foreach (Control ctr in tlpFull.Controls)
             {
-                // check if primary key == ja dan doe naam + INT PRIMARY KEY IDENTITY (1, 1)
-
-                if(ctr.Name == "chbPK")
+                if (ctr.Name != "chbPK")
                 {
-                    if((ctr as CheckBox).Checked)
+                    if (ctr.Name != "chbAI")
                     {
-                        
-                    }
-                }
-                else if (ctr.Name == "chbAI")
-                {
-                    if ((ctr as CheckBox).Checked)
-                    {
-                        
-                    }
-                }
-                else
-                {
-                    if (j == 1)
-                    {
-                        //de naam van de tabel 
-                        tempString = "`" + ctr.Text + "` ";
-                        name = ctr.Text;
-                    }
-                    else if (j == 2)
-                    {
-                        //het type 
-                        if (ctr.Text == "TIMESTAMP")
+                        if (j == 1)
                         {
-                            tempString = tempString + ctr.Text;
+                            //de naam van de tabel 
+                            tempString = "`" + ctr.Text + "` ";
+                            name = ctr.Text;
+                        }
+                        else if (j == 2)
+                        {
+                            //het type 
+                            if (ctr.Text == "TIMESTAMP")
+                            {
+                                tempString = tempString + ctr.Text;
+                            }
+                            else
+                            {
+                                tempString = tempString + ctr.Text;
+                            }
+                        }
+                        else if (j == 3)
+                        {
+                            // hoeveel letters(number)
+                            if (ctr.Text == "")
+                            {
+                                //error and finish
+                                MessageBox.Show("Please enter a valid length!", "Error", MessageBoxButtons.OK);
+                                error = true;
+                                break;
+                            }
+                            else if (prev == "TIMESTAMP")
+                            {
+                                tempString = tempString + " " + ctr.Text;
+                            }
+                            else
+                            {
+                                tempString = tempString + "(" + ctr.Text + ") ";
+                            }
+
                         }
                         else
                         {
-                            tempString = tempString + ctr.Text;
+                            // default
+                            if (ctr.Text == "NONE" || ctr.Text == "")
+                            {
+                                tempString = tempString + "NOT NULL";
+                            }
+                            else if (ctr.Text == "CURRENT_TIMESTAMP")
+                            {
+                                tempString = tempString + "NOT NULL DEFAULT " + ctr.Text;
+                            }
+                            else
+                            {
+                                tempString = tempString + ctr.Text + " DEFAULT NULL";
+                            }
                         }
-                    }
-                    else if (j == 3)
-                    {
-                        // hoeveel letters(number)
-                        if (ctr.Text == "")
+
+                        if (pkChecked == true)
                         {
-                            //error and finish
-                            MessageBox.Show("Please enter a valid length!", "Error", MessageBoxButtons.OK);
-                            error = true;
-                            break;
+                            //add pk to tempstring
+                            primaryKey = ", PRIMARY KEY (`" + name + "`)";
+                            pkChecked = false;
                         }
-                        else if (prev == "TIMESTAMP")
+
+
+                        if (j == 4)
                         {
-                            tempString = tempString + " " + ctr.Text;
+                            if (aiChecked == true)
+                            {
+                                //add ai to tempstring
+                                tempString = tempString + " AUTO_INCREMENT, ";
+                                aiChecked = false;
+                            }
+                            else
+                            {
+                                tempString = tempString + ", ";
+                            }
+
+                            fullString = fullString + tempString;
+                            tempString = "";
+                            j = 1;
                         }
                         else
                         {
-                            tempString = tempString + " (" + ctr.Text + ") ";
-                        }
-
-                    }
-                    else
-                    {
-                        // default
-                        if (ctr.Text == "NONE" || ctr.Text == "")
-                        {
-                            tempString = tempString + "NOT NULL, ";
-                        }
-                        else if (ctr.Text == "CURRENT_TIMESTAMP")
-                        {
-                            tempString = tempString + "NOT NULL DEFAULT " + ctr.Text + ", ";
-                        }
-                        else
-                        {
-                            tempString = tempString + ctr.Text + ", ";
+                            j++;
                         }
                     }
-
-                    if (j == 4)
-                    {
-                        j = 1;
-                        fullString = fullString + tempString;
-                        tempString = "";
-                    }
-                    else
-                    {
-                        j++;
-                    }
-
-                    prev = ctr.Text;
                 }
+
+                prev = ctr.Text;
             }
 
-            if(error == false)
+            if (error == false)
             {
                 fullString = fullString.Remove(fullString.Length - 2, 2);
                 string connectionString = "Server=192.168.161.205;Port=3306;Database=" + data.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
                 ExecuteQuery executeQuery = new ExecuteQuery(connectionString);
 
-                string sql = "CREATE TABLE " + data.NewTableName + " (" + fullString + ") ENGINE = InnoDB;";
-                //executeQuery.SimpleExecute(sql);
+                string sql = "CREATE TABLE " + data.NewTableName + " (" + fullString + primaryKey + ") ENGINE = InnoDB;";
+                bool errorQuery = executeQuery.SimpleExecute(sql);
 
-                this.Hide();
+                if (errorQuery == false)
+                {
+                    this.Hide();
+                }
+                
             }
 
         }

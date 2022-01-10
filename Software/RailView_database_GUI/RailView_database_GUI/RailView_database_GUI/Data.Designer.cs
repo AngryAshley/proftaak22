@@ -37,14 +37,14 @@ namespace RailView_database_GUI
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pibLogo = new System.Windows.Forms.PictureBox();
             this.lblSQL = new System.Windows.Forms.Label();
             this.DgvFull = new System.Windows.Forms.DataGridView();
             this.txbTableName = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.lblBorderForm = new System.Windows.Forms.Label();
             this.lblAddSomething = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pibLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DgvFull)).BeginInit();
             this.SuspendLayout();
             // 
@@ -130,16 +130,17 @@ namespace RailView_database_GUI
             this.label1.TabIndex = 38;
             this.label1.Text = "SQL";
             // 
-            // pictureBox1
+            // pibLogo
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(11, 11);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(217, 161);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 35;
-            this.pictureBox1.TabStop = false;
+            this.pibLogo.Image = ((System.Drawing.Image)(resources.GetObject("pibLogo.Image")));
+            this.pibLogo.Location = new System.Drawing.Point(11, 11);
+            this.pibLogo.Margin = new System.Windows.Forms.Padding(2);
+            this.pibLogo.Name = "pibLogo";
+            this.pibLogo.Size = new System.Drawing.Size(217, 161);
+            this.pibLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pibLogo.TabIndex = 35;
+            this.pibLogo.TabStop = false;
+            this.pibLogo.Click += new System.EventHandler(this.pibLogo_Click);
             // 
             // lblSQL
             // 
@@ -223,7 +224,7 @@ namespace RailView_database_GUI
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pibLogo);
             this.Controls.Add(this.lblSQL);
             this.Controls.Add(this.DgvFull);
             this.Controls.Add(this.lblBorderForm);
@@ -231,7 +232,7 @@ namespace RailView_database_GUI
             this.Text = "Data";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Data_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pibLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DgvFull)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -247,7 +248,7 @@ namespace RailView_database_GUI
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pibLogo;
         private System.Windows.Forms.Label lblSQL;
         private System.Windows.Forms.DataGridView DgvFull;
         private System.Windows.Forms.TextBox txbTableName;
