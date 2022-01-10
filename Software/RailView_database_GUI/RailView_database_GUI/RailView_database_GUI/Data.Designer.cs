@@ -41,7 +41,6 @@ namespace RailView_database_GUI
             this.lblSQL = new System.Windows.Forms.Label();
             this.DgvFull = new System.Windows.Forms.DataGridView();
             this.txbTableName = new System.Windows.Forms.TextBox();
-            this.txbTableAmount = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.lblBorderForm = new System.Windows.Forms.Label();
             this.lblAddSomething = new System.Windows.Forms.Label();
@@ -171,15 +170,8 @@ namespace RailView_database_GUI
             // 
             this.txbTableName.Location = new System.Drawing.Point(267, 720);
             this.txbTableName.Name = "txbTableName";
-            this.txbTableName.Size = new System.Drawing.Size(115, 20);
+            this.txbTableName.Size = new System.Drawing.Size(240, 20);
             this.txbTableName.TabIndex = 45;
-            // 
-            // txbTableAmount
-            // 
-            this.txbTableAmount.Location = new System.Drawing.Point(392, 720);
-            this.txbTableAmount.Name = "txbTableAmount";
-            this.txbTableAmount.Size = new System.Drawing.Size(115, 20);
-            this.txbTableAmount.TabIndex = 46;
             // 
             // btnAdd
             // 
@@ -223,7 +215,6 @@ namespace RailView_database_GUI
             this.ClientSize = new System.Drawing.Size(1553, 942);
             this.Controls.Add(this.lblAddSomething);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.txbTableAmount);
             this.Controls.Add(this.txbTableName);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.label6);
@@ -260,7 +251,6 @@ namespace RailView_database_GUI
         private System.Windows.Forms.Label lblSQL;
         private System.Windows.Forms.DataGridView DgvFull;
         private System.Windows.Forms.TextBox txbTableName;
-        private System.Windows.Forms.TextBox txbTableAmount;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Label lblBorderForm;
         private System.Windows.Forms.Label lblAddSomething;

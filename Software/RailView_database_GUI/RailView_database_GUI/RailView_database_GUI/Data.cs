@@ -11,6 +11,7 @@ namespace RailView_database_GUI
         Dashboard dashboard = null;
         public string CurrentTableName;
         public string AmountRowsNew;
+        public string NewTableName;
         public string DatabaseName;
         public string ConnectionString;
         bool isDatabase;
@@ -75,7 +76,6 @@ namespace RailView_database_GUI
                 else
                 {
                     AddGridButtons();
-                    txbTableAmount.Visible = true;
                     txbTableName.Visible = true;
                     lblAddSomething.Visible = true;
                     lblBorderForm.Visible = true;
@@ -101,7 +101,6 @@ namespace RailView_database_GUI
                 lblAddSomething.Text = "Add entity to " + CurrentTableName;
                 lblTitle.Text = "Table: " + CurrentTableName;
 
-                txbTableAmount.Visible = false;
                 txbTableName.Visible = false;
 
 
@@ -161,7 +160,6 @@ namespace RailView_database_GUI
 
         private void MakeFormInvisable()
         {
-            txbTableAmount.Visible = false;
             txbTableName.Visible = false;
             lblAddSomething.Visible = false;
             lblBorderForm.Visible = false;
@@ -195,7 +193,6 @@ namespace RailView_database_GUI
                         DatabaseName = dashboard.DatabaseName;
 
                         isDatabase = false;
-
                         RefreshFrom();
                     }
                     else
@@ -256,10 +253,18 @@ namespace RailView_database_GUI
             if (isDatabase == true)
             {
                 Console.WriteLine("add Table to: " + dashboard.DatabaseName);
+                if (txbTableName.Text == "")
+                {
+                    MessageBox.Show("Please enter a database name!", "Error", MessageBoxButtons.OK);
+                }
+                else
+                {
+                    NewTableName = txbTableName.Text;
+                    DatabaseName = dashboard.DatabaseName;
 
-                DatabaseName = dashboard.DatabaseName;
-                CreateTableForm createTableForm = new CreateTableForm(this);
-                createTableForm.ShowDialog();
+                    CreateTableForm createTableForm = new CreateTableForm(this);
+                    createTableForm.ShowDialog();
+                }
             }
             else
             {
@@ -269,6 +274,7 @@ namespace RailView_database_GUI
 
                 AddRowToTable addRowToTable = new AddRowToTable(this);
                 addRowToTable.ShowDialog();
+                RefreshFrom();
             }
         }
     }
