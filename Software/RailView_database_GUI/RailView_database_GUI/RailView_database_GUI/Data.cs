@@ -105,18 +105,33 @@ namespace RailView_database_GUI
 
 
                 countRows = false;
-                sql = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + dashboard.DatabaseName + "' AND TABLE_NAME = '" + CurrentTableName + "' ORDER BY ORDINAL_POSITION ASC";
+                sql = "SELECT COLUMN_NAME, COLUMN_KEY FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + dashboard.DatabaseName + "' AND TABLE_NAME = '" + CurrentTableName + "' ORDER BY ORDINAL_POSITION ASC";
                 List<string> columns = executeQuery.GetData(sql, countRows);
 
 
                 int countColumns = 0;
+                string prev = null;
                 foreach (string item in columns)
                 {
+                    string clmText = item;
+                    if (item == "PRI")
+                    {
+                        DgvFull.Columns[prev].Visible = false;
+                        DgvFull.Columns.Remove(prev);
+                        clmText = prev + " " + item;
+                    }
+                    else
+                    {
+                        Console.WriteLine(clmText);
+                        countColumns++;
+                    }
+
                     clm = new DataGridViewTextBoxColumn();
-                    clm.Name = item;
-                    clm.HeaderText = item;
+                    clm.Name = clmText;
+                    clm.HeaderText = clmText;
                     this.DgvFull.Columns.Add(clm);
-                    countColumns++;
+
+                    prev = clmText;
                 }
 
                 if (databaseIsGenerated == true)
@@ -199,6 +214,9 @@ namespace RailView_database_GUI
                     {
                         Console.WriteLine("Show button clicked = " + selectedRow.Cells[0].Value);
                         //show/edit entity
+                        // edit alleen als er een pk is anders error er is geen pk in deze tabel 
+                        // check welke tabel een pk is en dan edit where pk = gelijk aan zijn waarde
+
 
                     }
                 }
