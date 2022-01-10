@@ -60,7 +60,7 @@ namespace RailView_database_GUI
             return list;
         }
 
-        public void SimpleExecute(string sql)
+        public bool SimpleExecute(string sql)
         {
             try 
             { 
@@ -68,10 +68,12 @@ namespace RailView_database_GUI
                 MySqlCommand command = new MySqlCommand(sql, Conn);
                 command.ExecuteNonQuery();
                 Conn.Close();
+                return false;
             }
             catch (MySqlException ex)
             {
                 MessageBox.Show("#" + ex.Number.ToString() + ": " + ex.Message, "Error", MessageBoxButtons.OK);
+                return true;
             }
            
         }

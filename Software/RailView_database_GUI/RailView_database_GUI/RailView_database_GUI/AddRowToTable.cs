@@ -24,6 +24,7 @@ namespace RailView_database_GUI
             TextBox txb;
             ComboBox cmb;
             NumericUpDown nup;
+            MaskedTextBox mtb;
 
             bool countRows = false;
 
@@ -40,6 +41,7 @@ namespace RailView_database_GUI
 
             foreach (string item in columns)
             {
+                Console.WriteLine(item);
                 if (column == 1)
                 {
                     AddLabel(item, columnsAndTypesCount, "Columns", lblPositionX, positionY);
@@ -72,13 +74,22 @@ namespace RailView_database_GUI
                         this.Controls.Add(cmb);
                         valuesCount++;
                     }
-                    else if (item.Contains("int") || item.Contains("double"))
+                    else if (item.Contains("int"))
                     {
                         nup = new NumericUpDown();
                         nup.Name = "Values" + valuesCount;
                         nup.Location = new Point(txbPositionX, positionY);
                         nup.Size = new Size(120, 20);
                         this.Controls.Add(nup);
+                        valuesCount++;
+                    }
+                    else if (item.Contains("double"))
+                    {
+                        mtb = new MaskedTextBox();
+                        mtb.Name = "Values" + valuesCount;
+                        mtb.Location = new Point(txbPositionX, positionY);
+                        mtb.Size = new Size(120, 20);
+                        this.Controls.Add(mtb);
                         valuesCount++;
                     }
                     else
@@ -149,9 +160,12 @@ namespace RailView_database_GUI
 
             string sql = "INSERT INTO " + data.CurrentTableName + " (" + columns + ") VALUES (" + values + ");";
             ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
-            executeQuery.SimpleExecute(sql);
+            bool error = executeQuery.SimpleExecute(sql);
 
-            this.Hide();
+            if(error == false)
+            {
+                this.Hide();
+            }
         }
     }
 }

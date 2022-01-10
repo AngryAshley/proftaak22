@@ -264,18 +264,24 @@ namespace RailView_database_GUI
 
                     CreateTableForm createTableForm = new CreateTableForm(this);
                     createTableForm.ShowDialog();
+                    RefreshFrom();
                 }
             }
             else
             {
-                //add entity to current table 
-                //open form with the entitys of the table
                 Console.WriteLine("add entity current table: " + CurrentTableName);
 
                 AddRowToTable addRowToTable = new AddRowToTable(this);
                 addRowToTable.ShowDialog();
                 RefreshFrom();
             }
+        }
+
+        private void pibLogo_Click(object sender, EventArgs e)
+        {
+            Dashboard dashboard = new Dashboard();
+            this.Hide();
+            dashboard.ShowDialog();
         }
     }
 }
