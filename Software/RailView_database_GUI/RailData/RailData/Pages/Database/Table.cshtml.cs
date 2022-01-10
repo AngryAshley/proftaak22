@@ -63,24 +63,10 @@ namespace RailData.Pages.Database
 
         private void SelectDatabases()
         {
-            _connection = new MySqlConnection(newConnectionString);
-            _connection.Open();
+            ExecuteQuery executeQuery = new ExecuteQuery(newConnectionString);
 
             string sqlDatabases = "SHOW DATABASES";
-            cmd = new MySqlCommand(sqlDatabases, _connection);
-            cmd.ExecuteNonQuery();
-
-            MySqlDataReader databaseReader = cmd.ExecuteReader();
-
-            while (databaseReader.Read())
-            {
-                for (int i = 0; i < databaseReader.FieldCount; i++)
-                {
-                    Databases.Add(databaseReader.GetString(i));
-                }
-            }
-
-            _connection.Close();
+            Databases = executeQuery.SimpleExecute(sqlDatabases);
         }
 
         private void ShowTable(string databaseName, string tableName)
@@ -100,6 +86,7 @@ namespace RailData.Pages.Database
 
             try
             {
+
                 cmd = new MySqlCommand(sql, _connection);
                 cmd.ExecuteNonQuery();
 
@@ -172,11 +159,11 @@ namespace RailData.Pages.Database
 
             List<string> TableContents = new List<string>();
             List<string> Row = new List<string>();
-            List<string> joe2 = new List<string>();
+            List<string> FinalTableContents = new List<string>();
             int z = 0;
             int rowLength = 0;
             int colLength = 0;
-            string hoer = "";
+            string stripTimestamp = "";
 
             try
             {
@@ -198,24 +185,23 @@ namespace RailData.Pages.Database
                     {
                         if (i + 1 < databaseReader.FieldCount)
                         {
-                            hoer = databaseReader.GetString(i + 1);
+                            stripTimestamp = databaseReader.GetString(i + 1);
                         }
 
-                        if (hoer != "timestamp")
+                        if (stripTimestamp != "timestamp")
                         {
                             if (i == i % 1)
                             {
-                                joe2.Add(databaseReader.GetString(i));
+                                FinalTableContents.Add(databaseReader.GetString(i));
                             }
                         }
                     }
                 }
 
-                foreach (var item in joe2)
+                foreach (var item in FinalTableContents)
                 {
                     tableStructure += item + ",";
                 }
-                Console.WriteLine(tableStructure);
                 TempData["tableStructure"] = tableStructure;
 
             }
@@ -276,12 +262,6 @@ namespace RailData.Pages.Database
                 MySqlDataAdapter adapter = new MySqlDataAdapter(sql, _connection);
                 DataTable data = new DataTable();
                 adapter.Fill(data);
-
-                foreach (DataColumn column in data.Columns)
-                {
-                    //tableStructure += column.ToString() + ",";
-                }
-                //TempData["tableStructure"] = tableStructure;
             }
             catch (Exception ex)
             {
@@ -295,7 +275,6 @@ namespace RailData.Pages.Database
 
         public void OnPostFormHandler(string inputs, string layout, string tableName)
         {
-            Console.WriteLine(inputs);
             string enumValue = inputs;
             char[] charsToTrim = { '(', ')', ',', '"', '[', ']' };
             enumValue = enumValue.Trim(charsToTrim);
@@ -312,7 +291,6 @@ namespace RailData.Pages.Database
                 string TrimmedValues = values.Remove(values.Length - 1, 1);
 
                 string sql = $"INSERT INTO {tableName} ({TrimmedLayout}) VALUES ({TrimmedValues})";
-                Console.WriteLine(sql);
 
                 _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
                 _connection.Open();
@@ -322,12 +300,19 @@ namespace RailData.Pages.Database
             catch (Exception ex)
             {
                 errorHandling.ErrorMessage = ex.ToString();
-                Console.WriteLine(ex);
             }
             finally
             {
                 _connection.Close();
             }
+        }
+
+        public void OnPostDeleteRecord(string id, string tableName, string firstCol)
+        {
+            ExecuteQuery executeQuery = new ExecuteQuery(HttpContext.Session.GetString("connection"));
+
+            string sql = $"DELETE FROM {tableName} WHERE {firstCol}={id}";
+            executeQuery.SimpleExecute(sql);
         }
     }
 }
