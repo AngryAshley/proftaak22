@@ -138,18 +138,10 @@ function LoadCoords() {
 
 function LoadTrains() {
     $.ajax({
-        url: 'https://gateway.apiportal.ns.nl/virtual-train-api/api/vehicle',
+        url: 'http://127.0.0.1:5256/api/trains',
         type: 'GET',
         dataType: "json",
         contentType:'application/json',
-        // Origin: "http://normal-website.com/example/",
-        // headers:{
-        //     'Access-Control-Allow-Origin':'*'
-        // },
-        beforeSend: function(xhrObj){
-            // Request headers
-            xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","c4f11ff5e4ea4e13981610420db4a3b1");
-        },
         success: function (response) {
             for (let i = 0; i < trainLocation.length; i++) {
                 map.removeLayer(trainMarker[i]);
@@ -157,9 +149,9 @@ function LoadTrains() {
 
             trainLocation = [];
             trainMarker = [];
-            console.log(response);
-            for (let i = 0; i < response.length; i += 3) {
-                trainLocation.push([response[i], response[i + 1], response[i + 2]]);
+            console.log(response.payload.treinen);
+            for (let i = 0; i < response.payload.treinen.length; i++) {
+                trainLocation.push([response.payload.treinen[i].lat, response.payload.treinen[i].lng, response.payload.treinen[i].type]);
             }
 
             console.log(trainLocation);

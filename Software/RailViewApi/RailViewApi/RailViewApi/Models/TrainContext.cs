@@ -2,13 +2,13 @@
 
 namespace RailViewApi.Models
 {
-    public class TestContext : DbContext
+    public class TrainContext : DbContext
     {
-        public TestContext()
+        public TrainContext()
         {
         }
 
-        public TestContext(DbContextOptions<TestContext> options): base(options)
+        public TrainContext(DbContextOptions<TrainContext> options): base(options)
         {
         }
 
