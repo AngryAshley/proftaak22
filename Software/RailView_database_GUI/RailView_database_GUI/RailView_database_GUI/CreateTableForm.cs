@@ -7,6 +7,8 @@ namespace RailView_database_GUI
     public partial class CreateTableForm : Form
     {
         Data data = null;
+        int i = 1;
+        
         public CreateTableForm(Data c_data)
         {
             InitializeComponent();
@@ -15,7 +17,7 @@ namespace RailView_database_GUI
 
         private void CreateTableForm_Load(object sender, EventArgs e)
         {
-            tlpFull.ColumnCount = 4;
+            tlpFull.ColumnCount = 6;
             tlpFull.RowCount = 1;
         }
 
@@ -23,7 +25,6 @@ namespace RailView_database_GUI
         private void btnAddRow_Click(object sender, EventArgs e)
         {
             tlpFull.Height = tlpFull.Height + 25;
-            int i = 1;
             TextBox txbName = new TextBox();
             ComboBox cobType = new ComboBox();
             TextBox txbLenVal = new TextBox();
@@ -46,6 +47,9 @@ namespace RailView_database_GUI
                 cobDefault.Items.Add(cobDefault0.Items[j].ToString());
             }
 
+            txbName.Size = new Size(111, 20);
+            txbLenVal.Size = new Size(111, 20);
+
 
             RowStyle temp = tlpFull.RowStyles[tlpFull.RowCount - 1];
             tlpFull.RowCount++;
@@ -60,73 +64,119 @@ namespace RailView_database_GUI
 
         private void btnAddTable_Click(object sender, EventArgs e)
         {
-            foreach (Control c in this.Controls)
+
+            int j = 1;
+            string fullString = "";
+            string tempString = "";
+            bool error = false; 
+
+            string prev = null;
+            string name = null;
+
+            //check if leng/values ingevuld zijn 
+
+            foreach (Control ctr in tlpFull.Controls)
             {
-                if (c.GetType().Equals(typeof(TableLayoutPanel)))
+                // check if primary key == ja dan doe naam + INT PRIMARY KEY IDENTITY (1, 1)
+
+                if(ctr.Name == "chbPK")
                 {
-                    foreach (Control ctr in tlpFull.Controls)
+                    if((ctr as CheckBox).Checked)
                     {
-                        Console.WriteLine(ctr.Text);
-                        // Maak hier een string aan en daarna uit de loop execute de query 
+                        
+                    }
+                }
+                else if (ctr.Name == "chbAI")
+                {
+                    if ((ctr as CheckBox).Checked)
+                    {
+                        
+                    }
+                }
+                else
+                {
+                    if (j == 1)
+                    {
+                        //de naam van de tabel 
+                        tempString = "`" + ctr.Text + "` ";
+                        name = ctr.Text;
+                    }
+                    else if (j == 2)
+                    {
+                        //het type 
+                        if (ctr.Text == "TIMESTAMP")
+                        {
+                            tempString = tempString + ctr.Text;
+                        }
+                        else
+                        {
+                            tempString = tempString + ctr.Text;
+                        }
+                    }
+                    else if (j == 3)
+                    {
+                        // hoeveel letters(number)
+                        if (ctr.Text == "")
+                        {
+                            //error and finish
+                            MessageBox.Show("Please enter a valid length!", "Error", MessageBoxButtons.OK);
+                            error = true;
+                            break;
+                        }
+                        else if (prev == "TIMESTAMP")
+                        {
+                            tempString = tempString + " " + ctr.Text;
+                        }
+                        else
+                        {
+                            tempString = tempString + " (" + ctr.Text + ") ";
+                        }
+
+                    }
+                    else
+                    {
+                        // default
+                        if (ctr.Text == "NONE" || ctr.Text == "")
+                        {
+                            tempString = tempString + "NOT NULL, ";
+                        }
+                        else if (ctr.Text == "CURRENT_TIMESTAMP")
+                        {
+                            tempString = tempString + "NOT NULL DEFAULT " + ctr.Text + ", ";
+                        }
+                        else
+                        {
+                            tempString = tempString + ctr.Text + ", ";
+                        }
                     }
 
+                    if (j == 4)
+                    {
+                        j = 1;
+                        fullString = fullString + tempString;
+                        tempString = "";
+                    }
+                    else
+                    {
+                        j++;
+                    }
+
+                    prev = ctr.Text;
                 }
             }
-        }
 
-
-        public void AddTextBox(string rowNumber, string name, int locationX, int locationY)
-        {
-            TextBox txb = new TextBox();
-            txb.Name = "txb" + name + "Row" + rowNumber;
-            txb.Location = new Point(locationX, locationY);
-            this.Controls.Add(txb);
-            txb.BringToFront();
-        }
-
-        public void AddComboBox(string rowNumber, string name, int locationX, int locationY)
-        {
-            ComboBox cob = new ComboBox();
-            cob.Name = "cob" + name + "Row" + rowNumber;
-            cob.Location = new Point(locationX, locationY);
-
-            if (name == "Type")
+            if(error == false)
             {
-                cob.Items.Add("INT");
-                cob.Items.Add("VARCHAR");
-                cob.Items.Add("TEXT");
-                cob.Items.Add("DOUBLE");
-                cob.Items.Add("BOOLEAN");
-            }
-            else
-            {
-                cob.Items.Add("None");
-                cob.Items.Add("NULL");
+                fullString = fullString.Remove(fullString.Length - 2, 2);
+                string connectionString = "Server=192.168.161.205;Port=3306;Database=" + data.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
+                ExecuteQuery executeQuery = new ExecuteQuery(connectionString);
+
+                string sql = "CREATE TABLE " + data.NewTableName + " (" + fullString + ") ENGINE = InnoDB;";
+                //executeQuery.SimpleExecute(sql);
+
+                this.Hide();
             }
 
-            cob.DropDownStyle = ComboBoxStyle.DropDownList;
-            cob.BringToFront();
-            this.Controls.Add(cob);
         }
-
-        public void AddButton(int locationX, int locationY)
-        {
-            Button btn = new Button();
-            btn.Name = "btnAddTable";
-            btn.Text = "Add";
-            btn.Location = new Point(locationX, locationY);
-
-            btn.TabStop = false;
-            btn.FlatStyle = FlatStyle.Flat;
-            btn.FlatAppearance.BorderSize = 0;
-            btn.BackColor = Color.FromArgb(33, 115, 91);
-            btn.ForeColor = Color.White;
-
-            btn.BringToFront();
-            //btn.Click += (s, e) => { ExecuteTableQuery(); };
-            this.Controls.Add(btn);
-        }
-
-
     }
 }
