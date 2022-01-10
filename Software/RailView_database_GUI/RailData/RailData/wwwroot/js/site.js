@@ -40,3 +40,29 @@ $('#insertTable').click(function () {
         }
     });
 });
+
+$('.delete-btn').click(function () {
+    var t = $("input[name='__RequestVerificationToken']").val();
+    var tableName = $('.tableName').val();
+    var tableLayout = $('.tableLayout').val();
+    var getFirst = tableLayout.split(',')[0];
+    var id = $(this).attr('id');
+
+    $.ajax({
+        type: "POST",
+        url: "/Database/Table?handler=DeleteRecord",
+        data: {
+            "id": id,
+            "tableName": tableName,
+            "firstCol": getFirst
+        },
+        dataType: "html",
+        headers: {
+            "RequestVerificationToken": t
+        },
+        success: function () {
+            console.log("SUCCESS");
+            window.location.reload();
+        }
+    });
+});

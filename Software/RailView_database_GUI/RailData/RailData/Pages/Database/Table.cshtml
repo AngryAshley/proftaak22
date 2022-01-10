@@ -33,7 +33,7 @@
                         <td class="border rounded p-2">@Model.TableRecords[i].GetValue(j)</td>
                     }
                     <td><button class="btn btn-general">Edit</button></td>
-                    <td><button class="btn btn-danger">Delete</button></td>
+                    <td><button type="submit" class="btn btn-danger delete-btn" id="@Model.TableRecords[i].GetValue(0)">Delete</button></td>
                 </tr>
             }
         </table>

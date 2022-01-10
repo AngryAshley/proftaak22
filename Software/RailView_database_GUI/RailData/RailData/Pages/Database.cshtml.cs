@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using RailData.Models;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace RailData.Pages
     public class DatabaseModel : PageModel
     {
         // Class handlers
+        private readonly IConfiguration _configuration;
         public ErrorHandling errorHandling = new ErrorHandling();
         MySqlConnection _connection;
         MySqlCommand cmd = null;
@@ -19,6 +21,11 @@ namespace RailData.Pages
         public List<string> DescribedDatabase = new List<string>();
         string newConnectionString = "";
 
+        public DatabaseModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void OnGet()
         {
             if (HttpContext.Session.GetString("Loggedin") != null && HttpContext.Session.GetString("connection") != null)
@@ -26,12 +33,14 @@ namespace RailData.Pages
                 try
                 {
                     string getDatabaseName = Request.Query["databaseName"];
-                    newConnectionString = $"Server=192.168.161.205;Port=3306;Database={getDatabaseName};Uid=admin;Pwd=TopMaster99;";
+                    var connect = _configuration.GetSection("Database");
+                    newConnectionString = $"Server={connect.GetSection("Server").Value};Port={connect.GetSection("Port").Value};Database={getDatabaseName};Uid={HttpContext.Session.GetString("Loggedin")};Pwd={HttpContext.Session.GetString("Username")};";
 
                     SelectDatabases();
 
                     ShowTables(getDatabaseName);
-                } catch (MySqlException ex)
+                }
+                catch (MySqlException ex)
                 {
                     switch (ex.Number)
                     {
@@ -42,11 +51,12 @@ namespace RailData.Pages
                             errorHandling.ErrorMessage = "Cannot connect to server";
                             break;
                     }
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     errorHandling.ErrorMessage = "Could not connect to server: " + ex;
                 }
-            } 
+            }
         }
 
         public void SelectDatabases()
