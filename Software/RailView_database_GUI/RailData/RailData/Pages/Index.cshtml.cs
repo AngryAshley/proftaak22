@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using RailData.Models;
@@ -12,6 +13,7 @@ namespace RailData.Pages
     {
         // Class handlers
         private readonly ILogger<IndexModel> _logger;
+        private readonly IConfiguration _configuration;
         public ErrorHandling errorHandling = new ErrorHandling();
         MySqlConnection _connection;
         MySqlCommand cmd = null;
@@ -22,9 +24,10 @@ namespace RailData.Pages
         string connectionString = "";
         
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         public void OnGet()
@@ -58,16 +61,17 @@ namespace RailData.Pages
             string Username = Request.Form["Username"].ToString();
             string Password = Request.Form["Password"].ToString();
 
-
             if (Username != "" && Password != "")
             {
-                connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=" + Username + ";Pwd=" + Password + ";";
+                var connect = _configuration.GetSection("Database");
+                connectionString = $"Server={connect.GetSection("Server").Value};Port={connect.GetSection("Port").Value};Database={connect.GetSection("Default").Value};Uid={Username};Pwd={Password};";
 
                 try
                 {
                     _connection = new MySqlConnection(connectionString);
 
                     HttpContext.Session.SetString("Loggedin", Username);
+                    HttpContext.Session.SetString("Username", Password);
                     HttpContext.Session.SetString("connection", connectionString);
                     _connection.Open();
                     Response.Redirect("/");

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using RailData.Models;
 using System;
@@ -11,6 +12,7 @@ namespace RailData.Pages.Database
 {
     public class TableModel : PageModel
     {
+        private readonly IConfiguration _configuration;
         public ErrorHandling errorHandling = new ErrorHandling();
         MySqlConnection _connection;
         MySqlCommand cmd = null;
@@ -24,6 +26,11 @@ namespace RailData.Pages.Database
         string newConnectionString = "";
         string values = "";
 
+        public TableModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void OnGet()
         {
             if (HttpContext.Session.GetString("Loggedin") != null && HttpContext.Session.GetString("connection") != null)
@@ -32,7 +39,8 @@ namespace RailData.Pages.Database
                 {
                     string getDatabaseName = Request.Query["databaseName"];
                     string getTableName = Request.Query["tableName"];
-                    newConnectionString = $"Server=192.168.161.205;Port=3306;Database={getDatabaseName};Uid=admin;Pwd=TopMaster99;";
+                    var connect = _configuration.GetSection("Database");
+                    newConnectionString = $"Server={connect.GetSection("Server").Value};Port={connect.GetSection("Port").Value};Database={getDatabaseName};Uid={HttpContext.Session.GetString("Loggedin")};Pwd={HttpContext.Session.GetString("Username")};";
                     HttpContext.Session.Remove("connection");
                     HttpContext.Session.SetString("connection", newConnectionString);
 
