@@ -48,21 +48,23 @@ $('.delete-btn').click(function () {
     var getFirst = tableLayout.split(',')[0];
     var id = $(this).attr('id');
 
-    $.ajax({
-        type: "POST",
-        url: "/Database/Table?handler=DeleteRecord",
-        data: {
-            "id": id,
-            "tableName": tableName,
-            "firstCol": getFirst
-        },
-        dataType: "html",
-        headers: {
-            "RequestVerificationToken": t
-        },
-        success: function () {
-            console.log("SUCCESS");
-            window.location.reload();
-        }
-    });
+    if (confirm("Are you sure you want to delete this record?")) {
+        $.ajax({
+            type: "POST",
+            url: "/Database/Table?handler=DeleteRecord",
+            data: {
+                "id": id,
+                "tableName": tableName,
+                "firstCol": getFirst
+            },
+            dataType: "html",
+            headers: {
+                "RequestVerificationToken": t
+            },
+            success: function () {
+                console.log("SUCCESS");
+                window.location.reload();
+            }
+        });
+    }
 });
