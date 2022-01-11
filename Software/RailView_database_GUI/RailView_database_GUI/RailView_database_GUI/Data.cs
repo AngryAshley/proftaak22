@@ -14,6 +14,9 @@ namespace RailView_database_GUI
         public string NewTableName;
         public string DatabaseName;
         public string ConnectionString;
+        public string ClmNameShowEdit;
+        public string PrimaryKeyDataForSQL;
+        public bool IsEditEntity = false;
         bool isDatabase;
 
         public Data(Dashboard c_dashboard)
@@ -103,7 +106,6 @@ namespace RailView_database_GUI
 
                 txbTableName.Visible = false;
 
-
                 countRows = false;
                 sql = "SELECT COLUMN_NAME, COLUMN_KEY FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + dashboard.DatabaseName + "' AND TABLE_NAME = '" + CurrentTableName + "' ORDER BY ORDINAL_POSITION ASC";
                 List<string> columns = executeQuery.GetData(sql, countRows);
@@ -111,18 +113,18 @@ namespace RailView_database_GUI
 
                 int countColumns = 0;
                 string prev = null;
+                bool checkIfPriExists = false; 
                 foreach (string item in columns)
                 {
                     string clmText = item;
                     if (item == "PRI")
                     {
-                        DgvFull.Columns[prev].Visible = false;
-                        DgvFull.Columns.Remove(prev);
+                        DgvFull.Columns.RemoveAt(countColumns - 1);
                         clmText = prev + " " + item;
+                        checkIfPriExists = true;
                     }
-                    else
+                    else if (item != "")
                     {
-                        Console.WriteLine(clmText);
                         countColumns++;
                     }
 
@@ -134,13 +136,25 @@ namespace RailView_database_GUI
                     prev = clmText;
                 }
 
+                for(int k = 0; k < DgvFull.Columns.Count; k++)
+                {
+                    if (DgvFull.Columns[k].HeaderText == "")
+                    {
+                        DgvFull.Columns.RemoveAt(k);
+                    }
+                }
+
                 if (databaseIsGenerated == true)
                 {
                     MakeFormInvisable();
                 }
                 else
                 {
-                    AddGridButtons();
+                    if(checkIfPriExists == true)
+                    {
+                        AddGridButtons();
+                    }
+
                     lblAddSomething.Visible = true;
                     lblBorderForm.Visible = true;
                     btnAdd.Visible = true;
@@ -185,7 +199,7 @@ namespace RailView_database_GUI
         {
             GridButton gridButtonShow = new GridButton("Show");
             this.DgvFull.Columns.Add(gridButtonShow.SetButton());
-
+            
             GridButton gridButtonDelete = new GridButton("Delete");
             this.DgvFull.Columns.Add(gridButtonDelete.SetButton());
         }
@@ -199,28 +213,8 @@ namespace RailView_database_GUI
             if(rowNumber >= 0)
             {
                 DataGridViewRow selectedRow = DgvFull.Rows[rowNumber];
-
-                if (e.ColumnIndex == DgvFull.Columns["btnShow"].Index)
-                {
-                    if (isDatabase == true)
-                    {
-                        CurrentTableName = selectedRow.Cells["Tables"].Value.ToString();
-                        DatabaseName = dashboard.DatabaseName;
-
-                        isDatabase = false;
-                        RefreshFrom();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Show button clicked = " + selectedRow.Cells[0].Value);
-                        //show/edit entity
-                        // edit alleen als er een pk is anders error er is geen pk in deze tabel 
-                        // check welke tabel een pk is en dan edit where pk = gelijk aan zijn waarde
-
-
-                    }
-                }
-                else if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
+                
+                if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
                 {
                     if (isDatabase == true)
                     {
@@ -234,9 +228,20 @@ namespace RailView_database_GUI
                     }
                     else
                     {
-                        // Get the name id from table
-                        DataGridViewColumn topRow = DgvFull.Columns[0];
-                        string sql = "DELETE FROM " + CurrentTableName + " WHERE " + topRow.HeaderText + " = " + selectedRow.Cells[0].Value + ";";
+                        int selectedPKColumn = 0;
+
+                        for (int k = 0; k < DgvFull.Columns.Count; k++)
+                        {
+                            if (DgvFull.Columns[k].HeaderText.Contains("PRI"))
+                            {
+                                selectedPKColumn = k;
+                            }
+                        }
+
+                        DataGridViewColumn clmPK = DgvFull.Columns[selectedPKColumn];
+                        string headerText = clmPK.HeaderText.Remove(clmPK.HeaderText.Length - 4, 4);
+
+                        string sql = "DELETE FROM " + CurrentTableName + " WHERE " + headerText + " = " + selectedRow.Cells[selectedPKColumn].Value + ";";
 
                         DialogResult dialogResult = MessageBox.Show("Do you really want to execute: " + sql, "Confirm", MessageBoxButtons.OKCancel);
                         if (dialogResult == DialogResult.OK)
@@ -244,6 +249,43 @@ namespace RailView_database_GUI
                             executeQuery.SimpleExecute(sql);
                             RefreshFrom();
                         }
+                    }
+                }
+                else if (e.ColumnIndex == DgvFull.Columns["btnShow"].Index)
+                {
+                    if (isDatabase == true)
+                    {
+                        CurrentTableName = selectedRow.Cells["Tables"].Value.ToString();
+                        DatabaseName = dashboard.DatabaseName;
+
+                        isDatabase = false;
+                        RefreshFrom();
+                    }
+                    else
+                    {
+                        int selectedPKColumn = 0;
+
+                        for (int k = 0; k < DgvFull.Columns.Count; k++)
+                        {
+                            if (DgvFull.Columns[k].HeaderText.Contains("PRI"))
+                            {
+                                selectedPKColumn = k;
+                                
+                            }
+                        }
+                        Console.WriteLine("Show button clicked = " + selectedRow.Cells[selectedPKColumn].Value);
+
+                        //show/edit entity
+                        // check welke tabel een pk is en dan edit where pk = gelijk aan zijn waarde
+                        ClmNameShowEdit = DgvFull.Columns[selectedPKColumn].HeaderText;
+                        ClmNameShowEdit = ClmNameShowEdit.Remove(ClmNameShowEdit.Length - 4, 4);
+                        PrimaryKeyDataForSQL = selectedRow.Cells[selectedPKColumn].Value.ToString();
+                        IsEditEntity = true;
+                        DatabaseName = dashboard.DatabaseName;
+
+                        AddRowEditEntityForm addRowToTable = new AddRowEditEntityForm(this);
+                        addRowToTable.ShowDialog();
+                        RefreshFrom();
                     }
                 }
             }
@@ -288,8 +330,9 @@ namespace RailView_database_GUI
             else
             {
                 Console.WriteLine("add entity current table: " + CurrentTableName);
+                IsEditEntity = false;
 
-                AddRowToTable addRowToTable = new AddRowToTable(this);
+                AddRowEditEntityForm addRowToTable = new AddRowEditEntityForm(this);
                 addRowToTable.ShowDialog();
                 RefreshFrom();
             }
