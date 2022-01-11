@@ -191,5 +191,11 @@ namespace RailView_database_GUI
             }
 
         }
+
+        private void btnDeleteLastRow_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(tlpFull.RowCount);
+            //tlpFull.RowStyles.RemoveAt(tlpFull.RowCount);
+        }
     }
 }

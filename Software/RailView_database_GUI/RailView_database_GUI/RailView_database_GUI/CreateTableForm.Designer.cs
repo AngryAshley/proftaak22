@@ -45,6 +45,7 @@ namespace RailView_database_GUI
             this.btnAddTable = new System.Windows.Forms.Button();
             this.lblPK = new System.Windows.Forms.Label();
             this.lblAI = new System.Windows.Forms.Label();
+            this.btnDeleteLastRow = new System.Windows.Forms.Button();
             this.tlpFull.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -192,12 +193,12 @@ namespace RailView_database_GUI
             // 
             this.btnAddTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(115)))), ((int)(((byte)(91)))));
             this.btnAddTable.ForeColor = System.Drawing.Color.White;
-            this.btnAddTable.Location = new System.Drawing.Point(626, 110);
+            this.btnAddTable.Location = new System.Drawing.Point(626, 124);
             this.btnAddTable.Margin = new System.Windows.Forms.Padding(2);
             this.btnAddTable.Name = "btnAddTable";
             this.btnAddTable.Size = new System.Drawing.Size(125, 20);
             this.btnAddTable.TabIndex = 49;
-            this.btnAddTable.Text = "Add Table";
+            this.btnAddTable.Text = "Add table";
             this.btnAddTable.UseVisualStyleBackColor = false;
             this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
             // 
@@ -219,6 +220,19 @@ namespace RailView_database_GUI
             this.lblAI.TabIndex = 51;
             this.lblAI.Text = "AI";
             // 
+            // btnDeleteLastRow
+            // 
+            this.btnDeleteLastRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(115)))), ((int)(((byte)(91)))));
+            this.btnDeleteLastRow.ForeColor = System.Drawing.Color.White;
+            this.btnDeleteLastRow.Location = new System.Drawing.Point(626, 100);
+            this.btnDeleteLastRow.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDeleteLastRow.Name = "btnDeleteLastRow";
+            this.btnDeleteLastRow.Size = new System.Drawing.Size(125, 20);
+            this.btnDeleteLastRow.TabIndex = 52;
+            this.btnDeleteLastRow.Text = "Delete last row";
+            this.btnDeleteLastRow.UseVisualStyleBackColor = false;
+            this.btnDeleteLastRow.Click += new System.EventHandler(this.btnDeleteLastRow_Click);
+            // 
             // CreateTableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -226,6 +240,7 @@ namespace RailView_database_GUI
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(792, 433);
+            this.Controls.Add(this.btnDeleteLastRow);
             this.Controls.Add(this.lblAI);
             this.Controls.Add(this.lblPK);
             this.Controls.Add(this.btnAddTable);
@@ -265,5 +280,6 @@ namespace RailView_database_GUI
         private System.Windows.Forms.CheckBox chbAI;
         private System.Windows.Forms.Label lblPK;
         private System.Windows.Forms.Label lblAI;
+        private System.Windows.Forms.Button btnDeleteLastRow;
     }
 }

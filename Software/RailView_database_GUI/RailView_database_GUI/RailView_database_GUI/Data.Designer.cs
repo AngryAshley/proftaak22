@@ -130,6 +130,7 @@ namespace RailView_database_GUI
             this.Controls.Add(this.pibLogo);
             this.Controls.Add(this.DgvFull);
             this.Controls.Add(this.lblBorderForm);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Data";
             this.Text = "Data";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
