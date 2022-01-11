@@ -45,7 +45,7 @@ namespace RailView_database_GUI
             this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // AddRowToTable
+            // AddRowEditEntityForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -53,7 +53,8 @@ namespace RailView_database_GUI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnAdd);
-            this.Name = "AddRowToTable";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Name = "AddRowEditEntityForm";
             this.Text = "AddRowToTable";
             this.Load += new System.EventHandler(this.AddRowToTable_Load);
             this.ResumeLayout(false);

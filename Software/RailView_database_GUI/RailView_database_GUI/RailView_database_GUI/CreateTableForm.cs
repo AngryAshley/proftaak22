@@ -97,41 +97,29 @@ namespace RailView_database_GUI
                     {
                         if (j == 1)
                         {
-                            //de naam van de tabel 
                             tempString = "`" + ctr.Text + "` ";
                             name = ctr.Text;
                         }
                         else if (j == 2)
                         {
-                            //het type 
-                            if (ctr.Text == "TIMESTAMP")
-                            {
-                                tempString = tempString + ctr.Text;
-                            }
-                            else
-                            {
-                                tempString = tempString + ctr.Text;
-                            }
+                            tempString = tempString + ctr.Text;
                         }
                         else if (j == 3)
                         {
-                            // hoeveel letters(number)
-                            if (ctr.Text == "")
+                            if (prev == "TIMESTAMP")
                             {
-                                //error and finish
+                                tempString = tempString + " ";
+                            }
+                            else if (ctr.Text == "")
+                            {
                                 MessageBox.Show("Please enter a valid length!", "Error", MessageBoxButtons.OK);
                                 error = true;
                                 break;
-                            }
-                            else if (prev == "TIMESTAMP")
-                            {
-                                tempString = tempString + " " + ctr.Text;
                             }
                             else
                             {
                                 tempString = tempString + "(" + ctr.Text + ") ";
                             }
-
                         }
                         else
                         {
@@ -187,6 +175,7 @@ namespace RailView_database_GUI
 
             if (error == false)
             {
+                Console.WriteLine(fullString);
                 fullString = fullString.Remove(fullString.Length - 2, 2);
                 string connectionString = "Server=192.168.161.205;Port=3306;Database=" + data.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
                 ExecuteQuery executeQuery = new ExecuteQuery(connectionString);
