@@ -13,8 +13,6 @@ namespace RailData.Pages
         // Class handlers
         private readonly IConfiguration _configuration;
         public ErrorHandling errorHandling = new ErrorHandling();
-        MySqlConnection _connection;
-        MySqlCommand cmd = null;
 
         // Objects and variables
         public List<string> Databases = new List<string>();
@@ -30,10 +28,13 @@ namespace RailData.Pages
         {
             if (HttpContext.Session.GetString("Loggedin") != null && HttpContext.Session.GetString("connection") != null)
             {
+                // Check if the login sessions exist
+                // Then execute a new query to show all tables inside the selected database and put them in a list.
                 try
                 {
                     string getDatabaseName = Request.Query["databaseName"];
                     var connect = _configuration.GetSection("Database");
+                    // Set a new connection string with the correct database selected.
                     newConnectionString = $"Server={connect.GetSection("Server").Value};Port={connect.GetSection("Port").Value};Database={getDatabaseName};Uid={HttpContext.Session.GetString("Loggedin")};Pwd={HttpContext.Session.GetString("Username")};";
 
                     SelectDatabases();
@@ -61,56 +62,27 @@ namespace RailData.Pages
 
         public void SelectDatabases()
         {
-            _connection = new MySqlConnection(newConnectionString);
-            _connection.Open();
+            // Use the ExecuteQuery Class to show all databases in the side navigation.
+            ExecuteQuery executeQuery = new ExecuteQuery(newConnectionString);
 
             string sqlDatabases = "SHOW DATABASES";
-            cmd = new MySqlCommand(sqlDatabases, _connection);
-            cmd.ExecuteNonQuery();
-
-            MySqlDataReader databaseReader = cmd.ExecuteReader();
-
-            while (databaseReader.Read())
-            {
-                for (int i = 0; i < databaseReader.FieldCount; i++)
-                {
-                    Databases.Add(databaseReader.GetString(i));
-                }
-            }
-
-            _connection.Close();
+            Databases = executeQuery.SimpleExecute(sqlDatabases);
         }
 
         public void ShowTables(string databaseName)
         {
-            _connection.Open();
-
-            string sql = $"USE {databaseName}; show tables";
             TempData["databaseName"] = databaseName;
 
-            cmd = new MySqlCommand(sql, _connection);
-            cmd.ExecuteNonQuery();
+            // Use the ExecuteQuery Class to show all tables inside the selected database.
+            ExecuteQuery executeQuery = new ExecuteQuery(newConnectionString);
 
-            MySqlDataReader tableReader = cmd.ExecuteReader();
-
-            while (tableReader.Read())
-            {
-                for (int i = 0; i < tableReader.FieldCount; i++)
-                {
-                    DescribedDatabase.Add(tableReader.GetString(i));
-                }
-            }
-
-            _connection.Close();
+            string sql = $"USE {databaseName}; show tables";
+            DescribedDatabase = executeQuery.SimpleExecute(sql);
         }
-
-        //public void OnGetSelectDatabase(string databaseName)
-        //{
-        //    Console.WriteLine(databaseName);
-        //}
 
         public void OnGetSelectTable(string databaseName, string tableName)
         {
+            // Redirect and show the records inside the selected table.
             Response.Redirect($"/Database/Table?databaseName={databaseName}&tableName={tableName}");
         }
     }
