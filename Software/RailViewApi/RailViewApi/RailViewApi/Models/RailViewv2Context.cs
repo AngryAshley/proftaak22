@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace testapi.Models
+namespace RailViewApi.Models
 {
     public partial class RailViewv2Context : DbContext
     {
@@ -29,7 +29,7 @@ namespace testapi.Models
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(config["ConnectionStrings:RailViewDb"], Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql"));
+                optionsBuilder.UseMySql(config["ConnectionStrings:RailViewv2Db"], Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql"));
             }
         }
 

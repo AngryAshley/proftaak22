@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace testapi.Models
+namespace RailViewApi.Models
 {
     public partial class Camera
     {
