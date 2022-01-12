@@ -8,12 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient<TrainContext>();
 builder.Services.AddHttpClient<TrainRouteContext>();
-builder.Services.AddDbContext<RailViewContext>(o =>
-{
-    o.UseMySql(builder.Configuration.GetConnectionString("RailViewDb"),
-    Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.23-mysql"));
+builder.Services.AddDbContext<RailViewContext>();
+//builder.Services.AddDbContext<RailViewContext>(o =>
+//{
+//    o.UseMySql(builder.Configuration.GetConnectionString("RailViewDb"),
+//    Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.23-mysql"));
 
-});
+//});
 
 //Origins need to be changed in the future!
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
