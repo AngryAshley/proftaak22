@@ -8,33 +8,33 @@ namespace RailView_database_GUI
     public partial class Data : Form
     {
         Navigation navigation = new Navigation();
-        Dashboard dashboard = null;
+        public string Username;
+        public string Password;
+        public string DatabaseName;
         public string CurrentTableName;
         public string AmountRowsNew;
         public string NewTableName;
-        public string DatabaseName;
         public string ConnectionString;
         public string ClmNameShowEdit;
         public string PrimaryKeyDataForSQL;
         public bool IsEditEntity = false;
         bool isDatabase;
 
-        public Data(Dashboard c_dashboard)
+        public Data()
         {
             InitializeComponent();
-            dashboard = c_dashboard;
             isDatabase = true;
         }
 
         private void Data_Load(object sender, EventArgs e)
         {
             bool databaseIsGenerated = false;
-            if(dashboard.DatabaseName == "information_schema" || dashboard.DatabaseName == "sys" || dashboard.DatabaseName == "performance_schema")
+            if (DatabaseName == "information_schema" || DatabaseName == "sys" || DatabaseName == "performance_schema")
             {
                 databaseIsGenerated = true;
             }
 
-            ConnectionString = "Server=192.168.161.205;Port=3306;Database=" + dashboard.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
+            ConnectionString = "Server=192.168.161.205;Port=3306;Database=" + DatabaseName + ";Uid=" + Username + ";Pwd=" + Password + ";Convert Zero Datetime=true;";
             ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
             string name;
             string sql;
@@ -44,7 +44,7 @@ namespace RailView_database_GUI
 
             if (sender != null)
             {
-                List<Control> myControls = navigation.AddNaviagtion();
+                List<Control> myControls = navigation.AddNaviagtion(Username, Password);
                 foreach (Control c in myControls)
                 {
                     c.Click += new EventHandler(lblClicked);
@@ -55,8 +55,8 @@ namespace RailView_database_GUI
 
             if (isDatabase == true)
             {
-                lblTitle.Text = "Database: " + dashboard.DatabaseName;
-                lblAddSomething.Text = "Add table to " + dashboard.DatabaseName;
+                lblTitle.Text = "Database: " + DatabaseName;
+                lblAddSomething.Text = "Add table to " + DatabaseName;
 
                 name = "Tables";
                 clm = new DataGridViewTextBoxColumn();
@@ -70,7 +70,7 @@ namespace RailView_database_GUI
                 clm.HeaderText = name;
                 this.DgvFull.Columns.Add(clm);
 
-                if(databaseIsGenerated == true)
+                if (databaseIsGenerated == true)
                 {
                     GridButton gridButtonShow = new GridButton("Show");
                     this.DgvFull.Columns.Add(gridButtonShow.SetButton());
@@ -107,13 +107,13 @@ namespace RailView_database_GUI
                 txbTableName.Visible = false;
 
                 countRows = false;
-                sql = "SELECT COLUMN_NAME, COLUMN_KEY FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + dashboard.DatabaseName + "' AND TABLE_NAME = '" + CurrentTableName + "' ORDER BY ORDINAL_POSITION ASC";
+                sql = "SELECT COLUMN_NAME, COLUMN_KEY FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + DatabaseName + "' AND TABLE_NAME = '" + CurrentTableName + "' ORDER BY ORDINAL_POSITION ASC";
                 List<string> columns = executeQuery.GetData(sql, countRows);
 
 
                 int countColumns = 0;
                 string prev = null;
-                bool checkIfPriExists = false; 
+                bool checkIfPriExists = false;
                 foreach (string item in columns)
                 {
                     string clmText = item;
@@ -136,7 +136,7 @@ namespace RailView_database_GUI
                     prev = clmText;
                 }
 
-                for(int k = 0; k < DgvFull.Columns.Count; k++)
+                for (int k = 0; k < DgvFull.Columns.Count; k++)
                 {
                     if (DgvFull.Columns[k].HeaderText == "")
                     {
@@ -150,7 +150,7 @@ namespace RailView_database_GUI
                 }
                 else
                 {
-                    if(checkIfPriExists == true)
+                    if (checkIfPriExists == true)
                     {
                         AddGridButtons();
                     }
@@ -199,7 +199,7 @@ namespace RailView_database_GUI
         {
             GridButton gridButtonShow = new GridButton("Show");
             this.DgvFull.Columns.Add(gridButtonShow.SetButton());
-            
+
             GridButton gridButtonDelete = new GridButton("Delete");
             this.DgvFull.Columns.Add(gridButtonDelete.SetButton());
         }
@@ -210,10 +210,10 @@ namespace RailView_database_GUI
 
             int rowNumber = e.RowIndex;
 
-            if(rowNumber >= 0)
+            if (rowNumber >= 0)
             {
                 DataGridViewRow selectedRow = DgvFull.Rows[rowNumber];
-                
+
                 if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
                 {
                     if (isDatabase == true)
@@ -256,8 +256,6 @@ namespace RailView_database_GUI
                     if (isDatabase == true)
                     {
                         CurrentTableName = selectedRow.Cells["Tables"].Value.ToString();
-                        DatabaseName = dashboard.DatabaseName;
-
                         isDatabase = false;
                         RefreshFrom();
                     }
@@ -270,21 +268,21 @@ namespace RailView_database_GUI
                             if (DgvFull.Columns[k].HeaderText.Contains("PRI"))
                             {
                                 selectedPKColumn = k;
-                                
+
                             }
                         }
-                        Console.WriteLine("Show button clicked = " + selectedRow.Cells[selectedPKColumn].Value);
 
-                        //show/edit entity
-                        // check welke tabel een pk is en dan edit where pk = gelijk aan zijn waarde
                         ClmNameShowEdit = DgvFull.Columns[selectedPKColumn].HeaderText;
-                        ClmNameShowEdit = ClmNameShowEdit.Remove(ClmNameShowEdit.Length - 4, 4);
-                        PrimaryKeyDataForSQL = selectedRow.Cells[selectedPKColumn].Value.ToString();
-                        IsEditEntity = true;
-                        DatabaseName = dashboard.DatabaseName;
 
-                        AddRowEditEntityForm addRowToTable = new AddRowEditEntityForm(this);
-                        addRowToTable.ShowDialog();
+                        AddOrEditEntityForm editEntity = new AddOrEditEntityForm();
+                        editEntity.Username = Username;
+                        editEntity.Password = Password;
+                        editEntity.ClmNameShowEdit = ClmNameShowEdit.Remove(ClmNameShowEdit.Length - 4, 4);
+                        editEntity.PrimaryKeyDataForSQL = selectedRow.Cells[selectedPKColumn].Value.ToString();
+                        editEntity.IsEditEntity = true;
+                        editEntity.DatabaseName = DatabaseName;
+                        editEntity.CurrentTableName = CurrentTableName;
+                        editEntity.ShowDialog();
                         RefreshFrom();
                     }
                 }
@@ -293,7 +291,7 @@ namespace RailView_database_GUI
 
         public void lblClicked(object sender, EventArgs e)
         {
-            dashboard.DatabaseName = (sender as Label).Text;
+            DatabaseName = (sender as Label).Text;
 
             isDatabase = true;
             RefreshFrom();
@@ -312,9 +310,6 @@ namespace RailView_database_GUI
         {
             if (isDatabase == true)
             {
-                Console.WriteLine("add Table to: " + dashboard.DatabaseName);
-
-
                 if (txbTableName.Text == "")
                 {
                     MessageBox.Show("Please enter a database name!", "Error", MessageBoxButtons.OK);
@@ -330,7 +325,7 @@ namespace RailView_database_GUI
 
                     foreach (string item in dataTables)
                     {
-                        if(item.ToString() == txbTableName.Text)
+                        if (item.ToString() == txbTableName.Text)
                         {
                             error = true;
                         }
@@ -342,10 +337,11 @@ namespace RailView_database_GUI
                     }
                     else
                     {
-                        NewTableName = txbTableName.Text;
-                        DatabaseName = dashboard.DatabaseName;
-
-                        CreateTableForm createTableForm = new CreateTableForm(this);
+                        CreateTableForm createTableForm = new CreateTableForm();
+                        createTableForm.Username = Username;
+                        createTableForm.Password = Password;
+                        createTableForm.DatabaseName = DatabaseName;
+                        createTableForm.NewTableName = txbTableName.Text;
                         createTableForm.ShowDialog();
                         RefreshFrom();
                     }
@@ -353,10 +349,12 @@ namespace RailView_database_GUI
             }
             else
             {
-                Console.WriteLine("add entity current table: " + CurrentTableName);
-                IsEditEntity = false;
-
-                AddRowEditEntityForm addRowToTable = new AddRowEditEntityForm(this);
+                AddOrEditEntityForm addRowToTable = new AddOrEditEntityForm();
+                addRowToTable.Username = Username;
+                addRowToTable.Password = Password;
+                addRowToTable.IsEditEntity = false;
+                addRowToTable.DatabaseName = DatabaseName;
+                addRowToTable.CurrentTableName = CurrentTableName;
                 addRowToTable.ShowDialog();
                 RefreshFrom();
             }
@@ -364,8 +362,10 @@ namespace RailView_database_GUI
 
         private void pibLogo_Click(object sender, EventArgs e)
         {
-            Dashboard dashboard = new Dashboard();
             this.Hide();
+            Dashboard dashboard = new Dashboard();
+            dashboard.Username = Username;
+            dashboard.Password = Password;
             dashboard.ShowDialog();
         }
     }

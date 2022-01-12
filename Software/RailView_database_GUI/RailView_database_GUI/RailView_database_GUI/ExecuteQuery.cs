@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using MySql.Data.MySqlClient;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace RailView_database_GUI
 {
@@ -51,7 +50,7 @@ namespace RailView_database_GUI
                 if (countRows == true) { list.Add(amountOfRows.ToString()); }
 
                 Conn.Close();
-            } 
+            }
             catch (MySqlException ex)
             {
                 MessageBox.Show("#" + ex.Number.ToString() + ": " + ex.Message, "Error", MessageBoxButtons.OK);
@@ -62,8 +61,8 @@ namespace RailView_database_GUI
 
         public bool SimpleExecute(string sql)
         {
-            try 
-            { 
+            try
+            {
                 Conn.Open();
                 MySqlCommand command = new MySqlCommand(sql, Conn);
                 command.ExecuteNonQuery();
@@ -75,7 +74,7 @@ namespace RailView_database_GUI
                 MessageBox.Show("#" + ex.Number.ToString() + ": " + ex.Message, "Error", MessageBoxButtons.OK);
                 return true;
             }
-           
+
         }
     }
 }

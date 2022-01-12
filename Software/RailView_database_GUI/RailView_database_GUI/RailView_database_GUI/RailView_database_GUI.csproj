@@ -89,11 +89,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddRowEditEntityForm.cs">
+    <Compile Include="AddOrEditEntityForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddRowEditEntityForm.Designer.cs">
-      <DependentUpon>AddRowEditEntityForm.cs</DependentUpon>
+    <Compile Include="AddOrEditEntityForm.Designer.cs">
+      <DependentUpon>AddOrEditEntityForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CreateTableForm.cs">
       <SubType>Form</SubType>
@@ -124,8 +124,9 @@
     <Compile Include="Navigation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddRowEditEntityForm.resx">
-      <DependentUpon>AddRowEditEntityForm.cs</DependentUpon>
+    <Compile Include="User.cs" />
+    <EmbeddedResource Include="AddOrEditEntityForm.resx">
+      <DependentUpon>AddOrEditEntityForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CreateTableForm.resx">
       <DependentUpon>CreateTableForm.cs</DependentUpon>

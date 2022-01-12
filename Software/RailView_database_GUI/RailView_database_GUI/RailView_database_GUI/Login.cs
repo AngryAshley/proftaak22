@@ -13,11 +13,6 @@ namespace RailView_database_GUI
 
         private void Login_Load(object sender, EventArgs e)
         {
-            txbUsername.Text = "Username";
-            txbPassword.PasswordChar = '*';
-            btnLogin.TabStop = false;
-            btnLogin.FlatStyle = FlatStyle.Flat;
-            btnLogin.FlatAppearance.BorderSize = 0;
             txbPassword.KeyDown += new KeyEventHandler(tb_KeyDown);
             txbUsername.KeyDown += new KeyEventHandler(tb_KeyDown);
         }
@@ -29,10 +24,13 @@ namespace RailView_database_GUI
 
             try
             {
+                //Open dashboard with Username and Password
                 conn.Open();
-                Dashboard dahsboard = new Dashboard();
+                Dashboard dashboard = new Dashboard();
+                dashboard.Username = txbUsername.Text;
+                dashboard.Password = txbPassword.Text;
                 this.Hide();
-                dahsboard.ShowDialog();
+                dashboard.ShowDialog();
                 conn.Close();
 
             }

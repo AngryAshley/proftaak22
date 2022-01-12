@@ -6,13 +6,15 @@ namespace RailView_database_GUI
 {
     public partial class CreateTableForm : Form
     {
-        Data data = null;
         int i = 1;
+        public string Username;
+        public string Password;
+        public string DatabaseName;
+        public string NewTableName;
 
-        public CreateTableForm(Data c_data)
+        public CreateTableForm()
         {
             InitializeComponent();
-            data = c_data;
         }
 
         private void CreateTableForm_Load(object sender, EventArgs e)
@@ -177,24 +179,24 @@ namespace RailView_database_GUI
             {
                 Console.WriteLine(fullString);
                 fullString = fullString.Remove(fullString.Length - 2, 2);
-                string connectionString = "Server=192.168.161.205;Port=3306;Database=" + data.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
+                string connectionString = "Server=192.168.161.205;Port=3306;Database=" + DatabaseName + ";Uid=" + Username + ";Pwd=" + Password + ";Convert Zero Datetime=true;";
                 ExecuteQuery executeQuery = new ExecuteQuery(connectionString);
 
-                string sql = "CREATE TABLE " + data.NewTableName + " (" + fullString + primaryKey + ") ENGINE = InnoDB;";
+                string sql = "CREATE TABLE " + NewTableName + " (" + fullString + primaryKey + ") ENGINE = InnoDB;";
                 bool errorQuery = executeQuery.SimpleExecute(sql);
 
                 if (errorQuery == false)
                 {
                     this.Hide();
                 }
-                
+
             }
 
         }
 
         private void btnDeleteLastRow_Click(object sender, EventArgs e)
         {
-            if(tlpFull.RowCount > 1)
+            if (tlpFull.RowCount > 1)
             {
                 int countControls = tlpFull.Controls.Count - 5;
 

@@ -6,10 +6,6 @@ namespace RailView_database_GUI
     {
         public string ButtonName { get; set; }
 
-        public GridButton() : this("Standaard")
-        {
-        }
-
         public GridButton(string buttonName)
         {
             ButtonName = buttonName;

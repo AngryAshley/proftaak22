@@ -7,10 +7,9 @@ namespace RailView_database_GUI
 {
     class Navigation
     {
-        public string ConnectionString = "Server=192.168.161.205;Port=3306;Uid=admin;Pwd=TopMaster99;";
-
-        public List<Control> AddNaviagtion()
+        public List<Control> AddNaviagtion(string username, string password)
         {
+            string ConnectionString = "Server=192.168.161.205;Port=3306;Uid=" + username + ";Pwd=" + password + ";";
             ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
             List<Control> listOfControls = new List<Control>();
 
@@ -25,7 +24,7 @@ namespace RailView_database_GUI
             {
                 string name = tables[i].ToString();
 
-                if(name != "mysql")
+                if (name != "mysql")
                 {
                     Label lbl = new Label();
                     lbl.Text = name;

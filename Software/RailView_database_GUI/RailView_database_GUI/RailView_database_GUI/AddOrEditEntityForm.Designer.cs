@@ -1,7 +1,7 @@
 ﻿
 namespace RailView_database_GUI
 {
-    partial class AddRowEditEntityForm
+    partial class AddOrEditEntityForm
     {
         /// <summary>
         /// Required designer variable.

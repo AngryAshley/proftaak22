@@ -5,20 +5,25 @@ using System.Windows.Forms;
 
 namespace RailView_database_GUI
 {
-    public partial class AddRowEditEntityForm : Form
+    public partial class AddOrEditEntityForm : Form
     {
-        Data data = null;
+        public string Username;
+        public string Password;
         public string ConnectionString;
+        public string DatabaseName;
+        public string CurrentTableName;
+        public bool IsEditEntity;
+        public string ClmNameShowEdit;
+        public string PrimaryKeyDataForSQL;
 
-        public AddRowEditEntityForm(Data c_data)
+        public AddOrEditEntityForm()
         {
             InitializeComponent();
-            data = c_data;
         }
 
         private void AddRowToTable_Load(object sender, EventArgs e)
         {
-            ConnectionString = "Server=192.168.161.205;Port=3306;Database=" + data.DatabaseName + ";Uid=admin;Pwd=TopMaster99;Convert Zero Datetime=true;";
+            ConnectionString = "Server=192.168.161.205;Port=3306;Database=" + DatabaseName + ";Uid=" + Username + ";Pwd=" + Password + ";Convert Zero Datetime=true;";
             ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
             Label lbl;
             TextBox txb;
@@ -28,7 +33,7 @@ namespace RailView_database_GUI
 
             bool countRows = false;
 
-            string sql = "SELECT COLUMN_NAME, COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + data.DatabaseName + "' AND TABLE_NAME = '" + data.CurrentTableName + "' ORDER BY ORDINAL_POSITION ASC";
+            string sql = "SELECT COLUMN_NAME, COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + DatabaseName + "' AND TABLE_NAME = '" + CurrentTableName + "' ORDER BY ORDINAL_POSITION ASC";
             List<string> columns = executeQuery.GetData(sql, countRows);
 
             int positionY = 30;
@@ -41,13 +46,13 @@ namespace RailView_database_GUI
 
             foreach (string item in columns)
             {
-                if (column == 1)
+                if (column == 1) // First column with the names of the columns
                 {
                     AddLabel(item, columnsAndTypesCount, "Columns", lblPositionX, positionY);
                     column++;
                     columnsAndTypesCount++;
                 }
-                else if (column == 2)
+                else if (column == 2) // Second column for the type and the third column for the form
                 {
                     AddLabel(item, columnsAndTypesCount, "Types", typePositionX, positionY);
 
@@ -61,7 +66,7 @@ namespace RailView_database_GUI
                         enums = item.ToString();
 
                         enums = enums.Substring(4, enums.Length - 4);
-                        char[] charsToTrim = { '(', ')'};
+                        char[] charsToTrim = { '(', ')' };
                         enums = enums.Trim(charsToTrim);
                         var enumArr = enums.Split(',');
 
@@ -102,15 +107,14 @@ namespace RailView_database_GUI
                     }
 
                     column = 1;
-                    positionY = positionY +25;
+                    positionY = positionY + 25;
                 }
             }
 
-            if(data.IsEditEntity == true)
+            if (IsEditEntity == true)
             {
                 btnAdd.Text = "Edit";
-
-                sql = "SELECT * FROM `" + data.CurrentTableName + "` WHERE `" + data.ClmNameShowEdit + "` = " + data.PrimaryKeyDataForSQL + ";";
+                sql = "SELECT * FROM `" + CurrentTableName + "` WHERE `" + ClmNameShowEdit + "` = " + PrimaryKeyDataForSQL + ";";
                 List<string> values = executeQuery.GetData(sql, countRows);
 
                 int i = 0;
@@ -124,7 +128,7 @@ namespace RailView_database_GUI
 
                     if (!(c is Label) && !(c is Button))
                     {
-                        if(values[i] == "False" && !(c is TextBox))
+                        if (values[i] == "False" && !(c is TextBox))
                         {
                             c.Text = 0.ToString();
                         }
@@ -136,7 +140,7 @@ namespace RailView_database_GUI
                         {
                             c.Text = values[i];
                         }
-                        
+
                         i++;
                     }
 
@@ -157,7 +161,7 @@ namespace RailView_database_GUI
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if(data.IsEditEntity == false)
+            if (IsEditEntity == false)
             {
                 int columnsCount = 0;
                 int valuesCount = 0;
@@ -196,7 +200,7 @@ namespace RailView_database_GUI
                 values = values.Remove(values.Length - 2, 2);
                 columns = columns.Remove(columns.Length - 2, 2);
 
-                string sql = "INSERT INTO " + data.CurrentTableName + " (" + columns + ") VALUES (" + values + ");";
+                string sql = "INSERT INTO " + CurrentTableName + " (" + columns + ") VALUES (" + values + ");";
                 ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
                 bool error = executeQuery.SimpleExecute(sql);
 
@@ -222,7 +226,7 @@ namespace RailView_database_GUI
                             tempColumn = c.Text;
                             columnsCount++;
                         }
-                        
+
                         if (c.Name == "Values" + valuesCount)
                         {
                             if (c is TextBox)
@@ -241,7 +245,7 @@ namespace RailView_database_GUI
 
                 stringofvalues = stringofvalues.Remove(stringofvalues.Length - 2, 2);
 
-                string sql = "UPDATE `" + data.CurrentTableName + "` SET " + stringofvalues + " WHERE `" + data.CurrentTableName + "`.`" + data.ClmNameShowEdit + "` = " + data.PrimaryKeyDataForSQL + ";";
+                string sql = "UPDATE `" + CurrentTableName + "` SET " + stringofvalues + " WHERE `" + CurrentTableName + "`.`" + ClmNameShowEdit + "` = " + PrimaryKeyDataForSQL + ";";
                 Console.WriteLine(sql);
                 ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
                 bool error = executeQuery.SimpleExecute(sql);
