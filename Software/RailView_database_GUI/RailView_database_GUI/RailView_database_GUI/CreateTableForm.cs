@@ -194,8 +194,23 @@ namespace RailView_database_GUI
 
         private void btnDeleteLastRow_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(tlpFull.RowCount);
-            //tlpFull.RowStyles.RemoveAt(tlpFull.RowCount);
+            if(tlpFull.RowCount > 1)
+            {
+                int countControls = tlpFull.Controls.Count - 5;
+
+                for (int i = tlpFull.Controls.Count - 1; i > countControls; i--)
+                {
+                    tlpFull.Controls[i].Dispose();
+                }
+
+                tlpFull.RowStyles.RemoveAt(tlpFull.RowCount - 1);
+                tlpFull.RowCount--;
+                tlpFull.Height -= 25;
+            }
+            else
+            {
+                MessageBox.Show("Can't delete first row", "Error", MessageBoxButtons.OK);
+            }
         }
     }
 }

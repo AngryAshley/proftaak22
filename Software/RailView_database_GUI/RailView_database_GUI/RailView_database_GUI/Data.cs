@@ -313,18 +313,42 @@ namespace RailView_database_GUI
             if (isDatabase == true)
             {
                 Console.WriteLine("add Table to: " + dashboard.DatabaseName);
+
+
                 if (txbTableName.Text == "")
                 {
                     MessageBox.Show("Please enter a database name!", "Error", MessageBoxButtons.OK);
                 }
                 else
                 {
-                    NewTableName = txbTableName.Text;
-                    DatabaseName = dashboard.DatabaseName;
+                    bool error = false;
+                    ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
 
-                    CreateTableForm createTableForm = new CreateTableForm(this);
-                    createTableForm.ShowDialog();
-                    RefreshFrom();
+                    string sql = "SHOW TABLES";
+                    bool countRows = false;
+                    List<string> dataTables = executeQuery.GetData(sql, countRows);
+
+                    foreach (string item in dataTables)
+                    {
+                        if(item.ToString() == txbTableName.Text)
+                        {
+                            error = true;
+                        }
+                    }
+
+                    if (error == true)
+                    {
+                        MessageBox.Show("This database name already exists!", "Error", MessageBoxButtons.OK);
+                    }
+                    else
+                    {
+                        NewTableName = txbTableName.Text;
+                        DatabaseName = dashboard.DatabaseName;
+
+                        CreateTableForm createTableForm = new CreateTableForm(this);
+                        createTableForm.ShowDialog();
+                        RefreshFrom();
+                    }
                 }
             }
             else
