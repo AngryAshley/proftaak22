@@ -16,7 +16,6 @@ namespace RailData.Pages
         private readonly IConfiguration _configuration;
         public ErrorHandling errorHandling = new ErrorHandling();
         MySqlConnection _connection;
-        MySqlCommand cmd = null;
 
         // Objects and variables
         public List<string> Databases = new List<string>();
@@ -34,23 +33,13 @@ namespace RailData.Pages
         {
             if (HttpContext.Session.GetString("Loggedin") != null && HttpContext.Session.GetString("connection") != null)
             {
-                _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
-                _connection.Open();
-                // log database
+                // Check if the login sessions exist, then execute a new query to show all databases and put them in a list.
+                connectionString = HttpContext.Session.GetString("connection");
+
                 string sql = "SHOW DATABASES;";
-                cmd = new MySqlCommand(sql, _connection);
-                cmd.ExecuteNonQuery();
 
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        Databases.Add(reader.GetString(i));
-                    }
-                }
-                _connection.Close();
+                ExecuteQuery executeQuery = new ExecuteQuery(connectionString);
+                Databases = executeQuery.SimpleExecute(sql);
 
                 GetMysqlStatus();
             }
@@ -58,11 +47,14 @@ namespace RailData.Pages
 
         public void OnPost()
         {
+            // Request the username and password input from the form in the Index.cshtml
             string Username = Request.Form["Username"].ToString();
             string Password = Request.Form["Password"].ToString();
 
             if (Username != "" && Password != "")
             {
+                // Check if the inputs aren't emtpy.
+                // Then get the database connection information from the appsettings.json and connect to the database.
                 var connect = _configuration.GetSection("Database");
                 connectionString = $"Server={connect.GetSection("Server").Value};Port={connect.GetSection("Port").Value};Database={connect.GetSection("Default").Value};Uid={Username};Pwd={Password};";
 
@@ -70,18 +62,19 @@ namespace RailData.Pages
                 {
                     _connection = new MySqlConnection(connectionString);
 
+                    // Put the later needed information inside session variables.
                     HttpContext.Session.SetString("Loggedin", Username);
                     HttpContext.Session.SetString("Username", Password);
                     HttpContext.Session.SetString("connection", connectionString);
                     _connection.Open();
-                    Response.Redirect("/");
+                    Response.Redirect("/"); // Refresh the page.
                 }
                 catch (MySqlException ex)
                 {
                     ExitConnections();
                     switch (ex.Number)
                     {
-                        case 0:
+                        case 0: // MySQL.Data errorcode 0
                             errorHandling.ErrorMessage = "Invalid username/password, please try again";
                             break;
                         case 1045:
@@ -103,6 +96,7 @@ namespace RailData.Pages
 
         private void ExitConnections()
         {
+            // Method to remove all connections when a login fails or a session ends.
             HttpContext.Session.Remove("Loggedin");
             HttpContext.Session.Remove("connection");
             _connection.Close();
@@ -110,27 +104,18 @@ namespace RailData.Pages
 
         private void GetMysqlStatus()
         {
-            _connection = new MySqlConnection(HttpContext.Session.GetString("connection"));
-            _connection.Open();
-            // log database
+            // SQL statement to get the MySQL server information.
+            connectionString = HttpContext.Session.GetString("connection");
+
             string sql = "SHOW VARIABLES WHERE Variable_Name LIKE 'time_zone' OR Variable_Name LIKE 'version';";
-            cmd = new MySqlCommand(sql, _connection);
-            cmd.ExecuteNonQuery();
 
-            MySqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                for (int i = 0; i < reader.FieldCount; i++)
-                {
-                    Status.Add(reader.GetString(i));
-                }
-            }
-            _connection.Close();
+            ExecuteQuery executeQuery = new ExecuteQuery(connectionString);
+            Status = executeQuery.SimpleExecute(sql);
         }
 
         public void OnGetSelectDatabase(string databaseName)
         {
+            // Redirect and show the tables inside the database clicked.
             Response.Redirect($"/Database?databaseName={databaseName}");
         }
     }
