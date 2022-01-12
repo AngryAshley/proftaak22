@@ -20,6 +20,8 @@ SpoorData_solution <- read_xlsx("Spoordata_solution.xlsx")
 AanrijdingData <- read_xlsx("AanrijdingData.xlsx")
 SpoorData_prediction <- read_xlsx("Spoordata_prediction.xlsx")
 SpoorData <- read_xlsx("1979-2020 spoordata.xlsx")
+USER_DATA <- read.csv("USER_DATA.csv")
+NOTIFICATION_DATA <- read_xlsx("NOTIFICATION_DATA.xlsx")
 ```
 
 ```{r}
@@ -287,4 +289,29 @@ Storingen_jaar <- Disruptions
   
 
 ```
+
+```{r}
+Notification <- NOTIFICATION_DATA%>%
+  select(Accident_ID, Status_Type, Accident_Month)%>%
+  rename("Accident" = Accident_ID)%>%
+  rename("Status" = Status_Type)%>%
+  rename("Month" = Accident_Month)
+
+
+ggplot(data = Notification, aes(x=Month, y=Accident, fill=Status)) +
+  geom_col()
+
+#Lubridate toevoegen
+
+  
+```
+```{r}
+Users <- USER_DATA%>%
+select(Employee_Id, Department_Id)%>%
+rename("Employee" = Employee_Id)%>%
+rename("Department
+  
+```
+
+
 
