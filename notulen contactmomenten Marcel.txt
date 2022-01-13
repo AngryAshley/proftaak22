@@ -1,0 +1,46 @@
+Uitrekenen hoelang het duurt, hoeveel tijd er nodig is om contact op te nemen met de machinist/112.
+
+NS Protocol?
+
+Klant is weinig bereikbaar, dus een flexibele minimale structuur
+
+Architectuur technisch het generiek te bouwen. Niet genoeg info van de NS om een goede oplossing te vinden
+
+Remweg, noodrem, snelheid berekenen. Meerdere factoren zoals bochten, mogelijkheid om nog van spoor te wisselen.
+
+Oude data ophalen.
+
+Type trein, Wat rijdt die en karakteristiek van noodrem bij die trein.
+Karakter wijkt af bij bijvoorbeeld bochten, hellingen.
+
+Accuracy van object recognition. History live-beelden terugkijken. Hierop baseren hoe goed de object recognition is.
+
+False positive (Vier kwadranten?)
+    Errors ophalen: sommige errors moeten opgelost worden, sommigen hoeven niet.
+
+Financiele en morele afwegingen...
+
+Structuur/ architectuur bouwen. Hoe alle onderdelen met elkaar werken. Specificaties!
+___________________________________________________________________________________________________
+
+
+13-1-2022
+
+sommige dingen weet je niet door geen praktijk. 
+
+aannames flexibel maken.
+
+out of the box over sparren.
+
+meeste van leren van pitchen en product verkopen. wordt heel erg gewaardeerd.
+
+snelheidsindicator
+
+stap voor stap kijken wat er mogelijk is. laterna pas dynamisch maken. voorziet nu al de knelpunten. minimal = belangrijk.
+alles draait om tijd.
+
+indicator met mogelijkheden. kleur camera aanpassen op situatie.
+
+data van wat de camera opvangt opslaan. accuratie.
+
+beetje voorkomen dat het niet te veel op de ns app lijkt als men dashboard ziet. groen maken waar niks aan de hand
