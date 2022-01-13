@@ -17,17 +17,14 @@ mydb = mysql.connector.connect(
   host='192.168.161.205',
   user='admin',
   password='TopMaster99',
-  database='RailView'
+  database='RailViewv2'
 )
 
 railviewdata = mydb.cursor()
 
-railviewdata.execute("SELECT LAST_INSERT_ID() FROM alerts")
-result = railviewdata.fetchall()
-
 def updateDatabase(type): # function to update database on type of alert
-  updateSqlTrain = "UPDATE alerts SET alert=%s, location_x=%s, location_y=%s, route=%s, times=%s, alert_checked=%s WHERE cam_id=1"
-  valuesTrain = (type, 51.4531, 5.5680, "Helmond naar Eindhoven, Intercity", timestamp, 0)
+  updateSqlTrain = "UPDATE Accident SET Accident_Type=%s, Accident_Date=%s WHERE Camera.Camera_ID=1"
+  valuesTrain = (type, timestamp)
   railviewdata.execute(updateSqlTrain, valuesTrain)
   mydb.commit()
 
