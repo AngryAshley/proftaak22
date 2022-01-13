@@ -1,7 +1,7 @@
 ﻿
 namespace RailView_database_GUI
 {
-    partial class Dashboard
+    partial class DashboardForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace RailView_database_GUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashboard));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DashboardForm));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();

@@ -1,6 +1,6 @@
 ﻿namespace RailView_database_GUI
 {
-    partial class Login
+    partial class LoginForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.txbUsername = new System.Windows.Forms.TextBox();
             this.txbPassword = new System.Windows.Forms.TextBox();

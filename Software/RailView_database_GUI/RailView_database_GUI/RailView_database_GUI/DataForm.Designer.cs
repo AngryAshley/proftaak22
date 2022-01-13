@@ -1,7 +1,7 @@
 ﻿
 namespace RailView_database_GUI
 {
-    partial class Data
+    partial class DataForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace RailView_database_GUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Data));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataForm));
             this.lblTitle = new System.Windows.Forms.Label();
             this.pibLogo = new System.Windows.Forms.PictureBox();
             this.DgvFull = new System.Windows.Forms.DataGridView();

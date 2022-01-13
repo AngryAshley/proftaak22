@@ -5,25 +5,41 @@ using System.Windows.Forms;
 
 namespace RailView_database_GUI
 {
-    public partial class Data : Form
+    public partial class DataForm : Form
     {
+        // Fields & global variables
         Navigation navigation = new Navigation();
-        public string Username;
-        public string Password;
-        public string DatabaseName;
-        public string CurrentTableName;
-        public string AmountRowsNew;
-        public string NewTableName;
-        public string ConnectionString;
-        public string ClmNameShowEdit;
-        public string PrimaryKeyDataForSQL;
-        public bool IsEditEntity = false;
+        private readonly string username;
+        private readonly string password;
+        private string databaseName;
+        private string currentTableName;
+        private string amountRowsNew;
+        private string newTableName;
+        private string connectionString;
+        private string clmNameShowEdit;
+        private string primaryKeyDataForSQL;
+        private bool isEditEntity = false;
         bool isDatabase;
 
-        public Data()
+        // Properties
+        public string Username { get { return username; } }
+        public string Password { get { return password; } }
+        public string DatabaseName { get { return databaseName; } set { databaseName = value; } }
+        public string CurrentTableName { get { return currentTableName; } set { currentTableName = value; } } 
+        public string AmountRowsNew { get { return amountRowsNew; } set { amountRowsNew = value; } }
+        public string NewTableName { get { return newTableName; } set { newTableName = value; } }
+        public string ConnectionString { get { return connectionString; } set { connectionString = value; } }
+        public string ClmNameShowEdit { get { return clmNameShowEdit; } set { clmNameShowEdit = value; } }
+        public string PrimaryKeyDataForSQL { get { return primaryKeyDataForSQL; } set { primaryKeyDataForSQL = value; } }
+        public bool IsEditEntity { get { return isEditEntity; } set { isEditEntity = value; } }
+
+        public DataForm(string username, string password, string databaseName)
         {
             InitializeComponent();
             isDatabase = true;
+            this.username = username;
+            this.password = password;
+            this.databaseName = databaseName;
         }
 
         private void Data_Load(object sender, EventArgs e)
@@ -53,7 +69,7 @@ namespace RailView_database_GUI
                 }
             }
 
-            if (isDatabase == true)
+            if (isDatabase)
             {
                 lblTitle.Text = "Database: " + DatabaseName;
                 lblAddSomething.Text = "Add table to " + DatabaseName;
@@ -70,7 +86,7 @@ namespace RailView_database_GUI
                 clm.HeaderText = name;
                 this.DgvFull.Columns.Add(clm);
 
-                if (databaseIsGenerated == true)
+                if (databaseIsGenerated)
                 {
                     GridButton gridButtonShow = new GridButton("Show");
                     this.DgvFull.Columns.Add(gridButtonShow.SetButton());
@@ -144,13 +160,13 @@ namespace RailView_database_GUI
                     }
                 }
 
-                if (databaseIsGenerated == true)
+                if (databaseIsGenerated)
                 {
                     MakeFormInvisable();
                 }
                 else
                 {
-                    if (checkIfPriExists == true)
+                    if (checkIfPriExists)
                     {
                         AddGridButtons();
                     }
@@ -214,76 +230,76 @@ namespace RailView_database_GUI
             {
                 DataGridViewRow selectedRow = DgvFull.Rows[rowNumber];
 
-                if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
+                if(DgvFull.Columns[DgvFull.ColumnCount - 1].HeaderText == "Delete" || DgvFull.Columns[DgvFull.ColumnCount - 2].HeaderText == "Show")
                 {
-                    if (isDatabase == true)
-                    {
-                        DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete table: " + selectedRow.Cells["Tables"].Value, "Sure?", MessageBoxButtons.OKCancel);
-                        if (dialogResult == DialogResult.OK)
-                        {
-                            string sql = "DROP TABLE " + selectedRow.Cells["Tables"].Value;
-                            executeQuery.SimpleExecute(sql);
-                            RefreshFrom();
-                        }
-                    }
-                    else
-                    {
-                        int selectedPKColumn = 0;
 
-                        for (int k = 0; k < DgvFull.Columns.Count; k++)
+                    if (e.ColumnIndex == DgvFull.Columns["btnDelete"].Index)
+                    {
+                        if (isDatabase)
                         {
-                            if (DgvFull.Columns[k].HeaderText.Contains("PRI"))
+                            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete table: " + selectedRow.Cells["Tables"].Value, "Sure?", MessageBoxButtons.OKCancel);
+                            if (dialogResult == DialogResult.OK)
                             {
-                                selectedPKColumn = k;
+                                string sql = "DROP TABLE " + selectedRow.Cells["Tables"].Value;
+                                executeQuery.SimpleExecute(sql);
+                                RefreshForm();
                             }
                         }
-
-                        DataGridViewColumn clmPK = DgvFull.Columns[selectedPKColumn];
-                        string headerText = clmPK.HeaderText.Remove(clmPK.HeaderText.Length - 4, 4);
-
-                        string sql = "DELETE FROM " + CurrentTableName + " WHERE " + headerText + " = " + selectedRow.Cells[selectedPKColumn].Value + ";";
-
-                        DialogResult dialogResult = MessageBox.Show("Do you really want to execute: " + sql, "Confirm", MessageBoxButtons.OKCancel);
-                        if (dialogResult == DialogResult.OK)
+                        else
                         {
-                            executeQuery.SimpleExecute(sql);
-                            RefreshFrom();
-                        }
-                    }
-                }
-                else if (e.ColumnIndex == DgvFull.Columns["btnShow"].Index)
-                {
-                    if (isDatabase == true)
-                    {
-                        CurrentTableName = selectedRow.Cells["Tables"].Value.ToString();
-                        isDatabase = false;
-                        RefreshFrom();
-                    }
-                    else
-                    {
-                        int selectedPKColumn = 0;
+                            int selectedPKColumn = 0;
 
-                        for (int k = 0; k < DgvFull.Columns.Count; k++)
-                        {
-                            if (DgvFull.Columns[k].HeaderText.Contains("PRI"))
+                            for (int k = 0; k < DgvFull.Columns.Count; k++)
                             {
-                                selectedPKColumn = k;
+                                if (DgvFull.Columns[k].HeaderText.Contains("PRI"))
+                                {
+                                    selectedPKColumn = k;
+                                }
+                            }
 
+                            DataGridViewColumn clmPK = DgvFull.Columns[selectedPKColumn];
+                            string headerText = clmPK.HeaderText.Remove(clmPK.HeaderText.Length - 4, 4);
+
+                            string sql = "DELETE FROM " + CurrentTableName + " WHERE " + headerText + " = " + selectedRow.Cells[selectedPKColumn].Value + ";";
+
+                            DialogResult dialogResult = MessageBox.Show("Do you really want to execute: " + sql, "Confirm", MessageBoxButtons.OKCancel);
+                            if (dialogResult == DialogResult.OK)
+                            {
+                                executeQuery.SimpleExecute(sql);
+                                RefreshForm();
                             }
                         }
+                    }
+                    else if (e.ColumnIndex == DgvFull.Columns["btnShow"].Index)
+                    {
+                        if (isDatabase)
+                        {
+                            CurrentTableName = selectedRow.Cells["Tables"].Value.ToString();
+                            isDatabase = false;
+                            RefreshForm();
+                        }
+                        else
+                        {
+                            int selectedPKColumn = 0;
 
-                        ClmNameShowEdit = DgvFull.Columns[selectedPKColumn].HeaderText;
+                            for (int k = 0; k < DgvFull.Columns.Count; k++)
+                            {
+                                if (DgvFull.Columns[k].HeaderText.Contains("PRI"))
+                                {
+                                    selectedPKColumn = k;
 
-                        AddOrEditEntityForm editEntity = new AddOrEditEntityForm();
-                        editEntity.Username = Username;
-                        editEntity.Password = Password;
-                        editEntity.ClmNameShowEdit = ClmNameShowEdit.Remove(ClmNameShowEdit.Length - 4, 4);
-                        editEntity.PrimaryKeyDataForSQL = selectedRow.Cells[selectedPKColumn].Value.ToString();
-                        editEntity.IsEditEntity = true;
-                        editEntity.DatabaseName = DatabaseName;
-                        editEntity.CurrentTableName = CurrentTableName;
-                        editEntity.ShowDialog();
-                        RefreshFrom();
+                                }
+                            }
+
+                            ClmNameShowEdit = DgvFull.Columns[selectedPKColumn].HeaderText;
+                            ClmNameShowEdit = ClmNameShowEdit.Remove(ClmNameShowEdit.Length - 4, 4);
+                            PrimaryKeyDataForSQL = selectedRow.Cells[selectedPKColumn].Value.ToString();
+                            IsEditEntity = true;
+
+                            AddOrEditEntityForm editEntity = new AddOrEditEntityForm(Username, Password, ClmNameShowEdit, PrimaryKeyDataForSQL, IsEditEntity, DatabaseName, CurrentTableName, ConnectionString);
+                            editEntity.ShowDialog();
+                            RefreshForm();
+                        }
                     }
                 }
             }
@@ -292,12 +308,11 @@ namespace RailView_database_GUI
         public void lblClicked(object sender, EventArgs e)
         {
             DatabaseName = (sender as Label).Text;
-
             isDatabase = true;
-            RefreshFrom();
+            RefreshForm();
         }
 
-        public void RefreshFrom()
+        public void RefreshForm()
         {
             DgvFull.Rows.Clear();
             DgvFull.Columns.Clear();
@@ -308,7 +323,7 @@ namespace RailView_database_GUI
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (isDatabase == true)
+            if (isDatabase)
             {
                 if (txbTableName.Text == "")
                 {
@@ -316,7 +331,7 @@ namespace RailView_database_GUI
                 }
                 else
                 {
-                    bool error = false;
+                    bool isError = false;
                     ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
 
                     string sql = "SHOW TABLES";
@@ -327,45 +342,37 @@ namespace RailView_database_GUI
                     {
                         if (item.ToString() == txbTableName.Text)
                         {
-                            error = true;
+                            isError = true;
                         }
                     }
 
-                    if (error == true)
+                    if (isError)
                     {
                         MessageBox.Show("This database name already exists!", "Error", MessageBoxButtons.OK);
                     }
                     else
                     {
-                        CreateTableForm createTableForm = new CreateTableForm();
-                        createTableForm.Username = Username;
-                        createTableForm.Password = Password;
-                        createTableForm.DatabaseName = DatabaseName;
-                        createTableForm.NewTableName = txbTableName.Text;
+                        NewTableName = txbTableName.Text;
+
+                        CreateTableForm createTableForm = new CreateTableForm(Username, Password, NewTableName, ConnectionString);
                         createTableForm.ShowDialog();
-                        RefreshFrom();
+                        RefreshForm();
                     }
                 }
             }
             else
             {
-                AddOrEditEntityForm addRowToTable = new AddOrEditEntityForm();
-                addRowToTable.Username = Username;
-                addRowToTable.Password = Password;
-                addRowToTable.IsEditEntity = false;
-                addRowToTable.DatabaseName = DatabaseName;
-                addRowToTable.CurrentTableName = CurrentTableName;
+                IsEditEntity = false;
+                AddOrEditEntityForm addRowToTable = new AddOrEditEntityForm(Username, Password, ClmNameShowEdit, PrimaryKeyDataForSQL, IsEditEntity, DatabaseName, CurrentTableName, ConnectionString);
                 addRowToTable.ShowDialog();
-                RefreshFrom();
+                RefreshForm();
             }
         }
 
         private void pibLogo_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Dashboard dashboard = new Dashboard();
-            dashboard.Username = Username;
-            dashboard.Password = Password;
+            DashboardForm dashboard = new DashboardForm(Username, Password);
             dashboard.ShowDialog();
         }
     }

@@ -7,14 +7,23 @@ namespace RailView_database_GUI
     public partial class CreateTableForm : Form
     {
         int i = 1;
-        public string Username;
-        public string Password;
-        public string DatabaseName;
-        public string NewTableName;
+        private string username;
+        private string password;
+        private string newTableName;
+        private string connectionString;
 
-        public CreateTableForm()
+        public string Username { get { return username; } }
+        public string Password { get { return password; } }
+        public string NewTableName { get { return newTableName; } }
+        public string ConnectionString { get { return connectionString; } }
+
+        public CreateTableForm(string username, string password, string newTableName, string connectionString)
         {
             InitializeComponent();
+            this.username = username;
+            this.password = password;
+            this.newTableName = newTableName;
+            this.connectionString = connectionString;
         }
 
         private void CreateTableForm_Load(object sender, EventArgs e)
@@ -140,7 +149,7 @@ namespace RailView_database_GUI
                             }
                         }
 
-                        if (pkChecked == true)
+                        if (pkChecked)
                         {
                             //add pk to tempstring
                             primaryKey = ", PRIMARY KEY (`" + name + "`)";
@@ -150,7 +159,7 @@ namespace RailView_database_GUI
 
                         if (j == 4)
                         {
-                            if (aiChecked == true)
+                            if (aiChecked)
                             {
                                 //add ai to tempstring
                                 tempString = tempString + " AUTO_INCREMENT, ";
@@ -177,10 +186,8 @@ namespace RailView_database_GUI
 
             if (error == false)
             {
-                Console.WriteLine(fullString);
                 fullString = fullString.Remove(fullString.Length - 2, 2);
-                string connectionString = "Server=192.168.161.205;Port=3306;Database=" + DatabaseName + ";Uid=" + Username + ";Pwd=" + Password + ";Convert Zero Datetime=true;";
-                ExecuteQuery executeQuery = new ExecuteQuery(connectionString);
+                ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
 
                 string sql = "CREATE TABLE " + NewTableName + " (" + fullString + primaryKey + ") ENGINE = InnoDB;";
                 bool errorQuery = executeQuery.SimpleExecute(sql);

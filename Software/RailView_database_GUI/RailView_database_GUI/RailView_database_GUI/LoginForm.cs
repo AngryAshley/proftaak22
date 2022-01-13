@@ -4,9 +4,17 @@ using MySql.Data.MySqlClient;
 
 namespace RailView_database_GUI
 {
-    public partial class Login : Form
+    public partial class LoginForm : Form
     {
-        public Login()
+        // Fields
+        private string username;
+        private string password;
+
+        // Properties
+        public string Username { get { return username; } set { username = value; } }
+        public string Password { get { return password; } set { password = value; } }
+
+        public LoginForm()
         {
             InitializeComponent();
         }
@@ -22,24 +30,23 @@ namespace RailView_database_GUI
             string connectionString = "Server=192.168.161.205;Port=3306;Database=RailView;Uid=" + txbUsername.Text + ";Pwd=" + txbPassword.Text + ";Convert Zero Datetime=true;";
             MySqlConnection conn = new MySqlConnection(connectionString);
 
+            Username = txbUsername.Text;
+            Password = txbPassword.Text;
+
             try
             {
                 //Open dashboard with Username and Password
-                conn.Open();
-                Dashboard dashboard = new Dashboard();
-                dashboard.Username = txbUsername.Text;
-                dashboard.Password = txbPassword.Text;
                 this.Hide();
+                conn.Open();
+                DashboardForm dashboard = new DashboardForm(Username, Password);
                 dashboard.ShowDialog();
                 conn.Close();
-
             }
             catch (MySqlException ex)
             {
                 MessageBox.Show("#" + ex.Number.ToString() + ": " + ex.Message, "Error", MessageBoxButtons.OK);
             }
         }
-
 
         private void tb_KeyDown(object sender, KeyEventArgs e)
         {

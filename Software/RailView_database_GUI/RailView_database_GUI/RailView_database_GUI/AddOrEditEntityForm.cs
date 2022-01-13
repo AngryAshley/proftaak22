@@ -7,23 +7,42 @@ namespace RailView_database_GUI
 {
     public partial class AddOrEditEntityForm : Form
     {
-        public string Username;
-        public string Password;
-        public string ConnectionString;
-        public string DatabaseName;
-        public string CurrentTableName;
-        public bool IsEditEntity;
-        public string ClmNameShowEdit;
-        public string PrimaryKeyDataForSQL;
+        private string username;
+        private string password;
+        private string connectionString;
+        private string databaseName;
+        private string currentTableName;
+        private bool isEditEntity;
+        private string clmNameShowEdit;
+        private string primaryKeyDataForSQL;
 
-        public AddOrEditEntityForm()
+
+        public string Username { get { return username; } }
+        public string Password { get { return password; } }
+        public string ConnectionString { get { return connectionString; } }
+        public string DatabaseName { get { return databaseName; } }
+        public string CurrentTableName { get { return currentTableName; } }
+        public bool IsEditEntity { get { return isEditEntity; } }
+        public string ClmNameShowEdit { get { return clmNameShowEdit; } }
+        public string PrimaryKeyDataForSQL { get { return primaryKeyDataForSQL; } }
+
+
+
+        public AddOrEditEntityForm(string username, string password, string clmNameShowEdit, string primaryKeyDataForSQL, bool isEditEntity, string databaseName, string currentTableName, string connectionString)
         {
             InitializeComponent();
+            this.username = username;
+            this.password = password;
+            this.clmNameShowEdit = clmNameShowEdit;
+            this.primaryKeyDataForSQL = primaryKeyDataForSQL;
+            this.isEditEntity = isEditEntity;
+            this.databaseName = databaseName;
+            this.currentTableName = currentTableName;
+            this.connectionString = connectionString;
         }
 
         private void AddRowToTable_Load(object sender, EventArgs e)
         {
-            ConnectionString = "Server=192.168.161.205;Port=3306;Database=" + DatabaseName + ";Uid=" + Username + ";Pwd=" + Password + ";Convert Zero Datetime=true;";
             ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
             Label lbl;
             TextBox txb;
@@ -111,7 +130,7 @@ namespace RailView_database_GUI
                 }
             }
 
-            if (IsEditEntity == true)
+            if (IsEditEntity)
             {
                 btnAdd.Text = "Edit";
                 sql = "SELECT * FROM `" + CurrentTableName + "` WHERE `" + ClmNameShowEdit + "` = " + PrimaryKeyDataForSQL + ";";
@@ -246,7 +265,6 @@ namespace RailView_database_GUI
                 stringofvalues = stringofvalues.Remove(stringofvalues.Length - 2, 2);
 
                 string sql = "UPDATE `" + CurrentTableName + "` SET " + stringofvalues + " WHERE `" + CurrentTableName + "`.`" + ClmNameShowEdit + "` = " + PrimaryKeyDataForSQL + ";";
-                Console.WriteLine(sql);
                 ExecuteQuery executeQuery = new ExecuteQuery(ConnectionString);
                 bool error = executeQuery.SimpleExecute(sql);
 

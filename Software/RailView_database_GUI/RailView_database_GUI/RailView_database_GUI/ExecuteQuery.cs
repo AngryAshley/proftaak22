@@ -27,7 +27,7 @@ namespace RailView_database_GUI
 
                 while (data.Read())
                 {
-                    if (countRows == true)
+                    if (countRows)
                     {
                         amountOfRows++;
                     }
@@ -47,7 +47,7 @@ namespace RailView_database_GUI
                     }
                 }
 
-                if (countRows == true) { list.Add(amountOfRows.ToString()); }
+                if (countRows) { list.Add(amountOfRows.ToString()); }
 
                 Conn.Close();
             }

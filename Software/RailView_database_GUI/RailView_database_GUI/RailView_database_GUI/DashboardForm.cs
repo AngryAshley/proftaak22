@@ -4,15 +4,23 @@ using System.Windows.Forms;
 
 namespace RailView_database_GUI
 {
-    public partial class Dashboard : Form
+    public partial class DashboardForm : Form
     {
+        // Fileds
         Navigation navigation = new Navigation();
-        public string Username;
-        public string Password;
+        private readonly string username;
+        private readonly string password;
+        private string databaseName;
 
-        public Dashboard()
+        public string Username { get { return username; } }
+        public string Password { get { return password; } }
+        public string DatabaseName { get { return databaseName; } set { databaseName = value; } }
+
+        public DashboardForm(string username, string password)
         {
             InitializeComponent();
+            this.username = username;
+            this.password = password;
         }
 
         private void Dashboard_Load(object sender, EventArgs e)
@@ -29,10 +37,8 @@ namespace RailView_database_GUI
         public void DatabaseClicked(object sender, EventArgs e)
         {
             this.Hide();
-            Data data = new Data();
-            data.Username = Username;
-            data.Password = Password;
-            data.DatabaseName = (sender as Label).Text;
+            DatabaseName = (sender as Label).Text;
+            DataForm data = new DataForm(Username, Password, DatabaseName);
             data.ShowDialog();
         }
     }
