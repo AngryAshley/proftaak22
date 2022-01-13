@@ -11,17 +11,18 @@ namespace RailData.Pages
 {
     public class IndexModel : PageModel
     {
-        // Class handlers
+        // Fields & global variables
         private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration _configuration;
         public ErrorHandling errorHandling = new ErrorHandling();
         MySqlConnection _connection;
-
-        // Objects and variables
-        public List<string> Databases = new List<string>();
-        public List<string> Status = new List<string>();
+        List<string> databases = new List<string>();
+        List<string> status = new List<string>();
         string connectionString = "";
-        
+
+        // Properties
+        public List<string> Databases { get { return databases; } }
+        public List<string> Status { get { return status; } }
 
         public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration)
         {
@@ -39,7 +40,7 @@ namespace RailData.Pages
                 string sql = "SHOW DATABASES;";
 
                 ExecuteQuery executeQuery = new ExecuteQuery(connectionString);
-                Databases = executeQuery.SimpleExecute(sql);
+                databases = executeQuery.SimpleExecute(sql);
 
                 GetMysqlStatus();
             }
@@ -110,7 +111,7 @@ namespace RailData.Pages
             string sql = "SHOW VARIABLES WHERE Variable_Name LIKE 'time_zone' OR Variable_Name LIKE 'version';";
 
             ExecuteQuery executeQuery = new ExecuteQuery(connectionString);
-            Status = executeQuery.SimpleExecute(sql);
+            status = executeQuery.SimpleExecute(sql);
         }
 
         public void OnGetSelectDatabase(string databaseName)
