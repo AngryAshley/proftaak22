@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Includes all contexts
 builder.Services.AddHttpClient<TrainContext>();
 builder.Services.AddHttpClient<TrainRouteContext>();
 builder.Services.AddDbContext<RailViewContext>();
@@ -54,6 +55,7 @@ app.MapGet("/api/alerts", async (RailViewContext db) => await db.Alerts.ToListAs
 
 app.MapGet("/api/alertsv2", (RailViewv2Context db2) =>
 {
+    //query that selects all the tables and connects them through ID. Eventually sends the result to requested source
     var x = (from n in db2.Notifications
              join m in db2.Cameras on n.CameraId equals m.CameraId
              join c in db2.Coordinates on m.CoordinatesId equals c.CoordinatesId
@@ -79,6 +81,7 @@ app.MapGet("/api/alertsv2", (RailViewv2Context db2) =>
     return x;
 });
 
+//Calls external API's from NS (this is called here because of CORS-Policy)
 app.MapGet("/api/trains", async (HttpClient client) =>
 {
 
