@@ -10,14 +10,16 @@ namespace RailData.Pages
 {
     public class DatabaseModel : PageModel
     {
-        // Class handlers
+        // Fields & global variables
         private readonly IConfiguration _configuration;
         public ErrorHandling errorHandling = new ErrorHandling();
-
-        // Objects and variables
-        public List<string> Databases = new List<string>();
-        public List<string> DescribedDatabase = new List<string>();
+        List<string> databases = new List<string>();
+        List<string> describedDatabase = new List<string>();
         string newConnectionString = "";
+
+        // Properties
+        public List<string> Databases { get { return databases; } }
+        public List<string> DescribedDatabase { get { return describedDatabase; } }
 
         public DatabaseModel(IConfiguration configuration)
         {
@@ -66,7 +68,7 @@ namespace RailData.Pages
             ExecuteQuery executeQuery = new ExecuteQuery(newConnectionString);
 
             string sqlDatabases = "SHOW DATABASES";
-            Databases = executeQuery.SimpleExecute(sqlDatabases);
+            databases = executeQuery.SimpleExecute(sqlDatabases);
         }
 
         public void ShowTables(string databaseName)
@@ -77,7 +79,7 @@ namespace RailData.Pages
             ExecuteQuery executeQuery = new ExecuteQuery(newConnectionString);
 
             string sql = $"USE {databaseName}; show tables";
-            DescribedDatabase = executeQuery.SimpleExecute(sql);
+            describedDatabase = executeQuery.SimpleExecute(sql);
         }
 
         public void OnGetSelectTable(string databaseName, string tableName)

@@ -12,19 +12,24 @@ namespace RailData.Pages.Database
 {
     public class TableModel : PageModel
     {
+        // Fields & global variables
         private readonly IConfiguration _configuration;
         public ErrorHandling errorHandling = new ErrorHandling();
         MySqlConnection _connection;
         MySqlCommand cmd = null;
-
-        // Objects and variables
-        public List<string> Databases = new List<string>();
-        public List<string> TableStruct = new List<string>();
-        public List<Array> TableRecords = new List<Array>();
-        public List<Array> TableValues = new List<Array>();
-        public string tableStructure = "";
+        List<string> databases = new List<string>();
+        List<string> tableStruct = new List<string>();
+        List<Array> tableRecords = new List<Array>();
+        List<Array> tableValues = new List<Array>();
+        string tableStructure = "";
         string newConnectionString = "";
         string values = "";
+
+        // Properties
+        public List<string> Databases { get { return databases; } }
+        public List<string> TableStruct { get { return tableStruct; } }
+        public List<Array> TableRecords { get { return tableRecords; } }
+        public List<Array> TableValues { get { return tableValues; } }
 
         public TableModel(IConfiguration configuration)
         {
@@ -81,7 +86,7 @@ namespace RailData.Pages.Database
             ExecuteQuery executeQuery = new ExecuteQuery(newConnectionString);
 
             string sqlDatabases = "SHOW DATABASES";
-            Databases = executeQuery.SimpleExecute(sqlDatabases);
+            databases = executeQuery.SimpleExecute(sqlDatabases);
         }
 
         private void ShowTable(string databaseName, string tableName)
@@ -147,7 +152,7 @@ namespace RailData.Pages.Database
                     // Get the columns from the table and put them in a temporary list.
                     // Update the column length for further use.
                     colLength += 1;
-                    TableStruct.Add(column.ToString());
+                    tableStruct.Add(column.ToString());
                 }
 
                 for (int i = 0; i < TableContents.Count; i++)
@@ -164,7 +169,7 @@ namespace RailData.Pages.Database
                         // Add the counter inside the TableContents list into the new temporary Row list so that a correct sorted Row is generated.
                         // Then add the Row (converted to an Array type) to the TableRecords list.
                         Row.Add(TableContents[i]);
-                        TableRecords.Add(Row.ToArray());
+                        tableRecords.Add(Row.ToArray());
                         Row.Clear(); // Clear the row so it can go again with the next row in line of the SQL query.
                     }
                     z++;
@@ -277,7 +282,7 @@ namespace RailData.Pages.Database
                         // Add the counter inside the TableContents list into the new temporary Row list so that a correct sorted Row is generated.
                         // Then add the Row (converted to an Array type) to the TableValues list.
                         Row.Add(TableContents[i]);
-                        TableValues.Add(Row.ToArray());
+                        tableValues.Add(Row.ToArray());
                         Row.Clear(); // Clear the row so it can go again with the next row in line of the SQL query.
                     }
                     z++;
