@@ -37,18 +37,6 @@ app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/api/alerts", async (RailViewContext db) => await db.Alerts.ToListAsync());
 
-//app.MapGet("/api/alerts/{id}", async (RailViewContext db, int id) => await db.Alerts.FindAsync(id));
-
-//app.MapPut("/api/alerts/{id}", async (RailViewContext db, int id, Alert alert) =>
-//{
-//    if (id != alert.Id) return Results.BadRequest();
-
-//    db.Update(alert);
-//    await db.SaveChangesAsync();
-
-//    return Results.NoContent();
-//});
-
 app.MapGet("/api/alertsv2", (RailViewv2Context db2) =>
 {
     //query that selects all the tables and connects them through ID. Eventually sends the result to requested source
