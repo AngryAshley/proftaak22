@@ -1,0 +1,20 @@
+﻿To do list:
+
+Alert:
+- OOP for cameras
+- Measure time and (distance) from the potential location and train
+- Actions before impact?
+- Speakers added to system to warn person.
+
+GMAP:
+- Make specified markers for the popout
+- API get time is depended on the zoom level of the map (max and min update rate)
+
+GUI:
+- Clean
+
+Done:
+- Update the list when a change/new entry has occured in the database
+- Tooltip for every train marker
+- Use API to display NS train locations that updates it every few seconds using a timer
+- Create routes for each traject
