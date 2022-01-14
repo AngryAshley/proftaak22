@@ -1,0 +1,126 @@
+﻿@page
+@using Microsoft.AspNetCore.Http
+@model RailData.Pages.Database.TableModel
+@{
+    ViewData["Title"] = "Video surveillance";
+}
+@if (HttpContext.Session.GetString("Loggedin") != null)
+{
+    <div class="sidenav">
+        <img src="/images/logo.png" class="sidenav-img" alt="RailView logo" />
+        @foreach (var item in Model.Databases)
+        {
+            <a asp-page="/Index" asp-page-handler="SelectDatabase" asp-route-databaseName="@item">@item</a>
+        }
+    </div>
+    <div class="container-dashboard">
+        <div class="alert-danger mt-4 text-center" role="alert">@Model.errorHandling.Error()</div>
+        <h2>Database: @TempData["databaseName"], table: @TempData["tableName"]</h2>
+        <table>
+            <tr class="col">
+                @foreach (var colName in Model.TableStruct)
+                {
+                    <td class="border rounded p-2 font-weight-bold">@colName</td>
+                }
+                <td class="border rounded p-2 font-weight-bold">-</td>
+                <td class="border rounded p-2 font-weight-bold">-</td>
+            </tr>
+            @for (int i = 0; i < Model.TableRecords.Count; i++)
+            {
+                <tr id="row-@i">
+                    @for (int j = 0; j < Model.TableRecords[i].Length; j++)
+                    {
+                        <td class="border rounded p-2">@Model.TableRecords[i].GetValue(j)</td>
+                    }
+                    <td><button class="btn btn-general">Edit</button></td>
+                    <td><button type="submit" class="btn btn-danger delete-btn" id="@Model.TableRecords[i].GetValue(0)">Delete</button></td>
+                </tr>
+            }
+        </table>
+
+        <div class="row border rounded p-1 m-1 mt-3 w-25">
+            <h6>Add entry to @TempData["tableName"]</h6>
+            <button class="btn btn-general w-100" data-toggle="modal" data-target="#addEntryModal">Add</button>
+        </div>
+
+        <div class="modal fade" id="addEntryModal" tabindex="-1" role="dialog" aria-labelledby="addEntryLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addEntryLabel">Add entry to @TempData["tableName"]</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" id="insertTableForm">
+                        <div class="modal-body">
+                            <table>
+                                <tr class="col">
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Value</td>
+                                </tr>
+                                @for (int i = 0; i < Model.TableValues.Count; i++)
+                                {
+                                    <tr>
+                                        @for (int j = 0; j < Model.TableValues[i].Length; j++)
+                                        {
+                                            <td class="border rounded p-2">@Model.TableValues[i].GetValue(j)</td>
+                                        }
+                                        @if (Model.TableValues[i].GetValue(1).ToString().Contains("enum"))
+                                        {
+                                            string enumValue = Model.TableValues[i].GetValue(1).ToString();
+                                            enumValue = enumValue.Substring(4, enumValue.Length - 4);
+                                            char[] charsToTrim = { '(', ')', ',' };
+                                            enumValue = enumValue.Trim(charsToTrim);
+                                            var enumArr = enumValue.Split(',');
+
+                                            <td class="border rounded p-2">
+                                                <select class="custom-select" name="enum-@i">
+                                                    @for (int h = 0; h < enumArr.Length; h++) 
+                                                    {
+                                                        <option value="@enumArr[h]">@enumArr[h]</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                        }
+                                        else if (Model.TableValues[i].GetValue(1).ToString().Contains("int") || Model.TableValues[i].GetValue(1).ToString().Contains("double"))
+                                        {
+                                            <td class="border rounded p-2"><input type="number" placeholder="0" class="form-control" name="integer-@i"/></td>
+                                        }
+                                        else if (Model.TableValues[i].GetValue(1).ToString().Contains("time"))
+                                        {
+                                            <td class="border rounded p-2"><input type="datetime" value="@DateTime.Now" name="timestamp-@i" class="form-control" disabled/></td>
+                                        }
+                                        else 
+                                        {
+                                            <td class="border rounded p-2"><input type="text" placeholder="Something..." class="form-control" name="textbox-@i"/></td>
+                                        }
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" id="insertTable" class="btn btn-general">Add</button>
+                        </div>
+                        <input type="hidden" value="@TempData["tableStructure"]" class="tableLayout" disabled />
+                        <input type="hidden" value="@TempData["tableName"]" class="tableName" disabled />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="text-center d-flex justify-content-center">
+            <div>
+                <img src="/images/logo.png" />
+                <h2>You are logged out</h2>
+                <p>Try to login <a href="/">here</a>...</p>
+            </div>
+        </div>
+    </div>
+}
