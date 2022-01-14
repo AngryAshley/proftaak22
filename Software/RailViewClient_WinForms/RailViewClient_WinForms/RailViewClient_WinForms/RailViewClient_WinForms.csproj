@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Alert.cs" />
+    <Compile Include="Classes\Camera.cs" />
     <Compile Include="Classes\Stations.cs" />
     <Compile Include="Client.cs">
       <SubType>Form</SubType>

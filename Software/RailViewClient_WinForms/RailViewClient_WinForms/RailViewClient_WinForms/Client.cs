@@ -13,24 +13,20 @@ using MySql.Data.MySqlClient;
 using Geometry = RailViewClient.Geometry;
 using Positions = RailViewClientTrain.Positions;
 using Stations = RailViewClient_Stations.Stations;
+using RailViewClient_WinForms.Classes;
 
 namespace RailViewClient_WinForms
 {
-    public partial class Client : Form
+    public partial class ClientForm : Form
     {
         TextWriter _writer = null;
+
+        MySqlConnection con = new MySqlConnection("Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;");
 
         public Trajects traject = new Trajects();
         public Positions position = new Positions();
         public Stations station = new Stations();
 
-        Timer timerTrains = new Timer();
-        int trainTimerInterval = 2500;
-        bool refreshTrains = true;
-        bool showTrains = true;
-        bool showStations = false;
-
-        //trajectsRoute can be added to an array
         GMapRoute trajectsRoute;
         GMapOverlay trajectsOverlay;
 
@@ -39,57 +35,54 @@ namespace RailViewClient_WinForms
         GMapOverlay points = new GMapOverlay("points");
         GMapOverlay markers = new GMapOverlay("markers");
 
-        Timer timerAlert = new Timer();
-        List<string> alertList = new List<string>();
-        List<string> oldAlertList = new List<string>();
-        private int ItemMargin = 5;
-        string alerts = string.Empty;
-        bool refreshAlerts = true;
+        Camera camera = new Camera();
 
-        bool alertPerson = false;
-        bool alertOther = false;
-        bool do_Once = false;
-
-        public Client()
+        public ClientForm()
         {
             InitializeComponent();
             LoadJson();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        public void Form1_Load(object sender, EventArgs e)
         {
+            LoadTrainsTimer();
+            LoadAlertTimer();
+
             txtConsole.ReadOnly = true;
             txtConsole.ScrollBars = ScrollBars.Vertical;
             _writer = new TextBoxStreamWriter(txtConsole);
             Console.SetOut(_writer);
 
-            numericUpDown1.Increment = 100;
-            numericUpDown1.Maximum = 10000;
-            numericUpDown1.Minimum = 500;
-            numericUpDown1.Value = trainTimerInterval;
-
-
+            nrUpDwn_TimerInterval.Increment = 100;
+            nrUpDwn_TimerInterval.Maximum = 10000;
+            nrUpDwn_TimerInterval.Minimum = 500;
+            nrUpDwn_TimerInterval.Value = trainTimerInterval;
         }
-
+        #region Timers
+        Timer timerTrains = new Timer();
+        int trainTimerInterval = 5000;
+        bool pauseAlerts = true;
+        bool pauseTrains = true;
+        bool showTrains = true;
+        bool showStations = false;
         public void LoadTrainsTimer()
         {
             timerTrains.Tick += OnTimerTickTrain;
             timerTrains.Interval = trainTimerInterval;
-            timerTrains.Enabled = refreshTrains;
+            timerTrains.Enabled = pauseTrains;
         }
 
         public void LoadAlertTimer()
         {
             timerAlert.Tick += OnTimerTickAlert;
             timerAlert.Interval = 1000;
-            timerAlert.Enabled = refreshAlerts;
+            timerAlert.Enabled = pauseAlerts;
         }
 
         public void OnTimerTickTrain(object sender, EventArgs e)
         {
-            if (refreshTrains == true)
+            if (pauseTrains == true)
             {
-                //Console.WriteLine("trein coord reset");
                 LoadAPI();
                 LoadTrains(trains);
             }
@@ -97,16 +90,44 @@ namespace RailViewClient_WinForms
 
         public void OnTimerTickAlert(object sender, EventArgs e)
         {
-            if (refreshAlerts == true)
+            if (pauseAlerts == true)
             {
-                //Console.WriteLine(DateTime.Now + " Alert timer refresh");
                 SQLrequest();
             }
         }
+        private void btn_PauseTrains_Click(object sender, EventArgs e)
+        {
+            pauseTrains = !pauseTrains;
+        }
+
+        private void btn_PauseAlerts_click(object sender, EventArgs e)
+        {
+            pauseAlerts = !pauseAlerts;
+        }
+
+        private void btn_ChangeTimerInterval_Click(object sender, EventArgs e)
+        {
+            trainTimerInterval = Convert.ToInt32(nrUpDwn_TimerInterval.Value);
+            timerTrains.Interval = trainTimerInterval;
+        }
+        #endregion
+        #region Alerts
+
+        Timer timerAlert = new Timer();
+        List<string> alertList = new List<string>();
+        List<string> oldAlertList = new List<string>();
+        private int ItemMargin = 5;
+        string alerts = string.Empty;
+
+        bool alertPerson = false;
+        bool alertOther = false;
+        bool do_Once = false;
 
         public void SQLrequest()
         {
-            using (MySqlConnection con = new MySqlConnection("Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;"))
+            con.Close();
+
+            using (con)
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand("select * from alerts", con);
@@ -124,37 +145,35 @@ namespace RailViewClient_WinForms
                     alertList.Add(alerts);
                 }
 
-                if (oldAlertList.Count == 0)
+                if (oldAlertList.Count == 0 || alertList.Count < oldAlertList.Count)
                 {
-                    listBox1.DataSource = alertList;
+                    listBoxAlerts.DataSource = null;
+                    listBoxAlerts.DataSource = alertList;
                     oldAlertList = new List<string>(alertList);
                 }
 
-                if (alertList.Count != oldAlertList.Count)
+                if (alertList.Count > oldAlertList.Count)
                 {
-                    listBox1.DataSource = null;
-                    listBox1.DataSource = alertList;
+                    listBoxAlerts.DataSource = null;
+                    listBoxAlerts.DataSource = alertList;
                     oldAlertList = new List<string>(alertList);
 
                     if (alertList[alertList.Count - 1].Contains("person") == true)
                     {
-                        Console.WriteLine(DateTime.Now + " Person detected");
+                        Console.WriteLine(DateTime.Now + " Person detected.");
                         alertPerson = true;
-                        //alertPopUp();
                     }
                     if (alertList[alertList.Count - 1].Contains("train") == true)
                     {
-                        Console.WriteLine(DateTime.Now + " Train detected");
+                        Console.WriteLine(DateTime.Now + " Train detected.");
                     }
                     if (alertList[alertList.Count - 1].Contains("other") == true)
                     {
-                        Console.WriteLine(DateTime.Now + " Something other detected");
+                        Console.WriteLine(DateTime.Now + " Something other detected.");
                         alertOther = true;
-                        //alertPopUp();
                     }
-
+                    alertPopUp();
                 }
-
                 reader.Close();
                 con.Close();
             }
@@ -170,22 +189,61 @@ namespace RailViewClient_WinForms
                 if (alertPerson == true)
                 {
                     AlertCamera();
-                    MessageBox.Show("A person has been detected at:\n" + alertList[alertList.Count - 1]);
+                    //if (camera.CameraAlert == true)
+                    //{                        
+                    //}
+                    //else
+                    //{
                     alertPerson = false;
                     //DefaultCamera();
+                    //}                    
                 }
                 if (alertOther == true)
                 {
-                    AlertCamera();
-                    MessageBox.Show("Some movement has been detected at:\n" + alertList[alertList.Count - 1]);
+                    //if (camera.CameraAlert == false)
+                    //{
+
+                    //}                   
                     alertOther = false;
                     //DefaultCamera();
                 }
             }
+            do_Once = false;
         }
 
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            int alertCount = 0;
+
+            con.Close();
+
+            using (con)
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand("select * from alerts", con);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Alert alert = new Alert();
+                    alert.id = Convert.ToInt32(reader["id"]);
+                    alertCount = alert.id;
+                }
+                reader.Close();
+
+                alertCount++;
+                MySqlCommand cmd2 = new MySqlCommand("INSERT INTO alerts(id, cam_id, alert, location_x, location_y, route, alert_checked) VALUES(" + alertCount + ", 4, 'person', 51.4531, 5.568, 'test', 0);", con);
+                cmd2.ExecuteNonQuery();
+
+            }
+            con.Close();
+            SQLrequest();
+        }
+        #endregion
         public void DefaultCamera()
         {
+            click_Once = false;
+
             GMapMarker marker = new GMarkerGoogle(
                 new PointLatLng(51.4687928, 5.6342143),
             new Bitmap("cctv.png"));
@@ -197,6 +255,7 @@ namespace RailViewClient_WinForms
             marker.ToolTip.Foreground = Brushes.Black;
             marker.ToolTip.Stroke = Pens.Black;
             marker.ToolTip.TextPadding = new Size(20, 0);
+            marker.Tag = marker.ToolTipText;
         }
 
         public void AlertCamera()
@@ -216,13 +275,13 @@ namespace RailViewClient_WinForms
             gmap.Position = new PointLatLng(51.4687928, 5.6342143);
             gmap.Zoom = 12;
 
-            Form2 PopOut = new Form2();
-            PopOut.Show(this);
+            PopoutForm frmPopout = new PopoutForm(this);
+            frmPopout.Show(this);
         }
-
+        #region Alert Listbox
         public void alertListBox()
         {
-            listBox1.DrawMode = DrawMode.OwnerDrawVariable;
+            listBoxAlerts.DrawMode = DrawMode.OwnerDrawVariable;
         }
 
         private void lstChoices_MeasureItem(object sender, MeasureItemEventArgs e)
@@ -270,7 +329,8 @@ namespace RailViewClient_WinForms
             // Draw the focus rectangle if appropriate.
             e.DrawFocusRectangle();
         }
-
+        #endregion
+        #region Load API's and json files
         public void LoadTrajects(GMapOverlay points)
         {
             foreach (var trajects in traject.Payload.Features)
@@ -334,7 +394,6 @@ namespace RailViewClient_WinForms
                         new PointLatLng(stationLat, stationLng),
                         new Bitmap("station.png"));
                     trainstations.Markers.Add(stationMarker);
-                    //stationMarker.ToolTipMode = MarkerTooltipMode.Always;
                     stationMarker.ToolTipText = stationName;
                 }
                 gmap.Overlays.Add(trainstations);
@@ -420,109 +479,114 @@ namespace RailViewClient_WinForms
             var positions = JsonConvert.DeserializeObject<Positions>(response.Content);
             position = positions;
         }
+        #endregion
+        #region GMap
+        bool click_Once = false;
+
+        private void gmap_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        {
+            if (click_Once == false)
+            {
+                click_Once = true;
+
+                if (item.Tag != null)
+                {
+                    Console.WriteLine(String.Format("Camera {0}was clicked.", item.Tag));
+                    PopoutForm PopOut = new PopoutForm(this);
+                    PopOut.Show(this);
+                }
+                else
+                {
+                    click_Once = false;
+                }
+            }
+        }
 
         private void ResetMap()
         {
             gmap.Position = new PointLatLng(52.21299, 5.27937);
-            gmap.MinZoom = 6;
+            gmap.MinZoom = 5;
             gmap.MaxZoom = 18;
             gmap.Zoom = 7;
             gmap.CanDragMap = true;
             gmap.MarkersEnabled = true;
             gmap.PolygonsEnabled = true;
+            lblZoom.Text = "Zoom: " + Convert.ToString(gmap.Zoom);
         }
 
         private void gmap_Load(object sender, EventArgs e)
         {
             gmap.MapProvider = GMap.NET.MapProviders.OpenStreetMapProvider.Instance;
-            GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerOnly;
+            GMaps.Instance.Mode = AccessMode.ServerOnly;
             gmap.CanDragMap = true;
             gmap.ShowCenter = false;
 
             DefaultCamera();
             LoadTrajects(points);
-
             ResetMap();
-            LoadTrainsTimer();
-            LoadAlertTimer();
         }
+        private void gmap_OnMapZoomChanged()
+        {
+            lblZoom.Text = "Zoom: " + Convert.ToString(gmap.Zoom);
 
-        private void button1_Click(object sender, EventArgs e)
+            if (gmap.Zoom <= 7)
+            {
+                trainTimerInterval = 5000;
+            }
+            if (gmap.Zoom > 7 && gmap.Zoom < 11)
+            {
+                trainTimerInterval = 3000;
+            }
+            if (gmap.Zoom >= 11)
+            {
+                trainTimerInterval = 1000;
+            }
+
+            if (nrUpDwn_TimerInterval.Value != trainTimerInterval)
+            {
+                nrUpDwn_TimerInterval.Value = trainTimerInterval;
+                timerTrains.Interval = trainTimerInterval;
+                Console.WriteLine("Trains update interval has changed to: " + trainTimerInterval);
+            }
+        }
+        #endregion
+        #region Buttons
+        private void btn_ResetMapClick(object sender, EventArgs e)
         {
             ResetMap();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btn_PopOutClick(object sender, EventArgs e)
         {
-            Form2 PopOut = new Form2();
+            PopoutForm PopOut = new PopoutForm(this);
             PopOut.Show(this);
         }
 
-        private void gmap_OnMarkerClick_1(GMapMarker item, MouseEventArgs e)
-        {
-            Console.WriteLine(String.Format("Marker {0} was clicked.", item.Tag));
-            Form2 PopOut = new Form2();
-            PopOut.Show(this);
-        }
 
-        private void button3_Click(object sender, EventArgs e)
+
+        private void btn_GetPosClick(object sender, EventArgs e)
         {
             double latitude = gmap.Position.Lat;
             double longitude = gmap.Position.Lng;
             Console.WriteLine("Lat: " + latitude + "Lng: " + longitude);
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btn_ShowTrainsClick(object sender, EventArgs e)
         {
             showTrains = !showTrains;
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btn_ShowStationsClick(object sender, EventArgs e)
         {
             showStations = !showStations;
             LoadStations(trainstations);
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void btn_RequestSQLClick(object sender, EventArgs e)
         {
             SQLrequest();
         }
 
-        private void button7_Click(object sender, EventArgs e)
-        {
-            refreshTrains = !refreshTrains;
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            refreshAlerts = !refreshAlerts;
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            using (MySqlConnection con = new MySqlConnection("Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;"))
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO alerts(id, cam_id, alert, location_x, location_y, route, alert_checked) VALUES(20, 4, 'person', 12, 12, 'test', 0);", con);
-                cmd.ExecuteNonQuery();
-            }
-
-                //string test = DateTime.Now + "\n" + "Test naar test\n" + "0 person";
-                //listBox1.DataSource = null;
-                //refreshAlerts = false;
-                //SQLrequest();
-                //alertList.Add(test);
-                //alertPerson = true;                   
-                ////alertPopUp();
-                //refreshAlerts = true;
-            }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            trainTimerInterval = Convert.ToInt32(numericUpDown1.Value);
-            timerTrains.Interval = trainTimerInterval;
-        }
+        #endregion
     }
-
-
 }

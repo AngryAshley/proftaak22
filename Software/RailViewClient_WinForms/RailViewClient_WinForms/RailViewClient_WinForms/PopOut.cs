@@ -7,14 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RailViewClient_WinForms.Classes;
+using GMap.NET;
+using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
 
 namespace RailViewClient_WinForms
 {
-    public partial class Form2 : Form
+    public partial class PopoutForm : Form
     {
-        public Form2()
+        Camera camera = new Camera();
+        ClientForm clientForm;
+
+        public PopoutForm(ClientForm clientForm)
         {
             InitializeComponent();
+            this.clientForm = clientForm;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -31,10 +39,16 @@ namespace RailViewClient_WinForms
             this.webBrowser1.DocumentText = string.Format(embed, url);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnFalseAlert_Click(object sender, EventArgs e)
         {
             this.Close();
+            clientForm.DefaultCamera();
+        }
 
+        private void btnAlert_Click(object sender, EventArgs e)
+        {
+            //camera.AlertCamera();
+            camera.CameraAlert = true;
         }
     }
 }
