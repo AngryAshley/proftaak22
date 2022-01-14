@@ -1,7 +1,7 @@
 ﻿
 namespace RailViewClient_WinForms
 {
-    partial class Form2
+    partial class PopoutForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,13 +29,13 @@ namespace RailViewClient_WinForms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PopoutForm));
             this.tp_panel = new System.Windows.Forms.Panel();
             this.logo_pb = new System.Windows.Forms.PictureBox();
             this.logo_lbl = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnAlert = new System.Windows.Forms.Button();
+            this.btnFalseAlert = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tp_panel.SuspendLayout();
@@ -78,34 +78,35 @@ namespace RailViewClient_WinForms
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.button2);
+            this.panel1.Controls.Add(this.btnAlert);
+            this.panel1.Controls.Add(this.btnFalseAlert);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 627);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1050, 56);
             this.panel1.TabIndex = 4;
             // 
-            // button1
+            // btnAlert
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.button1.Location = new System.Drawing.Point(353, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(208, 42);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Alert";
-            this.button1.UseVisualStyleBackColor = false;
+            this.btnAlert.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnAlert.Location = new System.Drawing.Point(353, 8);
+            this.btnAlert.Name = "btnAlert";
+            this.btnAlert.Size = new System.Drawing.Size(208, 42);
+            this.btnAlert.TabIndex = 0;
+            this.btnAlert.Text = "Alert";
+            this.btnAlert.UseVisualStyleBackColor = false;
+            this.btnAlert.Click += new System.EventHandler(this.btnAlert_Click);
             // 
-            // button2
+            // btnFalseAlert
             // 
-            this.button2.BackColor = System.Drawing.Color.Lime;
-            this.button2.Location = new System.Drawing.Point(567, 8);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(208, 42);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "False Alert";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnFalseAlert.BackColor = System.Drawing.Color.Lime;
+            this.btnFalseAlert.Location = new System.Drawing.Point(567, 8);
+            this.btnFalseAlert.Name = "btnFalseAlert";
+            this.btnFalseAlert.Size = new System.Drawing.Size(208, 42);
+            this.btnFalseAlert.TabIndex = 1;
+            this.btnFalseAlert.Text = "False Alert";
+            this.btnFalseAlert.UseVisualStyleBackColor = false;
+            this.btnFalseAlert.Click += new System.EventHandler(this.btnFalseAlert_Click);
             // 
             // panel2
             // 
@@ -128,7 +129,7 @@ namespace RailViewClient_WinForms
             this.webBrowser1.Size = new System.Drawing.Size(1010, 524);
             this.webBrowser1.TabIndex = 0;
             // 
-            // Form2
+            // PopoutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -136,7 +137,7 @@ namespace RailViewClient_WinForms
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tp_panel);
-            this.Name = "Form2";
+            this.Name = "PopoutForm";
             this.Text = "Form2";
             this.tp_panel.ResumeLayout(false);
             this.tp_panel.PerformLayout();
@@ -153,8 +154,8 @@ namespace RailViewClient_WinForms
         private System.Windows.Forms.PictureBox logo_pb;
         private System.Windows.Forms.Label logo_lbl;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnFalseAlert;
+        private System.Windows.Forms.Button btnAlert;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.WebBrowser webBrowser1;
     }

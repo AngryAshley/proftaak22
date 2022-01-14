@@ -4,7 +4,6 @@ Alert:
 - OOP for cameras
 - Measure time and (distance) from the potential location and train
 - Actions before impact?
-- Speakers added to system to warn person.
 
 GMAP:
 - Make specified markers for the popout
