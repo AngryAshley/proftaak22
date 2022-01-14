@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-//using RailViewApi;
 using RailViewApi.Models;
-//using RestSharp;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,12 +9,6 @@ builder.Services.AddHttpClient<TrainContext>();
 builder.Services.AddHttpClient<TrainRouteContext>();
 builder.Services.AddDbContext<RailViewContext>();
 builder.Services.AddDbContext<RailViewv2Context>();
-//builder.Services.AddDbContext<RailViewContext>(o =>
-//{
-//    o.UseMySql(builder.Configuration.GetConnectionString("RailViewDb"),
-//    Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.23-mysql"));
-
-//});
 
 //Origins need to be changed in the future!
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -26,7 +18,11 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.WithOrigins("http://localhost",
-                                "http://127.0.0.1")
+                                "https://localhost",
+                                "http://127.0.0.1",
+                                "https://127.0.0.1",
+                                "http://i478152.hera.fhict.nl/",
+                                "https://i478152.hera.fhict.nl/")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
         });
@@ -35,7 +31,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 //Use CORS policy
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors(MyAllowSpecificOrigins); // allow any origin
 
 app.MapGet("/", () => "Hello World!");
 

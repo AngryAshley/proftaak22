@@ -1,11 +1,10 @@
-﻿// Write your JavaScript code.
+﻿//Variables
 var trainLocation = [];
 var trainMarker = [];
 var latlngs = [];
 var currentZoomLevel;
 var hideActiveTrain = false;
 var predefined_val = null;
-//var proxy = 'https://cors-anywhere.herokuapp.com/';
 
 var intercityIcon = L.icon({
     iconUrl: 'images/ic.png',
@@ -46,13 +45,15 @@ var map = L.map('map', {
 });
 
 //cctv cams
-var camera = L.marker([51.4531, 5.5680], { icon: cctvIcon }).addTo(map);
+var camera = L.marker([51.4531, 5.5680], { icon: alertIcon }).addTo(map);
+//var camera;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
 LoadTrains();
+LoadCoords();
 
 //Load active train locations
 setInterval(function () {
@@ -60,18 +61,84 @@ setInterval(function () {
 }, 10000);
 
 setInterval(function () {
-    //Load Alerts and cams through database
+    LoadAlerts();
+}, 1000);
+
+map.on('zoomend', function () {
+    currentZoomLevel = map.getZoom();
+    console.log(currentZoomLevel);
+});
+
+camera.on('click', function () {
+    ShowPopUp();
+    //Delete later
+    LoadCoords();
+});
+
+function ShowPopUp() {
+    window.open('popup.php', "Live Feed", 'fullscreen="yes"');
+}
+function ShowToast() {
+    //$('.toast').toast('show');
+    notify("error", "This is demo error notification message");
+}
+
+
+function notify(type, message) {
+    (() => {
+        let n = document.createElement("div");
+        let id = Math.random().toString(36).substr(2, 10);
+        n.setAttribute("id", id);
+        n.classList.add("notification", type);
+        n.innerText = message;
+        document.getElementById("notification-area").appendChild(n);
+        setTimeout(() => {
+            var notifications = document.getElementById("notification-area").getElementsByClassName("notification");
+            for (let i = 0; i < notifications.length; i++) {
+                if (notifications[i].getAttribute("id") == id) {
+                    notifications[i].remove();
+                    break;
+                }
+            }
+        }, 5000);
+    })();
+}
+
+function ShowAndHideTrains() {
+    hideActiveTrain = !hideActiveTrain;
+
+    if (hideActiveTrain) {
+        $("#btntrain").prop('value', 'Show Active Trains');
+        for (let i = 0; i < trainLocation.length; i++) {
+            map.removeLayer(trainMarker[i]);
+        }
+    }
+    else {
+        $("#btntrain").prop('value', 'Hide Active Trains');
+        trainMarker = [];
+        for (let i = 0; i < trainLocation.length; i++) {
+            if (trainLocation[i][2] == "ARR")
+                trainMarker[i] = L.marker(trainLocation[i], { icon: arrivaIcon }).addTo(map);
+            else if (trainLocation[i][2] == "SPR")
+                trainMarker[i] = L.marker(trainLocation[i], { icon: sprinterIcon }).addTo(map);
+            else
+                trainMarker[i] = L.marker(trainLocation[i], { icon: intercityIcon }).addTo(map);
+        }
+    }
+}
+
+//Load Alerts and cams through database
+function LoadAlerts() {
     $.ajax({
-        url: 'http://127.0.0.1:5256/api/alerts',
+        url: 'http://127.0.0.1:5256/api/alertsv2',
         type: 'GET',
         dataType: "json",
-        // headers:{
-        //     "Access-Control-Allow-Origin": "http://127.0.0.1:5256/api/alerts",
-        //     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-        // },
         success: function (response) {
             console.log(response);
             var data = response;
+            // if (camera != null) {
+            //     map.removeLayer(camera);
+            // }
 
             if (JSON.stringify(predefined_val) != JSON.stringify(data)) {
                 // window.location.href=window.location.href;
@@ -87,12 +154,18 @@ setInterval(function () {
 
                 // store alerts for check
                 data.forEach(element => {
-                    if (element['Alert_Checked'] == false && element['Alert'] == 'person') {
+                    if (element['statusType'] == false && element['accidentType'] == 'person') {
                         //cam_alerts[counter] = element;
                         //counter++;
                         notify("error", element["Id"]);
                         console.log("test: " + element["Id"]);
+                        //camera = L.marker([element['latitude'], element['longtitude']], { icon: alertIcon }).addTo(map);
                     }
+                    else {
+                        //camera = L.marker([element['latitude'], element['longtitude']], { icon: cctvIcon }).addTo(map);
+                    }
+                    console.log(camera);
+                    //map.addLayer(camera);
                 });
 
                 //camAlerts(cam_alerts);
@@ -106,20 +179,22 @@ setInterval(function () {
             console.log(error.responseText);
         }
     });
-}, 1000);
+}
 
 //Load coords from route
 function LoadCoords() {
     $.ajax({
-        url: '/Route/Index',
+        url: 'http://127.0.0.1:5256/api/routes',
         type: 'GET',
         success: function (response) {
             console.log(latlngs);
             latlngs = [];
-            console.log(response.length);
-            for (let i = 0; i < response.length; i += 2) {
-                latlngs.push([response[i], response[i + 1]]);
-                console.log(i);
+            console.log(response.payload.features);
+            for (let b = 0; b < response.payload.features[0].geometry.coordinates.length; b++) {
+                // for (let i = 0; i < response.payload.features[b].geometry.coordinates.length; i++) {
+                //     latlngs.push([response.payload.features[b].geometry.coordinates[i][1], response.payload.features[b].geometry.coordinates[i][0]]);
+                // }
+                latlngs.push([response.payload.features[0].geometry.coordinates[b][1], response.payload.features[0].geometry.coordinates[b][0]]);
             }
 
             console.log(latlngs);
@@ -136,6 +211,7 @@ function LoadCoords() {
     });
 }
 
+//Load live train positions
 function LoadTrains() {
     $.ajax({
         url: 'http://127.0.0.1:5256/api/trains',
@@ -173,65 +249,47 @@ function LoadTrains() {
     });
 }
 
-function ShowAndHideTrains() {
-    hideActiveTrain = !hideActiveTrain;
+//Load alerts (old)
+// function LoadAlerts() {
+//     $.ajax({
+//         url: 'http://127.0.0.1:5256/api/alerts',
+//         type: 'GET',
+//         dataType: "json",
+//         success: function (response) {
+//             console.log(response);
+//             var data = response;
 
-    if (hideActiveTrain) {
-        $("#btntrain").prop('value', 'Show Active Trains');
-        for (let i = 0; i < trainLocation.length; i++) {
-            map.removeLayer(trainMarker[i]);
-        }
-    }
-    else {
-        $("#btntrain").prop('value', 'Hide Active Trains');
-        trainMarker = [];
-        for (let i = 0; i < trainLocation.length; i++) {
-            if (trainLocation[i][2] == "ARR")
-                trainMarker[i] = L.marker(trainLocation[i], { icon: arrivaIcon }).addTo(map);
-            else if (trainLocation[i][2] == "SPR")
-                trainMarker[i] = L.marker(trainLocation[i], { icon: sprinterIcon }).addTo(map);
-            else
-                trainMarker[i] = L.marker(trainLocation[i], { icon: intercityIcon }).addTo(map);
-        }
-    }
-}
+//             if (JSON.stringify(predefined_val) != JSON.stringify(data)) {
+//                 // window.location.href=window.location.href;
+//                 //Get the template
+//                 var template = $("#all-data-template").html();
+//                 //Render output with Mustache.js
+//                 var renderTemplate = Mustache.render(template, data);
+//                 //Append the data to the body
+//                 $("#log").append(renderTemplate);
 
-function ShowPopUp() {
-    window.open('popup.php', "Live Feed", 'fullscreen="yes"');
-}
-function ShowToast() {
-    //$('.toast').toast('show');
-    notify("error", "This is demo error notification message");
-}
+//                 // camAlert = data;
+//                 predefined_val = data;
 
-map.on('zoomend', function () {
-    currentZoomLevel = map.getZoom();
-    console.log(currentZoomLevel);
-});
+//                 // store alerts for check
+//                 data.forEach(element => {
+//                     if (element['Alert_Checked'] == false && element['Alert'] == 'person') {
+//                         //cam_alerts[counter] = element;
+//                         //counter++;
+//                         notify("error", element["Id"]);
+//                         console.log("test: " + element["Id"]);
+//                     }
+//                 });
 
-camera.on('click', function () {
-    ShowPopUp();
-    //Delete later
-    LoadCoords();
-});
+//                 //camAlerts(cam_alerts);
+//             }
 
-
-function notify(type, message) {
-    (() => {
-        let n = document.createElement("div");
-        let id = Math.random().toString(36).substr(2, 10);
-        n.setAttribute("id", id);
-        n.classList.add("notification", type);
-        n.innerText = message;
-        document.getElementById("notification-area").appendChild(n);
-        setTimeout(() => {
-            var notifications = document.getElementById("notification-area").getElementsByClassName("notification");
-            for (let i = 0; i < notifications.length; i++) {
-                if (notifications[i].getAttribute("id") == id) {
-                    notifications[i].remove();
-                    break;
-                }
-            }
-        }, 5000);
-    })();
-}
+//             if (predefined_val == null) {
+//                 predefined_val = data;
+//             }
+//         },
+//         error: function (error) {
+//             console.log(error.responseText);
+//         }
+//     });
+// }

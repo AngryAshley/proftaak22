@@ -23,9 +23,9 @@
 
 <template id="all-data-template">
     {{#.}}
-    <div class="text-center border-top border-dark border-2">
+    <div class="text-center border-top border-bottom border-dark border-2">
         <p class="px-2 pt-2 text-capitalize">
-            {{times}} <br /> {{route}} <br /> <b>{{alert1}}</b>
+            {{accidentDate}} <br /> {{cameraName}} <br /> <b>{{accidentType}}</b>
         </p>
     </div>
     {{/.}}
