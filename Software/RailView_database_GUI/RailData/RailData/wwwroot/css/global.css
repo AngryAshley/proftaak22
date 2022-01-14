@@ -1,0 +1,33 @@
+﻿html {
+    font-size: 14px;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    margin: 0 auto;
+}
+
+.container-dashboard {
+    max-width: 1500px;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 10px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.btn-general {
+    background-color: #21735B;
+    color: white;
+}
+
+.btn-general:hover {
+    background-color: #002247;
+    color: white;
+}
