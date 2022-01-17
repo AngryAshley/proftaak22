@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RailViewClient_WinForms
+namespace RailViewClient_WinForms.Classes
 {
     public class Alert
     {

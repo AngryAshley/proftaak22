@@ -16,7 +16,6 @@ namespace RailViewClient_WinForms
 {
     public partial class PopoutForm : Form
     {
-        Camera camera = new Camera();
         ClientForm clientForm;
 
         public PopoutForm(ClientForm clientForm)
@@ -42,13 +41,13 @@ namespace RailViewClient_WinForms
         private void btnFalseAlert_Click(object sender, EventArgs e)
         {
             this.Close();
-            clientForm.DefaultCamera();
+            //clientForm.DefaultCamera();
         }
 
         private void btnAlert_Click(object sender, EventArgs e)
         {
             //camera.AlertCamera();
-            camera.CameraAlert = true;
+            //camera.CameraAlert = true;
         }
     }
 }

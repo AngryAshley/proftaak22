@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace RailViewClient
+namespace RailViewClient_WinForms.Classes
 {
     public class Links
     {

@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using System.IO;
 using Newtonsoft.Json;
-using RailViewClient;
 using GMap.NET;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
@@ -10,10 +9,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using RestSharp;
 using MySql.Data.MySqlClient;
-using Geometry = RailViewClient.Geometry;
-using Positions = RailViewClientTrain.Positions;
-using Stations = RailViewClient_Stations.Stations;
 using RailViewClient_WinForms.Classes;
+using Positions = RailViewClient_WinForms.Positions;
 
 namespace RailViewClient_WinForms
 {
@@ -21,7 +18,7 @@ namespace RailViewClient_WinForms
     {
         TextWriter _writer = null;
 
-        MySqlConnection con = new MySqlConnection("Server=192.168.161.205;Port=3306;Database=RailView;Uid=admin;Pwd=TopMaster99;");
+        MySqlConnection con = new MySqlConnection("Server=192.168.161.205;Port=3306;Database=RailViewv2;Uid=admin;Pwd=TopMaster99;");
 
         public Trajects traject = new Trajects();
         public Positions position = new Positions();
@@ -34,8 +31,6 @@ namespace RailViewClient_WinForms
         GMapOverlay trains = new GMapOverlay("trains");
         GMapOverlay points = new GMapOverlay("points");
         GMapOverlay markers = new GMapOverlay("markers");
-
-        Camera camera = new Camera();
 
         public ClientForm()
         {
@@ -125,60 +120,114 @@ namespace RailViewClient_WinForms
 
         public void SQLrequest()
         {
-            con.Close();
-
-            using (con)
+            try
             {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand("select * from alerts", con);
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    Alert alert = new Alert();
-                    alert.id = Convert.ToInt32(reader["id"]);
-                    alert.alert = reader["alert"].ToString();
-                    alert.route = reader["route"].ToString();
-                    alert.times = reader["times"].ToString();
-
-                    alerts = alert.times + " \n" + alert.route + "\n" + alert.id + " " + alert.alert + "\n";
-                    alertList.Add(alerts);
-                }
-
-                if (oldAlertList.Count == 0 || alertList.Count < oldAlertList.Count)
-                {
-                    listBoxAlerts.DataSource = null;
-                    listBoxAlerts.DataSource = alertList;
-                    oldAlertList = new List<string>(alertList);
-                }
-
-                if (alertList.Count > oldAlertList.Count)
-                {
-                    listBoxAlerts.DataSource = null;
-                    listBoxAlerts.DataSource = alertList;
-                    oldAlertList = new List<string>(alertList);
-
-                    if (alertList[alertList.Count - 1].Contains("person") == true)
-                    {
-                        Console.WriteLine(DateTime.Now + " Person detected.");
-                        alertPerson = true;
-                    }
-                    if (alertList[alertList.Count - 1].Contains("train") == true)
-                    {
-                        Console.WriteLine(DateTime.Now + " Train detected.");
-                    }
-                    if (alertList[alertList.Count - 1].Contains("other") == true)
-                    {
-                        Console.WriteLine(DateTime.Now + " Something other detected.");
-                        alertOther = true;
-                    }
-                    alertPopUp();
-                }
-                reader.Close();
                 con.Close();
+
+                using (con)
+                {
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT `n`.`Notification_ID` AS `NotificationId`, `n`.`Camera_ID` AS `CameraId`, `n`.`Employee_ID` AS `EmployeeId`, `n`.`Accident_ID` AS `AccidentId`, `n`.`Status_Type` AS `StatusType`, `n`.`Required_Action` AS `RequiredAction`, `c`.`Coordinates_ID` AS `CoordinatesId`, `c`.`Camera_Name` AS `CameraName`, `c`.`Stream_Link` AS `StreamLink`, `c0`.`longtitude` AS `Longtitude`, `c0`.`latitude` AS `Latitude`, `a`.`Accident_Date` AS `AccidentDate`, `a`.`Accident_Type` AS `AccidentType`" +
+                                                        "FROM `Notification` AS `n` " +
+                                                        "INNER JOIN `Camera` AS `c` ON `n`.`Camera_ID` = `c`.`Camera_ID` " +
+                                                        "INNER JOIN `Coordinates` AS `c0` ON `c`.`Coordinates_ID` = `c0`.`Coordinates_ID` " +
+                                                        "INNER JOIN `Accident` AS `a` ON `n`.`Accident_ID` = `a`.`Accident_ID` ", con);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Notification notification = new Notification();
+                        notification.NotificationId = (int)reader["notificationId"];
+                        notification.CameraId = (int)reader["cameraId"];
+                        notification.AccidentId = (int)reader["accidentId"];
+                        notification.StatusType = (string)reader["statusType"];
+                        notification.RequiredAction = (bool)reader["requiredAction"];
+
+                        Accident accident = new Accident();
+                        accident.AccidentId = (int)reader["accidentId"];
+                        accident.AccidentType = (string)reader["accidentType"];
+                        accident.AccidentDate = (DateTime)reader["accidentDate"];
+
+                        Camera camera = new Camera();
+                        camera.CameraId = (int)reader["cameraId"];
+                        camera.CameraName = (string)reader["cameraName"];
+                        camera.CoordinatesId = (int)reader["coordinatesId"];
+
+                        Coordinate coordinate = new Coordinate();
+                        coordinate.CoordinatesId = (int)reader["coordinatesId"];
+                        coordinate.Latitude = (double)reader["latitude"];
+                        coordinate.Longtitude = (double)reader["longtitude"];
+
+                        alerts = accident.AccidentDate + " \n" + camera.CameraName + "\n" + accident.AccidentType + "\n" + notification.StatusType + "\n" + notification.RequiredAction;
+                        alertList.Add(alerts);
+
+                        GMapMarker marker = null;
+
+                        if (notification.StatusType == "closed")
+                        {
+                            marker = new GMarkerGoogle(
+                            new PointLatLng(coordinate.Latitude, coordinate.Longtitude),
+                            new Bitmap("cctv.png"));
+                        }
+                        else if (notification.StatusType == "open")
+                        {
+                            marker = new GMarkerGoogle(
+                            new PointLatLng(coordinate.Latitude, coordinate.Longtitude),
+                            new Bitmap("alert.png"));
+                        }
+
+                        markers.Markers.Add(marker);
+                        gmap.Overlays.Add(markers);
+
+                        marker.ToolTipText = "\n" + camera.CameraName + "\n ";
+                        marker.ToolTip.Fill = Brushes.White;
+                        marker.ToolTip.Foreground = Brushes.Black;
+                        marker.ToolTip.Stroke = Pens.Black;
+                        marker.ToolTip.TextPadding = new Size(20, 0);
+                        marker.Tag = camera.CameraId;
+                    }
+
+                    if (oldAlertList.Count == 0 || alertList.Count < oldAlertList.Count)
+                    {
+                        listBoxAlerts.DataSource = null;
+                        listBoxAlerts.DataSource = alertList;
+                        oldAlertList = new List<string>(alertList);
+                    }
+
+                    if (alertList.Count > oldAlertList.Count)
+                    {
+                        listBoxAlerts.DataSource = null;
+                        listBoxAlerts.DataSource = alertList;
+                        oldAlertList = new List<string>(alertList);
+
+                        if (alertList[alertList.Count - 1].Contains("person") == true)
+                        {
+                            Console.WriteLine(DateTime.Now + " Person detected.");
+                            alertPerson = true;
+                        }
+                        if (alertList[alertList.Count - 1].Contains("train") == true)
+                        {
+                            Console.WriteLine(DateTime.Now + " Train detected.");
+                        }
+                        if (alertList[alertList.Count - 1].Contains("other") == true)
+                        {
+                            Console.WriteLine(DateTime.Now + " Something other detected.");
+                            alertOther = true;
+                        }
+                        alertPopUp();
+                    }
+                    reader.Close();
+                    con.Close();
+                }
+                alertList.Clear();
+                alertListBox();
             }
-            alertList.Clear();
-            alertListBox();
+            catch (Exception e)
+            {
+                pauseAlerts = false;
+                MessageBox.Show(e.ToString());
+
+            }
         }
 
         public void alertPopUp()
@@ -188,7 +237,6 @@ namespace RailViewClient_WinForms
                 do_Once = true;
                 if (alertPerson == true)
                 {
-                    AlertCamera();
                     //if (camera.CameraAlert == true)
                     //{                        
                     //}
@@ -220,19 +268,21 @@ namespace RailViewClient_WinForms
             using (con)
             {
                 con.Open();
-                MySqlCommand cmd = new MySqlCommand("select * from alerts", con);
+                MySqlCommand cmd = new MySqlCommand("select * from Accident", con);
                 MySqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    Alert alert = new Alert();
-                    alert.id = Convert.ToInt32(reader["id"]);
-                    alertCount = alert.id;
+                    Accident accident = new Accident();
+                    accident.AccidentId = (int)reader["AccidentId"];
+                    alertCount = accident.AccidentId;
+
+
                 }
                 reader.Close();
 
                 alertCount++;
-                MySqlCommand cmd2 = new MySqlCommand("INSERT INTO alerts(id, cam_id, alert, location_x, location_y, route, alert_checked) VALUES(" + alertCount + ", 4, 'person', 51.4531, 5.568, 'test', 0);", con);
+                MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Accident(id, cam_id, alert, location_x, location_y, route, alert_checked) VALUES(" + alertCount + ", 4, 'person', 51.4531, 5.568, 'test', 0);", con);
                 cmd2.ExecuteNonQuery();
 
             }
@@ -240,44 +290,6 @@ namespace RailViewClient_WinForms
             SQLrequest();
         }
         #endregion
-        public void DefaultCamera()
-        {
-            click_Once = false;
-
-            GMapMarker marker = new GMarkerGoogle(
-                new PointLatLng(51.4687928, 5.6342143),
-            new Bitmap("cctv.png"));
-            markers.Markers.Add(marker);
-            gmap.Overlays.Add(markers);
-
-            marker.ToolTipText = "\nRailcam Mierlo-Hout\n ";
-            marker.ToolTip.Fill = Brushes.White;
-            marker.ToolTip.Foreground = Brushes.Black;
-            marker.ToolTip.Stroke = Pens.Black;
-            marker.ToolTip.TextPadding = new Size(20, 0);
-            marker.Tag = marker.ToolTipText;
-        }
-
-        public void AlertCamera()
-        {
-            GMapMarker marker = new GMarkerGoogle(
-                new PointLatLng(51.4687928, 5.6342143),
-            new Bitmap("alert.png"));
-            markers.Markers.Add(marker);
-            gmap.Overlays.Add(markers);
-
-            marker.ToolTipText = "\nRailcam Mierlo-Hout\n ";
-            marker.ToolTip.Fill = Brushes.White;
-            marker.ToolTip.Foreground = Brushes.Black;
-            marker.ToolTip.Stroke = Pens.Black;
-            marker.ToolTip.TextPadding = new Size(20, 0);
-
-            gmap.Position = new PointLatLng(51.4687928, 5.6342143);
-            gmap.Zoom = 12;
-
-            PopoutForm frmPopout = new PopoutForm(this);
-            frmPopout.Show(this);
-        }
         #region Alert Listbox
         public void alertListBox()
         {
@@ -521,7 +533,6 @@ namespace RailViewClient_WinForms
             gmap.CanDragMap = true;
             gmap.ShowCenter = false;
 
-            DefaultCamera();
             LoadTrajects(points);
             ResetMap();
         }

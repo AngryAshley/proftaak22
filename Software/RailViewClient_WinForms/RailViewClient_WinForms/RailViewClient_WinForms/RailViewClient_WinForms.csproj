@@ -144,8 +144,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Accident.cs" />
     <Compile Include="Classes\Alert.cs" />
     <Compile Include="Classes\Camera.cs" />
+    <Compile Include="Classes\Coordinate.cs" />
+    <Compile Include="Classes\Department.cs" />
+    <Compile Include="Classes\Employee.cs" />
+    <Compile Include="Classes\EmployeeLogin.cs" />
+    <Compile Include="Classes\Notification.cs" />
     <Compile Include="Classes\Stations.cs" />
     <Compile Include="Client.cs">
       <SubType>Form</SubType>

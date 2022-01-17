@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RailViewClientTrain
+namespace RailViewClient_WinForms
 {
     public class Links
     {
