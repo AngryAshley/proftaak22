@@ -7,12 +7,18 @@ output:
 ```{r}
 #install.packages("lubridate") 
 #install.packages("reshape2")
+#install.packages("DBI")
+#install.packages("odbc")
+#install.packages("RSQLite")
 
 library(readxl)
 library(dplyr)
 library(ggplot2)
 library(reshape2)
 library(lubridate)
+library(odbc)
+library(DBI)
+library(RSQLite)
 
 Disruptions <- read_xlsx("disruptions-2011-2019.xlsx")
 AanrijdingLocatie <- read_xlsx("Spoordata_locatie.xlsx")
@@ -20,8 +26,13 @@ SpoorData_solution <- read_xlsx("Spoordata_solution.xlsx")
 AanrijdingData <- read_xlsx("AanrijdingData.xlsx")
 SpoorData_prediction <- read_xlsx("Spoordata_prediction.xlsx")
 SpoorData <- read_xlsx("1979-2020 spoordata.xlsx")
-USER_DATA <- read.csv("USER_DATA.csv")
+USER_DATA <- read_xlsx("USER_DATA.xlsx")
 NOTIFICATION_DATA <- read_xlsx("NOTIFICATION_DATA.xlsx")
+df1 <- read_xlsx("NOTIFICATION_DATA.xlsx")
+df2 <- read_xlsx("USER_DATA.xlsx")
+
+NOTIFICATION_DATA <- na.omit(NOTIFICATION_DATA) #verwijder alle observaties waarbij een variabele de waarde NA heeft
+df1 <- na.omit(df1)
 ```
 
 ```{r}
@@ -299,19 +310,162 @@ Notification <- NOTIFICATION_DATA%>%
 
 
 ggplot(data = Notification, aes(x=Month, y=Accident, fill=Status)) +
-  geom_col()
-
+  geom_bar(stat="identity") +
+  labs(title = "Aantal Accident meldingen per maand") +
+  labs(subtitle = "3 verschillende statussen per melding")
+  
 #Lubridate toevoegen
 
   
 ```
 ```{r}
 Users <- USER_DATA%>%
-select(Employee_Id, Department_Id)%>%
-rename("Employee" = Employee_Id)%>%
-rename("Department
+select(Employee_Id, Location, Department_Id)%>%
+rename("Medewerkers" = Employee_Id)%>%
+rename("Locatie" = Location)%>%
+rename("Department_ID" = Department_Id)
+  
+ggplot(data = Users, aes(x=Medewerkers, y=Locatie, fill=Department_ID)) +
+  geom_bar(stat="identity") +
+  labs(title = "Aantal medewerkers per locatie") +
+  labs(subtitle = "Department_id 1 t/m 10")
+
+
   
 ```
 
+```{r}
+Users2 <- USER_DATA%>%
+select(Employee_Id, Location, Employee_Name)%>%
+rename("Medewerker_ID" = Employee_Id)%>%
+rename("Locatie" = Location)%>%
+rename("Medewerkers" = Employee_Name)
+  
+ggplot(data = Users2, aes(x=Medewerker_ID, y=Locatie, fill=Medewerkers)) +
+  geom_col(stat="identity") +
+  labs(title = "aantal ID's") +
+  labs(subtitle = "Van alle locaties")
+
+```
+
+```{r}
+
+Notification2 <- NOTIFICATION_DATA%>%
+  select(Required_Action, Accident_ID, Accident_Type)%>%
+  rename("Accident_ID" = Accident_ID)%>%
+  rename("Action" = Required_Action)%>%
+  rename("Type_Accident" = Accident_Type)
 
 
+ggplot(data = Notification2, aes(x=Action, y=Accident_ID, fill=Type_Accident)) +
+  geom_raster(stat="identity") +
+  labs(title = "Required action per accident_id") +
+  labs(subtitle = "3 soorten action's per type accident")
+```
+```{r}
+Notification3 <- NOTIFICATION_DATA%>%
+  select(Notification_ID, Camera_Name, Accident_Date)%>%
+  rename("Datum" = Accident_Date)%>%
+  rename("ID" = Notification_ID)%>%
+  rename("Camera_Naam" = Camera_Name)
+  #Notification3$Datum <- as.Date(Notification3$Datum)
+  #Notification3$Maand <- as.numeric(format(Notification3$Datum, "%Y-%m-%d")
+
+
+ggplot(data = Notification3, aes(x=ID, y=Camera_Naam, fill=Datum)) +
+  geom_bar(stat="identity") +
+  labs(title = "") +
+  labs(subtitle = "3 soorten action's per type accident")
+
+```
+
+```{r}
+x <- "2022-10-05"
+
+x_formatted <- as.Date(x, format = "%Y-%m-%d")
+
+class(x_formatted)
+
+x_month <-format(x_formatted, "%m")
+
+```
+
+```{r}
+Notification3$Datum
+
+Notification3$Datum <- as.Date(Notification3$Datum, format = "%Y-%m-%d")
+
+class(Notification3$Datum)
+
+Notification3$Maand <- format(Notification3$Datum, "%m")
+
+
+```
+
+```{r}
+#Notification3 %>% mutate(Datum = month(Datum))%>%
+#  select((Datum))
+
+#Notification3$Datum%>%
+# mutate(Datum=ymd(Datum))%>%
+```
+
+```{r}
+con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+
+copy_to(con, mutate_at(df1, vars(starts_with("datum")), as.character), "Tabel1")
+        
+copy_to(con, df2, "Tabel2")
+
+knitr::opts_chunk$set(connection = "con")
+```
+
+```{sql connection="con"}
+
+SELECT *
+FROM Tabel1
+WHERE Status_Type ='Accident'
+GROUP BY Accident_Date;
+
+
+```
+Hier zijn alle accidents die binnen komen te zien en gefilterd op datum. het aantal binnenkomende accident meldingen per maand is hier te zien.
+
+```{sql connection="con"}
+
+SELECT *
+FROM Tabel1
+WHERE Status_Type ='Accident'
+GROUP BY Accident_Date;
+HAVING Accident_Month > 3
+
+```
+
+```{sql connection="con"}
+
+SELECT MIN(Accident_Date) AS FirstAccidentThisYear
+FROM Tabel1
+```
+Hier is te zien wanneer de 1e melding was die in 2021 binnen is gekomen.
+
+```{sql connection="con"}
+
+SELECT MAX(Accident_Date) AS LastAccidentThisYear
+FROM Tabel1
+
+
+```
+Hier is te zien was de laaste binnenkomende melding is op dit moment.
+
+```{sql connection="con"}
+
+SELECT *
+FROM Tabel1
+WHERE Status_Type ='Accident' AND 'Warning'>
+(SELECT Notification_ID
+FROM Tabel1
+WHERE Required_Action = 'Send_Help');
+
+
+```
+Hier zijn alle accidents/warings die binnen komen te zien en gefilterd op required action "Send_Help". het aantal binnenkomende accident/waring meldingen per maand is hier te zien.
