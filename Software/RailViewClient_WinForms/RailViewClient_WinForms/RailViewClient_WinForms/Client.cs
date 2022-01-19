@@ -11,6 +11,7 @@ using RestSharp;
 using MySql.Data.MySqlClient;
 using RailViewClient_WinForms.Classes;
 using Positions = RailViewClient_WinForms.Positions;
+using System.Linq;
 
 namespace RailViewClient_WinForms
 {
@@ -114,10 +115,6 @@ namespace RailViewClient_WinForms
         private int ItemMargin = 5;
         string alerts = string.Empty;
 
-        bool alertPerson = false;
-        bool alertOther = false;
-        bool do_Once = false;
-
         public void SQLrequest()
         {
             try
@@ -133,6 +130,8 @@ namespace RailViewClient_WinForms
                                                         "INNER JOIN `Coordinates` AS `c0` ON `c`.`Coordinates_ID` = `c0`.`Coordinates_ID` " +
                                                         "INNER JOIN `Accident` AS `a` ON `n`.`Accident_ID` = `a`.`Accident_ID` ", con);
                     MySqlDataReader reader = cmd.ExecuteReader();
+
+                    GMapMarker marker = null;
 
                     while (reader.Read())
                     {
@@ -158,10 +157,8 @@ namespace RailViewClient_WinForms
                         coordinate.Latitude = (double)reader["latitude"];
                         coordinate.Longtitude = (double)reader["longtitude"];
 
-                        alerts = accident.AccidentDate + " \n" + camera.CameraName + "\n" + accident.AccidentType + "\n" + notification.StatusType + "\n" + notification.RequiredAction;
-                        alertList.Add(alerts);
-
-                        GMapMarker marker = null;
+                        alerts = accident.AccidentDate + " \n" + camera.CameraName + "\n" + accident.AccidentType + "\n" + "Status: "+ notification.StatusType + "\n" + "Action required: " +notification.RequiredAction;
+                        alertList.Add(alerts);                     
 
                         if (notification.StatusType == "closed")
                         {
@@ -175,27 +172,29 @@ namespace RailViewClient_WinForms
                             new PointLatLng(coordinate.Latitude, coordinate.Longtitude),
                             new Bitmap("alert.png"));
                         }
-
-                        markers.Markers.Add(marker);
-                        gmap.Overlays.Add(markers);
-
                         marker.ToolTipText = "\n" + camera.CameraName + "\n ";
                         marker.ToolTip.Fill = Brushes.White;
                         marker.ToolTip.Foreground = Brushes.Black;
                         marker.ToolTip.Stroke = Pens.Black;
                         marker.ToolTip.TextPadding = new Size(20, 0);
                         marker.Tag = camera.CameraId;
+
+                        markers.Markers.Add(marker);
                     }
 
-                    if (oldAlertList.Count == 0 || alertList.Count < oldAlertList.Count)
+
+                    if (oldAlertList.Count == 0 || alertList.Count < oldAlertList.Count || oldAlertList.SequenceEqual(alertList)== false)
                     {
+                        markers.Clear();
                         listBoxAlerts.DataSource = null;
                         listBoxAlerts.DataSource = alertList;
                         oldAlertList = new List<string>(alertList);
+                        gmap.Overlays.Add(markers);
                     }
 
-                    if (alertList.Count > oldAlertList.Count)
+                    if (alertList.Count > oldAlertList.Count || alertList.SequenceEqual(oldAlertList)== false)
                     {
+                        markers.Clear();
                         listBoxAlerts.DataSource = null;
                         listBoxAlerts.DataSource = alertList;
                         oldAlertList = new List<string>(alertList);
@@ -203,7 +202,6 @@ namespace RailViewClient_WinForms
                         if (alertList[alertList.Count - 1].Contains("person") == true)
                         {
                             Console.WriteLine(DateTime.Now + " Person detected.");
-                            alertPerson = true;
                         }
                         if (alertList[alertList.Count - 1].Contains("train") == true)
                         {
@@ -212,9 +210,8 @@ namespace RailViewClient_WinForms
                         if (alertList[alertList.Count - 1].Contains("other") == true)
                         {
                             Console.WriteLine(DateTime.Now + " Something other detected.");
-                            alertOther = true;
                         }
-                        alertPopUp();
+                        gmap.Overlays.Add(markers);
                     }
                     reader.Close();
                     con.Close();
@@ -226,37 +223,7 @@ namespace RailViewClient_WinForms
             {
                 pauseAlerts = false;
                 MessageBox.Show(e.ToString());
-
             }
-        }
-
-        public void alertPopUp()
-        {
-            if (do_Once == false)
-            {
-                do_Once = true;
-                if (alertPerson == true)
-                {
-                    //if (camera.CameraAlert == true)
-                    //{                        
-                    //}
-                    //else
-                    //{
-                    alertPerson = false;
-                    //DefaultCamera();
-                    //}                    
-                }
-                if (alertOther == true)
-                {
-                    //if (camera.CameraAlert == false)
-                    //{
-
-                    //}                   
-                    alertOther = false;
-                    //DefaultCamera();
-                }
-            }
-            do_Once = false;
         }
 
         private void btnTest_Click(object sender, EventArgs e)
@@ -477,7 +444,6 @@ namespace RailViewClient_WinForms
                 Stations stations = JsonConvert.DeserializeObject<Stations>(json);
                 station = stations;
             }
-
         }
 
         public void LoadAPI()
@@ -503,7 +469,7 @@ namespace RailViewClient_WinForms
 
                 if (item.Tag != null)
                 {
-                    Console.WriteLine(String.Format("Camera {0}was clicked.", item.Tag));
+                    Console.WriteLine(String.Format("Camera {0} was clicked.", item.Tag));
                     PopoutForm PopOut = new PopoutForm(this);
                     PopOut.Show(this);
                 }
@@ -512,6 +478,16 @@ namespace RailViewClient_WinForms
                     click_Once = false;
                 }
             }
+        }
+
+        public void FalseAlertClick()
+        {
+            click_Once = false;
+        }
+
+        public void AlertClick()
+        {
+            click_Once = false;
         }
 
         private void ResetMap()
@@ -573,8 +549,6 @@ namespace RailViewClient_WinForms
             PopOut.Show(this);
         }
 
-
-
         private void btn_GetPosClick(object sender, EventArgs e)
         {
             double latitude = gmap.Position.Lat;
@@ -597,7 +571,6 @@ namespace RailViewClient_WinForms
         {
             SQLrequest();
         }
-
         #endregion
     }
 }

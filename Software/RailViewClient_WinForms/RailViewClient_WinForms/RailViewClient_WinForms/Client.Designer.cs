@@ -170,6 +170,7 @@ namespace RailViewClient_WinForms
             // 
             // btm_panel
             // 
+            this.btm_panel.BackColor = System.Drawing.Color.White;
             this.btm_panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.btm_panel.Controls.Add(this.tabControl);
             this.btm_panel.Controls.Add(this.panel2);

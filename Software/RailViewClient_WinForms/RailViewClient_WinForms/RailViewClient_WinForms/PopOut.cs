@@ -41,13 +41,13 @@ namespace RailViewClient_WinForms
         private void btnFalseAlert_Click(object sender, EventArgs e)
         {
             this.Close();
-            //clientForm.DefaultCamera();
+            clientForm.FalseAlertClick();
         }
 
         private void btnAlert_Click(object sender, EventArgs e)
         {
-            //camera.AlertCamera();
-            //camera.CameraAlert = true;
+            this.Close();
+            clientForm.AlertClick();
         }
     }
 }
