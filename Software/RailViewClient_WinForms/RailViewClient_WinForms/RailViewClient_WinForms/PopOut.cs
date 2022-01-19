@@ -54,9 +54,9 @@ namespace RailViewClient_WinForms
 
         private void PopoutForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
-            this.Close();
+            this.Hide();
             clientForm.ClickOnce();
+            e.Cancel = true;
         }
     }
 }

@@ -183,36 +183,54 @@ namespace RailViewClient_WinForms
                     }
 
 
-                    if (oldAlertList.Count == 0 || alertList.Count < oldAlertList.Count || oldAlertList.SequenceEqual(alertList)== false)
+                    if (oldAlertList.Count == 0 /*|| alertList.Count < oldAlertList.Count*/ || oldAlertList.SequenceEqual(alertList)== false)
                     {
                         markers.Clear();
                         listBoxAlerts.DataSource = null;
                         listBoxAlerts.DataSource = alertList;
-                        oldAlertList = new List<string>(alertList);
+
+                        if (oldAlertList.SequenceEqual(alertList)== false)
+                        {
+                            oldAlertList = new List<string>(alertList);
+
+                            if (alertList[alertList.Count - 1].Contains("person") == true)
+                            {
+                                Console.WriteLine(DateTime.Now + " Person detected.");
+                            }
+                            if (alertList[alertList.Count - 1].Contains("train") == true)
+                            {
+                                Console.WriteLine(DateTime.Now + " Train detected.");
+                            }
+                            if (alertList[alertList.Count - 1].Contains("other") == true)
+                            {
+                                Console.WriteLine(DateTime.Now + " Something other detected.");
+                            }
+                        }
+
                         gmap.Overlays.Add(markers);
                     }
 
-                    if (alertList.Count > oldAlertList.Count || alertList.SequenceEqual(oldAlertList)== false)
-                    {
-                        markers.Clear();
-                        listBoxAlerts.DataSource = null;
-                        listBoxAlerts.DataSource = alertList;
-                        oldAlertList = new List<string>(alertList);
+                    //if (alertList.Count > oldAlertList.Count/* || alertList.SequenceEqual(oldAlertList)== false*/)
+                    //{
+                    //    markers.Clear();
+                    //    listBoxAlerts.DataSource = null;
+                    //    listBoxAlerts.DataSource = alertList;
+                    //    oldAlertList = new List<string>(alertList);
 
-                        if (alertList[alertList.Count - 1].Contains("person") == true)
-                        {
-                            Console.WriteLine(DateTime.Now + " Person detected.");
-                        }
-                        if (alertList[alertList.Count - 1].Contains("train") == true)
-                        {
-                            Console.WriteLine(DateTime.Now + " Train detected.");
-                        }
-                        if (alertList[alertList.Count - 1].Contains("other") == true)
-                        {
-                            Console.WriteLine(DateTime.Now + " Something other detected.");
-                        }
-                        gmap.Overlays.Add(markers);
-                    }
+                    //    if (alertList[alertList.Count - 1].Contains("person") == true)
+                    //    {
+                    //        Console.WriteLine(DateTime.Now + " Person detected.");
+                    //    }
+                    //    if (alertList[alertList.Count - 1].Contains("train") == true)
+                    //    {
+                    //        Console.WriteLine(DateTime.Now + " Train detected.");
+                    //    }
+                    //    if (alertList[alertList.Count - 1].Contains("other") == true)
+                    //    {
+                    //        Console.WriteLine(DateTime.Now + " Something other detected.");
+                    //    }
+                    //    gmap.Overlays.Add(markers);
+                    //}
                     reader.Close();
                     con.Close();
                 }
@@ -486,7 +504,7 @@ namespace RailViewClient_WinForms
             using (con)
             {
                 con.Open();
-                MySqlCommand cmd = new MySqlCommand("UPDATE notification " +
+                MySqlCommand cmd = new MySqlCommand("UPDATE Notification " +
                                                     "SET Status_Type = 'closed', Required_Action = false " +
                                                     "WHERE camera_id = " + cameraId + " AND Status_Type = 'open'; ", con);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -500,7 +518,7 @@ namespace RailViewClient_WinForms
             using (con)
             {
                 con.Open();
-                MySqlCommand cmd = new MySqlCommand("UPDATE notification " +
+                MySqlCommand cmd = new MySqlCommand("UPDATE Notification " +
                                                     "SET Status_Type = 'closed', Required_Action = true " +
                                                     "WHERE camera_id = " + cameraId + " AND Status_Type = 'open'; ", con);
                 MySqlDataReader reader = cmd.ExecuteReader();
