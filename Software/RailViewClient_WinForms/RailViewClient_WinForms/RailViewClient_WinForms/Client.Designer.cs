@@ -127,7 +127,7 @@ namespace RailViewClient_WinForms
             this.logo_lbl.ForeColor = System.Drawing.Color.White;
             this.logo_lbl.Location = new System.Drawing.Point(55, 16);
             this.logo_lbl.Name = "logo_lbl";
-            this.logo_lbl.Size = new System.Drawing.Size(140, 38);
+            this.logo_lbl.Size = new System.Drawing.Size(129, 35);
             this.logo_lbl.TabIndex = 1;
             this.logo_lbl.Text = "RailView";
             // 
@@ -149,9 +149,9 @@ namespace RailViewClient_WinForms
             this.listBoxAlerts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxAlerts.FormattingEnabled = true;
             this.listBoxAlerts.ItemHeight = 16;
-            this.listBoxAlerts.Location = new System.Drawing.Point(20, 86);
+            this.listBoxAlerts.Location = new System.Drawing.Point(20, 82);
             this.listBoxAlerts.Name = "listBoxAlerts";
-            this.listBoxAlerts.Size = new System.Drawing.Size(292, 828);
+            this.listBoxAlerts.Size = new System.Drawing.Size(292, 832);
             this.listBoxAlerts.TabIndex = 3;
             this.listBoxAlerts.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstChoices_DrawItem);
             this.listBoxAlerts.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lstChoices_MeasureItem);
@@ -163,7 +163,7 @@ namespace RailViewClient_WinForms
             this.lblAlerts.Font = new System.Drawing.Font("Arial Narrow", 15.81818F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAlerts.Location = new System.Drawing.Point(20, 20);
             this.lblAlerts.Name = "lblAlerts";
-            this.lblAlerts.Size = new System.Drawing.Size(173, 66);
+            this.lblAlerts.Size = new System.Drawing.Size(154, 62);
             this.lblAlerts.TabIndex = 2;
             this.lblAlerts.Text = "             Alerts\r\n \r\n";
             this.lblAlerts.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -392,7 +392,7 @@ namespace RailViewClient_WinForms
             this.lblZoom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblZoom.Location = new System.Drawing.Point(50, 50);
             this.lblZoom.Name = "lblZoom";
-            this.lblZoom.Size = new System.Drawing.Size(71, 22);
+            this.lblZoom.Size = new System.Drawing.Size(66, 20);
             this.lblZoom.TabIndex = 1;
             this.lblZoom.Text = "Zoom: ";
             // 

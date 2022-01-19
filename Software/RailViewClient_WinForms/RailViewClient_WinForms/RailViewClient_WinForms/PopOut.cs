@@ -17,11 +17,13 @@ namespace RailViewClient_WinForms
     public partial class PopoutForm : Form
     {
         ClientForm clientForm;
+        int cameraId;
 
-        public PopoutForm(ClientForm clientForm)
+        public PopoutForm(ClientForm clientForm, int cameraId)
         {
             InitializeComponent();
             this.clientForm = clientForm;
+            this.cameraId = cameraId;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -41,13 +43,20 @@ namespace RailViewClient_WinForms
         private void btnFalseAlert_Click(object sender, EventArgs e)
         {
             this.Close();
-            clientForm.FalseAlertClick();
+            clientForm.FalseAlertClick(cameraId);
         }
 
         private void btnAlert_Click(object sender, EventArgs e)
         {
             this.Close();
-            clientForm.AlertClick();
+            clientForm.AlertClick(cameraId);
+        }
+
+        private void PopoutForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Close();
+            clientForm.ClickOnce();
         }
     }
 }

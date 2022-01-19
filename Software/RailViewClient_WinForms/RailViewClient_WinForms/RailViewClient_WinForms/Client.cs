@@ -470,7 +470,7 @@ namespace RailViewClient_WinForms
                 if (item.Tag != null)
                 {
                     Console.WriteLine(String.Format("Camera {0} was clicked.", item.Tag));
-                    PopoutForm PopOut = new PopoutForm(this);
+                    PopoutForm PopOut = new PopoutForm(this, (int)item.Tag);
                     PopOut.Show(this);
                 }
                 else
@@ -480,12 +480,35 @@ namespace RailViewClient_WinForms
             }
         }
 
-        public void FalseAlertClick()
+        public void FalseAlertClick(int cameraId)
         {
             click_Once = false;
+            using (con)
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand("UPDATE notification " +
+                                                    "SET Status_Type = 'closed', Required_Action = false " +
+                                                    "WHERE camera_id = " + cameraId + " AND Status_Type = 'open'; ", con);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                con.Close();
+            }
         }
 
-        public void AlertClick()
+        public void AlertClick(int cameraId)
+        {
+            click_Once = false;
+            using (con)
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand("UPDATE notification " +
+                                                    "SET Status_Type = 'closed', Required_Action = true " +
+                                                    "WHERE camera_id = " + cameraId + " AND Status_Type = 'open'; ", con);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                con.Close();
+            }
+        }
+
+        public void ClickOnce()
         {
             click_Once = false;
         }
@@ -545,7 +568,28 @@ namespace RailViewClient_WinForms
 
         private void btn_PopOutClick(object sender, EventArgs e)
         {
-            PopoutForm PopOut = new PopoutForm(this);
+            var lat1 = 51.44524;
+            var lat2 = 51.4687928;
+            var lon1 = 5.49769;
+            var lon2 = 5.6342143;
+
+            var R = 6371e3; // metres
+            var φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+            var φ2 = lat2 * Math.PI / 180;
+            var Δφ = (lat2 - lat1) * Math.PI / 180;
+            var Δλ = (lon2 - lon1) * Math.PI / 180;
+
+            var a = Math.Sin(Δφ / 2) * Math.Sin(Δφ / 2) +
+                      Math.Cos(φ1) * Math.Cos(φ2) *
+                      Math.Sin(Δλ / 2) * Math.Sin(Δλ / 2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            var d = R * c; // in metres
+
+            // / 1000 for km
+            MessageBox.Show("answer = " + d / 1000);
+
+            PopoutForm PopOut = new PopoutForm(this, 1);
             PopOut.Show(this);
         }
 

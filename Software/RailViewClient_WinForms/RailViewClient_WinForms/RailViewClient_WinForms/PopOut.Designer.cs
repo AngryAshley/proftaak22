@@ -72,7 +72,7 @@ namespace RailViewClient_WinForms
             this.logo_lbl.ForeColor = System.Drawing.Color.White;
             this.logo_lbl.Location = new System.Drawing.Point(55, 16);
             this.logo_lbl.Name = "logo_lbl";
-            this.logo_lbl.Size = new System.Drawing.Size(140, 38);
+            this.logo_lbl.Size = new System.Drawing.Size(129, 35);
             this.logo_lbl.TabIndex = 1;
             this.logo_lbl.Text = "RailView";
             // 
@@ -139,6 +139,7 @@ namespace RailViewClient_WinForms
             this.Controls.Add(this.tp_panel);
             this.Name = "PopoutForm";
             this.Text = "Form2";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PopoutForm_FormClosing);
             this.tp_panel.ResumeLayout(false);
             this.tp_panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logo_pb)).EndInit();
