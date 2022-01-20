@@ -193,15 +193,15 @@ namespace RailViewClient_WinForms
                         {
                             oldAlertList = new List<string>(alertList);
 
-                            if (alertList[alertList.Count - 1].Contains("person") == true)
+                            if (alertList[alertList.Count - 1].Contains("person") && alertList[alertList.Count - 1].Contains("open"))
                             {
                                 Console.WriteLine(DateTime.Now + " Person detected.");
                             }
-                            if (alertList[alertList.Count - 1].Contains("train") == true)
+                            if (alertList[alertList.Count - 1].Contains("train") && alertList[alertList.Count - 1].Contains("open"))
                             {
                                 Console.WriteLine(DateTime.Now + " Train detected.");
                             }
-                            if (alertList[alertList.Count - 1].Contains("other") == true)
+                            if (alertList[alertList.Count - 1].Contains("other") && alertList[alertList.Count - 1].Contains("open"))
                             {
                                 Console.WriteLine(DateTime.Now + " Something other detected.");
                             }
@@ -209,28 +209,6 @@ namespace RailViewClient_WinForms
 
                         gmap.Overlays.Add(markers);
                     }
-
-                    //if (alertList.Count > oldAlertList.Count/* || alertList.SequenceEqual(oldAlertList)== false*/)
-                    //{
-                    //    markers.Clear();
-                    //    listBoxAlerts.DataSource = null;
-                    //    listBoxAlerts.DataSource = alertList;
-                    //    oldAlertList = new List<string>(alertList);
-
-                    //    if (alertList[alertList.Count - 1].Contains("person") == true)
-                    //    {
-                    //        Console.WriteLine(DateTime.Now + " Person detected.");
-                    //    }
-                    //    if (alertList[alertList.Count - 1].Contains("train") == true)
-                    //    {
-                    //        Console.WriteLine(DateTime.Now + " Train detected.");
-                    //    }
-                    //    if (alertList[alertList.Count - 1].Contains("other") == true)
-                    //    {
-                    //        Console.WriteLine(DateTime.Now + " Something other detected.");
-                    //    }
-                    //    gmap.Overlays.Add(markers);
-                    //}
                     reader.Close();
                     con.Close();
                 }
