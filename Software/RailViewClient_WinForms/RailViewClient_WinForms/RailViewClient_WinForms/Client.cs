@@ -437,7 +437,7 @@ namespace RailViewClient_WinForms
                     new PointLatLng(lat, lng),
                     new Bitmap(train));
                     trains.Markers.Add(traincoord);
-                    traincoord.ToolTipText = "\nTrain Info\nID: " + train_id + "\nType: " + type + "\nVelocity: " + Math.Round(velocity, 1) + " km/h";
+                    traincoord.ToolTipText = "\nTrain Info\nID: " + train_id + "\nType: " + type + "\nVelocity: " + Math.Round(velocity, 1) + " km/h\nCamera Distance: " + CalculateDistance(lat, lng) + " m";
                 }
                 gmap.Overlays.Add(trains);
             }
@@ -577,18 +577,10 @@ namespace RailViewClient_WinForms
                 Console.WriteLine("Trains update interval has changed to: " + trainTimerInterval);
             }
         }
-        #endregion
-        #region Buttons
-        private void btn_ResetMapClick(object sender, EventArgs e)
-        {
-            ResetMap();
-        }
 
-        private void btn_PopOutClick(object sender, EventArgs e)
+        public double CalculateDistance(double lat1, double lon1)
         {
-            var lat1 = 51.44524;
             var lat2 = 51.4687928;
-            var lon1 = 5.49769;
             var lon2 = 5.6342143;
 
             var R = 6371e3; // metres
@@ -605,8 +597,17 @@ namespace RailViewClient_WinForms
             var d = R * c; // in metres
 
             // / 1000 for km
-            MessageBox.Show("answer = " + d / 1000);
+            return Math.Round(d, 2);
+        }
+        #endregion
+        #region Buttons
+        private void btn_ResetMapClick(object sender, EventArgs e)
+        {
+            ResetMap();
+        }
 
+        private void btn_PopOutClick(object sender, EventArgs e)
+        {
             PopoutForm PopOut = new PopoutForm(this, 1);
             PopOut.Show(this);
         }
