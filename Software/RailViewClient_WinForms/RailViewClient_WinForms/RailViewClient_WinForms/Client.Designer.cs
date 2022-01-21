@@ -78,8 +78,8 @@ namespace RailViewClient_WinForms
             this.gmap.GrayScaleMode = true;
             this.gmap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.gmap.LevelsKeepInMemory = 5;
-            this.gmap.Location = new System.Drawing.Point(38, 41);
-            this.gmap.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gmap.Location = new System.Drawing.Point(51, 50);
+            this.gmap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gmap.MarkersEnabled = true;
             this.gmap.MaxZoom = 2;
             this.gmap.MinZoom = 2;
@@ -93,7 +93,7 @@ namespace RailViewClient_WinForms
             this.gmap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gmap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gmap.ShowTileGridLines = false;
-            this.gmap.Size = new System.Drawing.Size(916, 508);
+            this.gmap.Size = new System.Drawing.Size(1222, 626);
             this.gmap.TabIndex = 0;
             this.gmap.Zoom = 0D;
             this.gmap.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gmap_OnMarkerClick);
@@ -107,18 +107,18 @@ namespace RailViewClient_WinForms
             this.tp_panel.Controls.Add(this.logo_lbl);
             this.tp_panel.Dock = System.Windows.Forms.DockStyle.Top;
             this.tp_panel.Location = new System.Drawing.Point(0, 0);
-            this.tp_panel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tp_panel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tp_panel.Name = "tp_panel";
-            this.tp_panel.Size = new System.Drawing.Size(1245, 51);
+            this.tp_panel.Size = new System.Drawing.Size(1660, 63);
             this.tp_panel.TabIndex = 2;
             // 
             // logo_pb
             // 
             this.logo_pb.Image = ((System.Drawing.Image)(resources.GetObject("logo_pb.Image")));
-            this.logo_pb.Location = new System.Drawing.Point(10, 10);
-            this.logo_pb.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.logo_pb.Location = new System.Drawing.Point(13, 12);
+            this.logo_pb.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.logo_pb.Name = "logo_pb";
-            this.logo_pb.Size = new System.Drawing.Size(33, 34);
+            this.logo_pb.Size = new System.Drawing.Size(44, 42);
             this.logo_pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.logo_pb.TabIndex = 0;
             this.logo_pb.TabStop = false;
@@ -128,10 +128,9 @@ namespace RailViewClient_WinForms
             this.logo_lbl.AutoSize = true;
             this.logo_lbl.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logo_lbl.ForeColor = System.Drawing.Color.White;
-            this.logo_lbl.Location = new System.Drawing.Point(41, 13);
-            this.logo_lbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.logo_lbl.Location = new System.Drawing.Point(55, 16);
             this.logo_lbl.Name = "logo_lbl";
-            this.logo_lbl.Size = new System.Drawing.Size(103, 27);
+            this.logo_lbl.Size = new System.Drawing.Size(140, 38);
             this.logo_lbl.TabIndex = 1;
             this.logo_lbl.Text = "RailView";
             // 
@@ -142,21 +141,22 @@ namespace RailViewClient_WinForms
             this.lft_panel.Controls.Add(this.listBoxAlerts);
             this.lft_panel.Controls.Add(this.lblAlerts);
             this.lft_panel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lft_panel.Location = new System.Drawing.Point(0, 51);
-            this.lft_panel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lft_panel.Location = new System.Drawing.Point(0, 63);
+            this.lft_panel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lft_panel.Name = "lft_panel";
-            this.lft_panel.Padding = new System.Windows.Forms.Padding(15, 16, 15, 16);
-            this.lft_panel.Size = new System.Drawing.Size(251, 761);
+            this.lft_panel.Padding = new System.Windows.Forms.Padding(20);
+            this.lft_panel.Size = new System.Drawing.Size(334, 936);
             this.lft_panel.TabIndex = 3;
             // 
             // listBoxAlerts
             // 
             this.listBoxAlerts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxAlerts.FormattingEnabled = true;
-            this.listBoxAlerts.Location = new System.Drawing.Point(15, 68);
-            this.listBoxAlerts.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listBoxAlerts.ItemHeight = 16;
+            this.listBoxAlerts.Location = new System.Drawing.Point(20, 86);
+            this.listBoxAlerts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBoxAlerts.Name = "listBoxAlerts";
-            this.listBoxAlerts.Size = new System.Drawing.Size(219, 675);
+            this.listBoxAlerts.Size = new System.Drawing.Size(292, 828);
             this.listBoxAlerts.TabIndex = 3;
             this.listBoxAlerts.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstChoices_DrawItem);
             this.listBoxAlerts.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lstChoices_MeasureItem);
@@ -166,10 +166,9 @@ namespace RailViewClient_WinForms
             this.lblAlerts.AutoSize = true;
             this.lblAlerts.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblAlerts.Font = new System.Drawing.Font("Arial Narrow", 15.81818F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAlerts.Location = new System.Drawing.Point(15, 16);
-            this.lblAlerts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblAlerts.Location = new System.Drawing.Point(20, 20);
             this.lblAlerts.Name = "lblAlerts";
-            this.lblAlerts.Size = new System.Drawing.Size(128, 52);
+            this.lblAlerts.Size = new System.Drawing.Size(173, 66);
             this.lblAlerts.TabIndex = 2;
             this.lblAlerts.Text = "             Alerts\r\n \r\n";
             this.lblAlerts.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -181,11 +180,11 @@ namespace RailViewClient_WinForms
             this.btm_panel.Controls.Add(this.tabControl);
             this.btm_panel.Controls.Add(this.panel2);
             this.btm_panel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btm_panel.Location = new System.Drawing.Point(251, 643);
+            this.btm_panel.Location = new System.Drawing.Point(334, 791);
             this.btm_panel.Margin = new System.Windows.Forms.Padding(0);
             this.btm_panel.Name = "btm_panel";
-            this.btm_panel.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btm_panel.Size = new System.Drawing.Size(994, 169);
+            this.btm_panel.Padding = new System.Windows.Forms.Padding(5);
+            this.btm_panel.Size = new System.Drawing.Size(1326, 208);
             this.btm_panel.TabIndex = 4;
             // 
             // tabControl
@@ -193,22 +192,22 @@ namespace RailViewClient_WinForms
             this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Controls.Add(this.tabPage2);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Location = new System.Drawing.Point(4, 4);
-            this.tabControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl.Location = new System.Drawing.Point(5, 5);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl.Name = "tabControl";
             this.tabControl.Padding = new System.Drawing.Point(0, 0);
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(770, 159);
+            this.tabControl.Size = new System.Drawing.Size(1029, 196);
             this.tabControl.TabIndex = 0;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.txtConsole);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage1.Size = new System.Drawing.Size(762, 133);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage1.Size = new System.Drawing.Size(1021, 167);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Console";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -217,11 +216,11 @@ namespace RailViewClient_WinForms
             // 
             this.txtConsole.BackColor = System.Drawing.Color.White;
             this.txtConsole.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtConsole.Location = new System.Drawing.Point(2, 2);
+            this.txtConsole.Location = new System.Drawing.Point(3, 2);
             this.txtConsole.Margin = new System.Windows.Forms.Padding(0);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
-            this.txtConsole.Size = new System.Drawing.Size(758, 129);
+            this.txtConsole.Size = new System.Drawing.Size(1015, 163);
             this.txtConsole.TabIndex = 0;
             // 
             // tabPage2
@@ -233,10 +232,10 @@ namespace RailViewClient_WinForms
             this.tabPage2.Controls.Add(this.btnRequestPos);
             this.tabPage2.Controls.Add(this.btnResetMap);
             this.tabPage2.Controls.Add(this.btn_ShowStations);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(764, 133);
+            this.tabPage2.Size = new System.Drawing.Size(1021, 167);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Control";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -244,10 +243,10 @@ namespace RailViewClient_WinForms
             // btnTestAlert
             // 
             this.btnTestAlert.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTestAlert.Location = new System.Drawing.Point(165, 2);
-            this.btnTestAlert.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnTestAlert.Location = new System.Drawing.Point(220, 2);
+            this.btnTestAlert.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnTestAlert.Name = "btnTestAlert";
-            this.btnTestAlert.Size = new System.Drawing.Size(68, 28);
+            this.btnTestAlert.Size = new System.Drawing.Size(91, 34);
             this.btnTestAlert.TabIndex = 8;
             this.btnTestAlert.Text = "test alert";
             this.btnTestAlert.UseVisualStyleBackColor = true;
@@ -256,10 +255,10 @@ namespace RailViewClient_WinForms
             // btn_PopOut
             // 
             this.btn_PopOut.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_PopOut.Location = new System.Drawing.Point(2, 75);
-            this.btn_PopOut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_PopOut.Location = new System.Drawing.Point(3, 92);
+            this.btn_PopOut.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_PopOut.Name = "btn_PopOut";
-            this.btn_PopOut.Size = new System.Drawing.Size(62, 28);
+            this.btn_PopOut.Size = new System.Drawing.Size(83, 34);
             this.btn_PopOut.TabIndex = 1;
             this.btn_PopOut.Text = "Pop Out";
             this.btn_PopOut.UseVisualStyleBackColor = true;
@@ -268,10 +267,10 @@ namespace RailViewClient_WinForms
             // btn_PauseAlerts
             // 
             this.btn_PauseAlerts.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_PauseAlerts.Location = new System.Drawing.Point(82, 2);
-            this.btn_PauseAlerts.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_PauseAlerts.Location = new System.Drawing.Point(109, 2);
+            this.btn_PauseAlerts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_PauseAlerts.Name = "btn_PauseAlerts";
-            this.btn_PauseAlerts.Size = new System.Drawing.Size(78, 28);
+            this.btn_PauseAlerts.Size = new System.Drawing.Size(104, 34);
             this.btn_PauseAlerts.TabIndex = 7;
             this.btn_PauseAlerts.Text = "Pause Alerts";
             this.btn_PauseAlerts.UseVisualStyleBackColor = true;
@@ -280,10 +279,10 @@ namespace RailViewClient_WinForms
             // btn_RequestSQL
             // 
             this.btn_RequestSQL.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_RequestSQL.Location = new System.Drawing.Point(106, 35);
-            this.btn_RequestSQL.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_RequestSQL.Location = new System.Drawing.Point(141, 43);
+            this.btn_RequestSQL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_RequestSQL.Name = "btn_RequestSQL";
-            this.btn_RequestSQL.Size = new System.Drawing.Size(92, 31);
+            this.btn_RequestSQL.Size = new System.Drawing.Size(123, 38);
             this.btn_RequestSQL.TabIndex = 5;
             this.btn_RequestSQL.Text = "Request SQL";
             this.btn_RequestSQL.UseVisualStyleBackColor = true;
@@ -292,10 +291,10 @@ namespace RailViewClient_WinForms
             // btnRequestPos
             // 
             this.btnRequestPos.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRequestPos.Location = new System.Drawing.Point(2, 35);
-            this.btnRequestPos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRequestPos.Location = new System.Drawing.Point(3, 43);
+            this.btnRequestPos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRequestPos.Name = "btnRequestPos";
-            this.btnRequestPos.Size = new System.Drawing.Size(100, 31);
+            this.btnRequestPos.Size = new System.Drawing.Size(133, 38);
             this.btnRequestPos.TabIndex = 2;
             this.btnRequestPos.Text = "Position request";
             this.btnRequestPos.UseVisualStyleBackColor = true;
@@ -305,10 +304,10 @@ namespace RailViewClient_WinForms
             // 
             this.btnResetMap.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnResetMap.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.btnResetMap.Location = new System.Drawing.Point(2, 2);
-            this.btnResetMap.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnResetMap.Location = new System.Drawing.Point(3, 2);
+            this.btnResetMap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnResetMap.Name = "btnResetMap";
-            this.btnResetMap.Size = new System.Drawing.Size(76, 28);
+            this.btnResetMap.Size = new System.Drawing.Size(101, 34);
             this.btnResetMap.TabIndex = 0;
             this.btnResetMap.Text = "Reset Map";
             this.btnResetMap.UseVisualStyleBackColor = true;
@@ -317,10 +316,10 @@ namespace RailViewClient_WinForms
             // btn_ShowStations
             // 
             this.btn_ShowStations.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ShowStations.Location = new System.Drawing.Point(2, 107);
-            this.btn_ShowStations.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_ShowStations.Location = new System.Drawing.Point(3, 132);
+            this.btn_ShowStations.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_ShowStations.Name = "btn_ShowStations";
-            this.btn_ShowStations.Size = new System.Drawing.Size(88, 27);
+            this.btn_ShowStations.Size = new System.Drawing.Size(117, 33);
             this.btn_ShowStations.TabIndex = 4;
             this.btn_ShowStations.Text = "Show Stations";
             this.btn_ShowStations.UseVisualStyleBackColor = true;
@@ -334,28 +333,27 @@ namespace RailViewClient_WinForms
             this.panel2.Controls.Add(this.btn_PauseTrains);
             this.panel2.Controls.Add(this.btn_ShowTrains);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(774, 4);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Location = new System.Drawing.Point(1034, 5);
+            this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(214, 159);
+            this.panel2.Size = new System.Drawing.Size(285, 196);
             this.panel2.TabIndex = 4;
             // 
             // lblTimer
             // 
             this.lblTimer.AutoSize = true;
-            this.lblTimer.Location = new System.Drawing.Point(4, 9);
-            this.lblTimer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTimer.Location = new System.Drawing.Point(5, 11);
             this.lblTimer.Name = "lblTimer";
-            this.lblTimer.Size = new System.Drawing.Size(74, 13);
+            this.lblTimer.Size = new System.Drawing.Size(93, 16);
             this.lblTimer.TabIndex = 3;
             this.lblTimer.Text = "Update Timer:";
             // 
             // btn_ChangeTimerInterval
             // 
-            this.btn_ChangeTimerInterval.Location = new System.Drawing.Point(153, 4);
-            this.btn_ChangeTimerInterval.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_ChangeTimerInterval.Location = new System.Drawing.Point(204, 5);
+            this.btn_ChangeTimerInterval.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_ChangeTimerInterval.Name = "btn_ChangeTimerInterval";
-            this.btn_ChangeTimerInterval.Size = new System.Drawing.Size(56, 24);
+            this.btn_ChangeTimerInterval.Size = new System.Drawing.Size(75, 30);
             this.btn_ChangeTimerInterval.TabIndex = 2;
             this.btn_ChangeTimerInterval.Text = "Change";
             this.btn_ChangeTimerInterval.UseVisualStyleBackColor = true;
@@ -363,19 +361,19 @@ namespace RailViewClient_WinForms
             // 
             // nrUpDwn_TimerInterval
             // 
-            this.nrUpDwn_TimerInterval.Location = new System.Drawing.Point(79, 7);
-            this.nrUpDwn_TimerInterval.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nrUpDwn_TimerInterval.Location = new System.Drawing.Point(105, 9);
+            this.nrUpDwn_TimerInterval.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nrUpDwn_TimerInterval.Name = "nrUpDwn_TimerInterval";
-            this.nrUpDwn_TimerInterval.Size = new System.Drawing.Size(65, 20);
+            this.nrUpDwn_TimerInterval.Size = new System.Drawing.Size(87, 22);
             this.nrUpDwn_TimerInterval.TabIndex = 1;
             // 
             // btn_PauseTrains
             // 
             this.btn_PauseTrains.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_PauseTrains.Location = new System.Drawing.Point(128, 128);
-            this.btn_PauseTrains.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_PauseTrains.Location = new System.Drawing.Point(171, 158);
+            this.btn_PauseTrains.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_PauseTrains.Name = "btn_PauseTrains";
-            this.btn_PauseTrains.Size = new System.Drawing.Size(81, 27);
+            this.btn_PauseTrains.Size = new System.Drawing.Size(108, 33);
             this.btn_PauseTrains.TabIndex = 6;
             this.btn_PauseTrains.Text = "Pause Timer";
             this.btn_PauseTrains.UseVisualStyleBackColor = true;
@@ -384,10 +382,10 @@ namespace RailViewClient_WinForms
             // btn_ShowTrains
             // 
             this.btn_ShowTrains.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ShowTrains.Location = new System.Drawing.Point(4, 128);
-            this.btn_ShowTrains.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_ShowTrains.Location = new System.Drawing.Point(5, 158);
+            this.btn_ShowTrains.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_ShowTrains.Name = "btn_ShowTrains";
-            this.btn_ShowTrains.Size = new System.Drawing.Size(83, 27);
+            this.btn_ShowTrains.Size = new System.Drawing.Size(111, 33);
             this.btn_ShowTrains.TabIndex = 3;
             this.btn_ShowTrains.Text = "Show Trains";
             this.btn_ShowTrains.UseVisualStyleBackColor = true;
@@ -400,11 +398,11 @@ namespace RailViewClient_WinForms
             this.panel1.Controls.Add(this.lblZoom);
             this.panel1.Controls.Add(this.gmap);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(251, 51);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Location = new System.Drawing.Point(334, 63);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(38, 41, 38, 41);
-            this.panel1.Size = new System.Drawing.Size(994, 592);
+            this.panel1.Padding = new System.Windows.Forms.Padding(51, 50, 51, 50);
+            this.panel1.Size = new System.Drawing.Size(1326, 728);
             this.panel1.TabIndex = 5;
             // 
             // lblZoom
@@ -413,23 +411,22 @@ namespace RailViewClient_WinForms
             this.lblZoom.BackColor = System.Drawing.Color.Transparent;
             this.lblZoom.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblZoom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblZoom.Location = new System.Drawing.Point(38, 41);
-            this.lblZoom.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblZoom.Location = new System.Drawing.Point(51, 50);
             this.lblZoom.Name = "lblZoom";
-            this.lblZoom.Size = new System.Drawing.Size(58, 17);
+            this.lblZoom.Size = new System.Drawing.Size(71, 22);
             this.lblZoom.TabIndex = 1;
             this.lblZoom.Text = "Zoom: ";
             // 
             // ClientForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1245, 812);
+            this.ClientSize = new System.Drawing.Size(1660, 999);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btm_panel);
             this.Controls.Add(this.lft_panel);
             this.Controls.Add(this.tp_panel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "ClientForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);

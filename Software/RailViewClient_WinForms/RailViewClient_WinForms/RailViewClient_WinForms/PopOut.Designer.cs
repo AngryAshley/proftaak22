@@ -37,11 +37,12 @@ namespace RailViewClient_WinForms
             this.btnAlert = new System.Windows.Forms.Button();
             this.btnFalseAlert = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tp_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logo_pb)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tp_panel
@@ -72,7 +73,7 @@ namespace RailViewClient_WinForms
             this.logo_lbl.ForeColor = System.Drawing.Color.White;
             this.logo_lbl.Location = new System.Drawing.Point(55, 16);
             this.logo_lbl.Name = "logo_lbl";
-            this.logo_lbl.Size = new System.Drawing.Size(129, 35);
+            this.logo_lbl.Size = new System.Drawing.Size(140, 38);
             this.logo_lbl.TabIndex = 1;
             this.logo_lbl.Text = "RailView";
             // 
@@ -111,7 +112,7 @@ namespace RailViewClient_WinForms
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.webBrowser1);
+            this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 63);
             this.panel2.Name = "panel2";
@@ -119,15 +120,15 @@ namespace RailViewClient_WinForms
             this.panel2.Size = new System.Drawing.Size(1050, 564);
             this.panel2.TabIndex = 5;
             // 
-            // webBrowser1
+            // pictureBox1
             // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(20, 20);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.ScrollBarsEnabled = false;
-            this.webBrowser1.Size = new System.Drawing.Size(1010, 524);
-            this.webBrowser1.TabIndex = 0;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(20, 20);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(1010, 524);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // PopoutForm
             // 
@@ -145,6 +146,7 @@ namespace RailViewClient_WinForms
             ((System.ComponentModel.ISupportInitialize)(this.logo_pb)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -158,6 +160,6 @@ namespace RailViewClient_WinForms
         private System.Windows.Forms.Button btnFalseAlert;
         private System.Windows.Forms.Button btnAlert;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

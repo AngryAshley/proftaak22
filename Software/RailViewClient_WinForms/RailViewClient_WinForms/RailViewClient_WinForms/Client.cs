@@ -33,6 +33,33 @@ namespace RailViewClient_WinForms
         GMapOverlay points = new GMapOverlay("points");
         GMapOverlay markers = new GMapOverlay("markers");
 
+        private string _streamLink = string.Empty;
+        public string StreamLink
+        {
+            get
+            {
+                return _streamLink;
+            }
+            set
+            {
+                if (_streamLink != value)
+                    _streamLink = value;
+            }
+        }
+
+        private bool _isStreaming = false;
+        public bool IsStreaming
+        {
+            get
+            {
+                return _isStreaming;
+            }
+            set 
+            { if(_isStreaming != value) 
+                    _isStreaming = value; 
+            }
+        }
+
         public ClientForm()
         {
             InitializeComponent();
@@ -151,14 +178,15 @@ namespace RailViewClient_WinForms
                         camera.CameraId = (int)reader["cameraId"];
                         camera.CameraName = (string)reader["cameraName"];
                         camera.CoordinatesId = (int)reader["coordinatesId"];
+                        camera.StreamLink = (string)reader["streamLink"];
 
                         Coordinate coordinate = new Coordinate();
                         coordinate.CoordinatesId = (int)reader["coordinatesId"];
                         coordinate.Latitude = (double)reader["latitude"];
                         coordinate.Longtitude = (double)reader["longtitude"];
 
-                        alerts = accident.AccidentDate + " \n" + camera.CameraName + "\n" + accident.AccidentType + "\n" + "Status: "+ notification.StatusType + "\n" + "Action required: " +notification.RequiredAction;
-                        alertList.Add(alerts);                     
+                        alerts = accident.AccidentDate + " \n" + "Camera: " + camera.CameraName + "\n" + "Type: " + accident.AccidentType + "\n" + "Status: " + notification.StatusType + "\n" + "Action required: " + notification.RequiredAction;
+                        alertList.Add(alerts);
 
                         if (notification.StatusType == "closed")
                         {
@@ -171,7 +199,14 @@ namespace RailViewClient_WinForms
                             marker = new GMarkerGoogle(
                             new PointLatLng(coordinate.Latitude, coordinate.Longtitude),
                             new Bitmap("alert.png"));
-                        }
+
+                            if(accident.AccidentType == "person" || accident.AccidentType == "other")
+                            {
+                                StreamLink = camera.StreamLink;
+                                IsStreaming = true;
+                            }                            
+                        }                       
+
                         marker.ToolTipText = "\n" + camera.CameraName + "\n ";
                         marker.ToolTip.Fill = Brushes.White;
                         marker.ToolTip.Foreground = Brushes.Black;
@@ -182,14 +217,13 @@ namespace RailViewClient_WinForms
                         markers.Markers.Add(marker);
                     }
 
-
-                    if (oldAlertList.Count == 0 /*|| alertList.Count < oldAlertList.Count*/ || oldAlertList.SequenceEqual(alertList)== false)
+                    if (oldAlertList.Count == 0 || oldAlertList.SequenceEqual(alertList) == false)
                     {
                         markers.Clear();
                         listBoxAlerts.DataSource = null;
                         listBoxAlerts.DataSource = alertList;
 
-                        if (oldAlertList.SequenceEqual(alertList)== false)
+                        if (oldAlertList.SequenceEqual(alertList) == false)
                         {
                             oldAlertList = new List<string>(alertList);
 
@@ -535,11 +569,11 @@ namespace RailViewClient_WinForms
         {
             lblZoom.Text = "Zoom: " + Convert.ToString(gmap.Zoom);
 
-            if (gmap.Zoom <= 7)
+            if (gmap.Zoom <= 8)
             {
                 trainTimerInterval = 5000;
             }
-            if (gmap.Zoom > 7 && gmap.Zoom < 11)
+            if (gmap.Zoom > 8 && gmap.Zoom < 11)
             {
                 trainTimerInterval = 3000;
             }
@@ -552,7 +586,7 @@ namespace RailViewClient_WinForms
             {
                 nrUpDwn_TimerInterval.Value = trainTimerInterval;
                 timerTrains.Interval = trainTimerInterval;
-                Console.WriteLine("Trains update interval has changed to: " + trainTimerInterval);
+                Console.WriteLine("Trains update interval has changed to: " + trainTimerInterval / 1000 + "s");
             }
         }
 
