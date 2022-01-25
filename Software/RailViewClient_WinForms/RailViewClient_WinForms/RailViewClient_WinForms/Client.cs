@@ -37,13 +37,21 @@ namespace RailViewClient_WinForms
         public string StreamLink
         {
             get
-            {
-                return _streamLink;
-            }
+            { return _streamLink; }
             set
             {
                 if (_streamLink != value)
                     _streamLink = value;
+            }
+        }
+        private string _camName = string.Empty;
+        public string CamName
+        {
+            get { return _camName; }
+            set
+            {
+                if (_camName != value)
+                    _camName = value;
             }
         }
 
@@ -51,12 +59,11 @@ namespace RailViewClient_WinForms
         public bool IsStreaming
         {
             get
+            { return _isStreaming; }
+            set
             {
-                return _isStreaming;
-            }
-            set 
-            { if(_isStreaming != value) 
-                    _isStreaming = value; 
+                if (_isStreaming != value)
+                    _isStreaming = value;
             }
         }
 
@@ -142,6 +149,9 @@ namespace RailViewClient_WinForms
         private int ItemMargin = 5;
         string alerts = string.Empty;
 
+        double cameraLat;
+        double cameraLon;
+
         public void SQLrequest()
         {
             try
@@ -188,24 +198,28 @@ namespace RailViewClient_WinForms
                         alerts = accident.AccidentDate + " \n" + "Camera: " + camera.CameraName + "\n" + "Type: " + accident.AccidentType + "\n" + "Status: " + notification.StatusType + "\n" + "Action required: " + notification.RequiredAction;
                         alertList.Add(alerts);
 
+                        StreamLink = camera.StreamLink;
+                        cameraLon = coordinate.Longtitude;
+                        cameraLat = coordinate.Latitude;
+                        CamName = camera.CameraName;
+
                         if (notification.StatusType == "closed")
                         {
                             marker = new GMarkerGoogle(
                             new PointLatLng(coordinate.Latitude, coordinate.Longtitude),
                             new Bitmap("cctv.png"));
                         }
-                        else if (notification.StatusType == "open")
+                        if (notification.StatusType == "open")
                         {
                             marker = new GMarkerGoogle(
                             new PointLatLng(coordinate.Latitude, coordinate.Longtitude),
                             new Bitmap("alert.png"));
 
-                            if(accident.AccidentType == "person" || accident.AccidentType == "other")
+                            if (accident.AccidentType == "person" || accident.AccidentType == "other")
                             {
-                                StreamLink = camera.StreamLink;
                                 IsStreaming = true;
-                            }                            
-                        }                       
+                            }
+                        }
 
                         marker.ToolTipText = "\n" + camera.CameraName + "\n ";
                         marker.ToolTip.Fill = Brushes.White;
@@ -229,7 +243,9 @@ namespace RailViewClient_WinForms
 
                             if (alertList[alertList.Count - 1].Contains("person") && alertList[alertList.Count - 1].Contains("open"))
                             {
-                                Console.WriteLine(DateTime.Now + " Person detected.");
+                                Console.WriteLine(DateTime.Now + "\n Person detected at: " + marker.ToolTipText);
+                                gmap.Position = new PointLatLng(cameraLat, cameraLon);
+                                gmap.Zoom = 14;
                             }
                             if (alertList[alertList.Count - 1].Contains("train") && alertList[alertList.Count - 1].Contains("open"))
                             {
@@ -237,7 +253,9 @@ namespace RailViewClient_WinForms
                             }
                             if (alertList[alertList.Count - 1].Contains("other") && alertList[alertList.Count - 1].Contains("open"))
                             {
-                                Console.WriteLine(DateTime.Now + " Something other detected.");
+                                Console.WriteLine(DateTime.Now + "\n Unknown detected at: " + marker.ToolTipText);
+                                gmap.Position = new PointLatLng(cameraLat, cameraLon);
+                                gmap.Zoom = 14;
                             }
                         }
 
@@ -256,36 +274,6 @@ namespace RailViewClient_WinForms
             }
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            int alertCount = 0;
-
-            con.Close();
-
-            using (con)
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand("select * from Accident", con);
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    Accident accident = new Accident();
-                    accident.AccidentId = (int)reader["AccidentId"];
-                    alertCount = accident.AccidentId;
-
-
-                }
-                reader.Close();
-
-                alertCount++;
-                MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Accident(id, cam_id, alert, location_x, location_y, route, alert_checked) VALUES(" + alertCount + ", 4, 'person', 51.4531, 5.568, 'test', 0);", con);
-                cmd2.ExecuteNonQuery();
-
-            }
-            con.Close();
-            SQLrequest();
-        }
         #endregion
         #region Alert Listbox
         public void alertListBox()
@@ -499,7 +487,7 @@ namespace RailViewClient_WinForms
 
                 if (item.Tag != null)
                 {
-                    Console.WriteLine(String.Format("Camera {0} was clicked.", item.Tag));
+                    Console.WriteLine(String.Format("Camera {0}was clicked.", item.ToolTipText));
                     PopoutForm PopOut = new PopoutForm(this, (int)item.Tag);
                     PopOut.Show(this);
                 }
@@ -522,6 +510,7 @@ namespace RailViewClient_WinForms
                 MySqlDataReader reader = cmd.ExecuteReader();
                 con.Close();
             }
+            ResetMap();
         }
 
         public void AlertClick(int cameraId)

@@ -42,7 +42,6 @@ namespace RailViewClient_WinForms
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.txtConsole = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnTestAlert = new System.Windows.Forms.Button();
             this.btn_PopOut = new System.Windows.Forms.Button();
             this.btn_PauseAlerts = new System.Windows.Forms.Button();
             this.btn_RequestSQL = new System.Windows.Forms.Button();
@@ -214,7 +213,7 @@ namespace RailViewClient_WinForms
             // 
             // txtConsole
             // 
-            this.txtConsole.BackColor = System.Drawing.Color.White;
+            this.txtConsole.BackColor = System.Drawing.SystemColors.Control;
             this.txtConsole.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtConsole.Location = new System.Drawing.Point(3, 2);
             this.txtConsole.Margin = new System.Windows.Forms.Padding(0);
@@ -225,7 +224,6 @@ namespace RailViewClient_WinForms
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.btnTestAlert);
             this.tabPage2.Controls.Add(this.btn_PopOut);
             this.tabPage2.Controls.Add(this.btn_PauseAlerts);
             this.tabPage2.Controls.Add(this.btn_RequestSQL);
@@ -239,18 +237,6 @@ namespace RailViewClient_WinForms
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Control";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // btnTestAlert
-            // 
-            this.btnTestAlert.Font = new System.Drawing.Font("Arial", 7.090909F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTestAlert.Location = new System.Drawing.Point(220, 2);
-            this.btnTestAlert.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnTestAlert.Name = "btnTestAlert";
-            this.btnTestAlert.Size = new System.Drawing.Size(91, 34);
-            this.btnTestAlert.TabIndex = 8;
-            this.btnTestAlert.Text = "test alert";
-            this.btnTestAlert.UseVisualStyleBackColor = true;
-            this.btnTestAlert.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // btn_PopOut
             // 
@@ -375,7 +361,7 @@ namespace RailViewClient_WinForms
             this.btn_PauseTrains.Name = "btn_PauseTrains";
             this.btn_PauseTrains.Size = new System.Drawing.Size(108, 33);
             this.btn_PauseTrains.TabIndex = 6;
-            this.btn_PauseTrains.Text = "Pause Timer";
+            this.btn_PauseTrains.Text = "Pause Trains";
             this.btn_PauseTrains.UseVisualStyleBackColor = true;
             this.btn_PauseTrains.Click += new System.EventHandler(this.btn_PauseTrains_Click);
             // 
@@ -428,7 +414,7 @@ namespace RailViewClient_WinForms
             this.Controls.Add(this.tp_panel);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "ClientForm";
-            this.Text = "Form1";
+            this.Text = "RailView Client";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tp_panel.ResumeLayout(false);
             this.tp_panel.PerformLayout();
@@ -469,7 +455,6 @@ namespace RailViewClient_WinForms
         private System.Windows.Forms.Button btn_PauseAlerts;
         private System.Windows.Forms.Button btn_PauseTrains;
         private System.Windows.Forms.TextBox txtConsole;
-        private System.Windows.Forms.Button btnTestAlert;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label lblTimer;

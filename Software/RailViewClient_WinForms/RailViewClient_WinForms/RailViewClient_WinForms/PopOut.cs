@@ -12,30 +12,59 @@ using GMap.NET;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using System.Net;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace RailViewClient_WinForms
 {
     public partial class PopoutForm : Form
     {
         ClientForm clientForm;
+        Timer StreamTimer = new Timer();
         int cameraId;
 
         public PopoutForm(ClientForm clientForm, int cameraId)
         {
             InitializeComponent();
+
             this.clientForm = clientForm;
             this.cameraId = cameraId;
+
+            lblCameraName.Text = clientForm.CamName;
+
+            StreamTimer.Enabled = true;
+            StreamTimer.Interval = 3000;
+            StreamTimer.Tick += StreamTimer_Tick;
+
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+        }
+
+        private void StreamTimer_Tick(object sender, EventArgs e)
+        {
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(clientForm.StreamLink);
+            request.Method = "HEAD";
+
+            bool exists;
+            try
+            {
+                request.GetResponse();
+                exists = true;
+            }
+            catch
+            {
+                exists = false;
+            }
+
+            if (exists == true)
+            {
+                pictureBox1.InitialImage = null;
+                pictureBox1.ImageLocation = clientForm.StreamLink;
+            }         
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-        
-            if (clientForm.IsStreaming == true)
-            {
-                pictureBox1.Load(clientForm.StreamLink);
-            }         
         }
 
         private void btnFalseAlert_Click(object sender, EventArgs e)
@@ -48,7 +77,7 @@ namespace RailViewClient_WinForms
         private void btnAlert_Click(object sender, EventArgs e)
         {
             this.Close();
-            clientForm.AlertClick(cameraId);           
+            clientForm.AlertClick(cameraId);
         }
 
         private void PopoutForm_FormClosing(object sender, FormClosingEventArgs e)

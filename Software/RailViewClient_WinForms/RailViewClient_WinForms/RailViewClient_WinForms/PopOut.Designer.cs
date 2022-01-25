@@ -38,6 +38,7 @@ namespace RailViewClient_WinForms
             this.btnFalseAlert = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblCameraName = new System.Windows.Forms.Label();
             this.tp_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logo_pb)).BeginInit();
             this.panel1.SuspendLayout();
@@ -113,6 +114,7 @@ namespace RailViewClient_WinForms
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
             this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Controls.Add(this.lblCameraName);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 63);
             this.panel2.Name = "panel2";
@@ -123,12 +125,23 @@ namespace RailViewClient_WinForms
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(20, 20);
+            this.pictureBox1.Location = new System.Drawing.Point(20, 46);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1010, 524);
+            this.pictureBox1.Size = new System.Drawing.Size(1010, 498);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            // 
+            // lblCameraName
+            // 
+            this.lblCameraName.AutoSize = true;
+            this.lblCameraName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblCameraName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCameraName.Location = new System.Drawing.Point(20, 20);
+            this.lblCameraName.Name = "lblCameraName";
+            this.lblCameraName.Size = new System.Drawing.Size(76, 26);
+            this.lblCameraName.TabIndex = 1;
+            this.lblCameraName.Text = "label1";
             // 
             // PopoutForm
             // 
@@ -139,13 +152,14 @@ namespace RailViewClient_WinForms
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tp_panel);
             this.Name = "PopoutForm";
-            this.Text = "Form2";
+            this.Text = "Camera Feed";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PopoutForm_FormClosing);
             this.tp_panel.ResumeLayout(false);
             this.tp_panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logo_pb)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -161,5 +175,6 @@ namespace RailViewClient_WinForms
         private System.Windows.Forms.Button btnAlert;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblCameraName;
     }
 }
