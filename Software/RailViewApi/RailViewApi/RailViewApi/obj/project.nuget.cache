@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zIA0/VH/jx5hmMnK7qS4ORXREa8tzMr5fCmoOzVH/2EpQF2dO7Q+UvRD79z1jnN/u1FjRIK+/mWDxwf5eDiq6Q==",
+  "dgSpecHash": "5yn7O6py3gCbGibXfcAAIwveg4yDhoqp8FQ3H4KbCVkf4k/+wdAWpyLRcObQcrFaKg2eO2K81HxmiWTucoasiA==",
   "success": true,
-  "projectFilePath": "D:\\Documents\\SchoolFontys\\proftaak22\\Software\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj",
+  "projectFilePath": "D:\\Documents\\SchoolFontys\\proftaaknongit\\tryingtofixstuff\\RailViewApi\\RailViewApi\\RailViewApi\\RailViewApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bende\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\bende\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\6.0.1\\microsoft.aspnetcore.diagnostics.entityframeworkcore.6.0.1.nupkg.sha512",

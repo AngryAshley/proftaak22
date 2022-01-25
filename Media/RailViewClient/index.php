@@ -25,7 +25,7 @@
     {{#.}}
     <div class="text-center border-top border-bottom border-dark border-2">
         <p class="px-2 pt-2 text-capitalize">
-            {{accidentDate}} <br /> {{cameraName}} <br /> <b>{{accidentType}}</b>
+            {{accidentDate}} <br /> {{cameraName}} <br /> <b>{{accidentType}}</b> <br /> Status: {{statusType}} <br /> Action Required: {{requiredAction}}
         </p>
     </div>
     {{/.}}

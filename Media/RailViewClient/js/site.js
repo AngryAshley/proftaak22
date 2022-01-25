@@ -45,8 +45,10 @@ var map = L.map('map', {
 });
 
 //cctv cams
-var camera = L.marker([51.4531, 5.5680], { icon: alertIcon }).addTo(map);
-//var camera;
+//var camera = L.marker([51.4531, 5.5680], { icon: alertIcon }).addTo(map);
+var camera = [];
+var cam_alerts;
+var counter = 0;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -69,10 +71,10 @@ map.on('zoomend', function () {
     console.log(currentZoomLevel);
 });
 
-camera.on('click', function () {
+map.on('click', function () {
     ShowPopUp();
     //Delete later
-    LoadCoords();
+    //LoadCoords();
 });
 
 function ShowPopUp() {
@@ -82,7 +84,6 @@ function ShowToast() {
     //$('.toast').toast('show');
     notify("error", "This is demo error notification message");
 }
-
 
 function notify(type, message) {
     (() => {
@@ -136,9 +137,9 @@ function LoadAlerts() {
         success: function (response) {
             console.log(response);
             var data = response;
-            // if (camera != null) {
-            //     map.removeLayer(camera);
-            // }
+            if (camera != null) {
+                map.removeLayer(camera);
+            }
 
             if (JSON.stringify(predefined_val) != JSON.stringify(data)) {
                 // window.location.href=window.location.href;
@@ -149,26 +150,22 @@ function LoadAlerts() {
                 //Append the data to the body
                 $("#log").append(renderTemplate);
 
-                // camAlert = data;
                 predefined_val = data;
 
                 // store alerts for check
                 data.forEach(element => {
-                    if (element['statusType'] == false && element['accidentType'] == 'person') {
-                        //cam_alerts[counter] = element;
-                        //counter++;
-                        notify("error", element["Id"]);
-                        console.log("test: " + element["Id"]);
-                        //camera = L.marker([element['latitude'], element['longtitude']], { icon: alertIcon }).addTo(map);
+                    if (element['statusType'] == "open") {
+                        notify("error", "New Alert! Camera " + element["cameraId"] + ": " + element["cameraName"]);
+                        camera2 = L.marker([element['latitude'], element['longtitude']], { icon: alertIcon }).addTo(map);
+                        localStorage.setItem("cameraId", element["cameraId"]);
+                        localStorage.setItem("notificationId", element["notificationId"]);
+                        localStorage.setItem("accidentId", element["accidentId"]);
                     }
                     else {
-                        //camera = L.marker([element['latitude'], element['longtitude']], { icon: cctvIcon }).addTo(map);
+                        camera1 = L.marker([element['latitude'], element['longtitude']], { icon: cctvIcon }).addTo(map);
                     }
                     console.log(camera);
-                    //map.addLayer(camera);
                 });
-
-                //camAlerts(cam_alerts);
             }
 
             if (predefined_val == null) {
@@ -248,3 +245,64 @@ function LoadTrains() {
         }
     });
 }
+
+//POP-UP
+function EmergencyAlarm() {
+    console.log("test");
+    $.ajax({
+        type: "PUT",
+        headers: { 
+            'Accept': 'application/json',
+            'Content-Type': 'application/json' 
+        },
+        url: 'https://localhost:7256/api/alertsv2/' + localStorage.getItem("notificationId"),
+        data: JSON.stringify({
+            "notificationId": localStorage.getItem("notificationId"),
+            "cameraId": localStorage.getItem("cameraId"),
+            "employeeId": 1,
+            "accidentId": localStorage.getItem("accidentId"),
+            "statusType": "closed",
+            "requiredAction": true
+        }),
+        dataType: "json",
+        contentType:'application/json',
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+}
+
+function FalseAlarm() {
+    console.log("test");
+    $.ajax({
+        type: "PUT",
+        url: 'https://localhost:7256/api/alertsv2/' + localStorage.getItem("notificationId"),
+        data: JSON.stringify({
+            "notificationId": localStorage.getItem("notificationId"),
+            "cameraId": localStorage.getItem("cameraId"),
+            "employeeId": 1,
+            "accidentId": localStorage.getItem("accidentId"),
+            "statusType": "closed",
+            "requiredAction": false
+        }),
+        dataType: "json",
+        contentType:'application/json',
+        success: function (response) {
+            console.log("GOED");
+            console.log(response);
+        },
+        error: function (error) {
+
+            console.log("FOUT")
+            console.log(error);
+        }
+    });
+}
+
+setInterval(function () {
+    console.log("123");
+    document.getElementById("testid").src = "https://192.168.161.205/000001.jpg";
+}, 1000);

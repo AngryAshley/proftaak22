@@ -65,6 +65,16 @@ app.MapGet("/api/alertsv2", (RailViewv2Context db2) =>
     return x;
 });
 
+app.MapPut("api/alertsv2/{id}", async (RailViewv2Context db2, int id, Notification notification) =>
+{
+    if (id != notification.NotificationId) return Results.BadRequest();
+
+    db2.Update(notification);
+    await db2.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
 //Calls external API's from NS (this is called here because of CORS-Policy)
 app.MapGet("/api/trains", async (HttpClient client) =>
 {
